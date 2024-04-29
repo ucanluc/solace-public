@@ -6,7 +6,6 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <Nullable>enable</Nullable>
     <!--The rest is default Godot stuff.-->
-    <TargetFramework>net6.0</TargetFramework>
     <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net7.0</TargetFramework>
     <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'ios' ">net8.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
@@ -14,5 +13,9 @@
   <ItemGroup>
     <!--Required for GdUnit4-->
     <PackageReference Include="gdUnit4.api" Version="4.2.0-rc*"/>
+  </ItemGroup>
+  <ItemGroup>
+    <!--Recommended by Rider-Godot integration-->
+    <None Include="**/*.tscn"/>
   </ItemGroup>
 </Project>
