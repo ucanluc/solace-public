@@ -1,9 +1,12 @@
 <Project Sdk="Godot.NET.Sdk/4.2.1">
   <PropertyGroup>
     <!--Following is required for GdUnit4-->
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <LangVersion>11.0</LangVersion>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <!--Disable warning of invalid/incompatible GodotSharp version-->
+    <NoWarn>NU1605</NoWarn>
+    <!--Force nullable warnings.-->
     <Nullable>enable</Nullable>
     <!--The rest is default Godot stuff.-->
     <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net7.0</TargetFramework>
@@ -12,7 +15,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!--Required for GdUnit4-->
-    <PackageReference Include="gdUnit4.api" Version="4.2.0-rc*"/>
+    <PackageReference Include="gdUnit4.api" Version="4.2.*"/>
   </ItemGroup>
   <ItemGroup>
     <!--Recommended by Rider-Godot integration-->
