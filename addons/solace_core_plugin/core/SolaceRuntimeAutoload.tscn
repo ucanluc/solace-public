@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cwjiammkso2y8"]
+
+[ext_resource type="Script" path="res://addons/solace_core_plugin/core/SolaceRuntimeAutoload.cs" id="1_cmpu5"]
+
+[node name="SolaceRuntimeAutoload" type="Node"]
+script = ExtResource("1_cmpu5")

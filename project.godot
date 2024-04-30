@@ -18,6 +18,10 @@ run/main_scene="res://main/Main.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 config/icon="res://main/icon.svg"
 
+[autoload]
+
+SolaceRuntimeAutoload="*res://addons/solace_core_plugin/core/SolaceRuntimeAutoload.tscn"
+
 [display]
 
 window/size/viewport_width=1920
