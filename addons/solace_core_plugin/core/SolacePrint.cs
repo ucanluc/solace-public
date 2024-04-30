@@ -5,7 +5,7 @@ using Godot;
 namespace Solace.addons.solace_core_plugin.core;
 
 /// <summary>
-/// Console/Logging utilities
+/// Solace Core's Console/Logging utilities
 /// </summary>
 public static class SolacePrint
 {

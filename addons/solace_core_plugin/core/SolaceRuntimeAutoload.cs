@@ -2,13 +2,17 @@ using Godot;
 
 namespace Solace.addons.solace_core_plugin.core;
 
+/// <summary>
+/// Attaches the Solace Runtime to Godot's lifecycle.
+/// </summary>
+/// <remarks>Assumed to be a Autoload in Godot's settings.</remarks>
 public partial class SolaceRuntimeAutoload : Node
 {
     public override void _EnterTree()
     {
         SC.Print(nameof(SolaceRuntimeAutoload), "Starting Autoload...");
-        SolaceRuntime.Activate();
         base._EnterTree();
+        SolaceRuntime.Activate();
     }
 
     public override void _Ready()
@@ -20,8 +24,8 @@ public partial class SolaceRuntimeAutoload : Node
     public override void _ExitTree()
     {
         SC.Print(nameof(SolaceRuntimeAutoload), "Exiting Autoload...");
-        base._ExitTree();
         SolaceRuntime.Deactivate();
+        base._ExitTree();
     }
 
     public override void _Process(double delta)

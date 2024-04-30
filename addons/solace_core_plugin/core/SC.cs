@@ -1,7 +1,7 @@
 ﻿namespace Solace.addons.solace_core_plugin.core;
 
 /// <summary>
-/// Solace's global functions
+/// Solace Core's global functions
 /// </summary>
 
 // ReSharper disable once InconsistentNaming
