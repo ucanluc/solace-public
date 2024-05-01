@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers.Text;
 using System.Collections.Generic;
 using Godot;
 
@@ -12,11 +13,17 @@ public static class SolacePrint
     public enum PrintType
     {
         Meta,
-        NamedObject
+        NamedObject,
+        Error,
+        Warning,
+        Verbose
     }
 
     private const string TagMeta = "[META]";
     private const string TagGodotObject = "[OBJ]";
+    private const string TagError = "[ERR]";
+    private const string TagVerbose = "[verbose]";
+    private const string TagWarning = "[WARN]";
 
     private static readonly Queue<string> PrintingQueue = new();
     private static readonly string Stamp = FormatStamp(Random.Shared.Next());
@@ -46,6 +53,9 @@ public static class SolacePrint
         {
             PrintType.Meta => TagMeta,
             PrintType.NamedObject => TagGodotObject,
+            PrintType.Error => TagError,
+            PrintType.Warning => TagWarning,
+            PrintType.Verbose => TagVerbose,
             _ => throw new ArgumentOutOfRangeException(nameof(tagType), tagType, null)
         };
     }
@@ -53,6 +63,6 @@ public static class SolacePrint
     private static string FormatStamp(int i)
     {
         // Formats given integer for a quick & short identification string. 
-        return $"{i % 256 + 16:X}";
+        return $"{i % 256 + 16:X}"; // create 2 hexadecimal characters from any int
     }
 }
