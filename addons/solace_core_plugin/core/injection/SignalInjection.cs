@@ -112,7 +112,7 @@ public partial class SignalInjection:Node
     {
         if (_isAttachedGlobally)
         {
-            SC.Print(nameof(SignalInjection), "Aborting; Tried to initialise multiple times.");
+            SC.PrintErr(nameof(SignalInjection), "Aborting; Tried to initialise multiple times.");
             return;
         }
 
@@ -135,7 +135,7 @@ public partial class SignalInjection:Node
         }
         else
         {
-            SC.Print(nameof(SignalInjection), "No signal hook attachment exists, check for multiple instantiation.");
+            SC.PrintErr(nameof(SignalInjection), "No signal hook attachment exists, check for multiple instantiation.");
         }
 
         _registrationDisabled = false;
@@ -183,18 +183,18 @@ public partial class SignalInjection:Node
     {
         if (!_isAttachedGlobally)
         {
-            SC.Print(nameof(SignalInjection),
+            SC.PrintWarn(nameof(SignalInjection),
                 $"Signal injection not active; Hook {callable.Method} into {signalName} may be inactive.");
         }
 
         if (_registrationDisabled)
         {
-            SC.Print(nameof(SignalInjection),
-                $"Signal injection late registry; Hook for {callable.Method} into {signalName} is ignored.");
+            SC.PrintErr(nameof(SignalInjection),
+                $"Signal injection ignored; Hook for {callable.Method} into {signalName} is registered too late.");
             return false;
         }
 
-        SC.Print(nameof(SignalInjection),
+        SC.PrintVerbose(nameof(SignalInjection),
             $"Signal injection registered; Hook for {callable.Method} into {signalName}.");
 
         if (!SignalToEventHandlerMap.ContainsKey(signalName))
