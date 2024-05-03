@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://6idf853bwbjf"]
+
+[ext_resource type="Script" path="res://content/audio/user_interface/UserInterfaceAudioInjector.cs" id="1_muo3w"]
+[ext_resource type="AudioStream" uid="uid://c2p67h0mgou7g" path="res://addons/kenney/audio/switch30.ogg" id="2_01xri"]
+
+[node name="UserInterfaceAudioInjector" type="Node" node_paths=PackedStringArray("_clickSound")]
+script = ExtResource("1_muo3w")
+_clickSound = NodePath("ButtonClickAudioStreamPlayer")
+
+[node name="ButtonClickAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_01xri")
+max_polyphony = 10
