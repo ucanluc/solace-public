@@ -50,11 +50,11 @@ public partial class AppDefinitionResource : Resource
 
     private void RegisterApp(AppNode appInstance)
     {
-        // throw new System.NotImplementedException();
+        // TODO: App handling
     }
 
     private void SetupApp(AppNode appInstance)
     {
-        // throw new System.NotImplementedException();
+        // TODO: App handling
     }
 }
