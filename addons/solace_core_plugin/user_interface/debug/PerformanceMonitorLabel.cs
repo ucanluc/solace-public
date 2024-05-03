@@ -1,13 +1,35 @@
 ﻿using Godot;
 
-namespace Solace.content.user_interface.debug;
+namespace Solace.addons.solace_core_plugin.user_interface.debug;
 
+[Tool]
 public partial class PerformanceMonitorLabel : Label
 {
+    [Export] private bool _updateInEditor;
+
+    public override void _EnterTree()
+    {
+        base._EnterTree();
+        // Update once on entry if we are in the editor to check visually.
+        if (Engine.IsEditorHint())
+        {
+            UpdateDebugText(0);
+        }
+    }
+
     public override void _Process(double delta)
     {
-        // TODO: Tabular debug data display will replace the need for this.
+        if (_updateInEditor || (!Engine.IsEditorHint()))
+        {
+            UpdateDebugText(delta);
+        }
+    }
+
+    private void UpdateDebugText(double delta)
+    {
+        // TODO: Tabular debug data display will replace the need for this label.
         // TODO: Register debug data via a common api in SC; which might still use Performance.GetMonitor.
+        // TODO: Display registered debug monitors (including custom signals) by querying from here.
         Text = $"Engine FPS: {Engine.GetFramesPerSecond()}" +
                $"\nUpdate Delta: {delta}" +
                $"\nMonitor FPS: {Performance.GetMonitor(Performance.Monitor.TimeFps)}" +

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://duwb0iweib585"]
 
-[ext_resource type="Script" path="res://content/user_interface/application/QuitButton.cs" id="1_6kapd"]
 [ext_resource type="Script" path="res://addons/solace_core_plugin/core/application/AppNode.cs" id="1_gurne"]
+[ext_resource type="Script" path="res://addons/solace_core_plugin/user_interface/application/QuitButton.cs" id="2_x0086"]
 
 [node name="RuntimeHookMain" type="Node"]
 script = ExtResource("1_gurne")
@@ -39,4 +39,4 @@ text = "Example"
 [node name="QuitButton" type="Button" parent="CanvasLayer/Menu/MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Quit"
-script = ExtResource("1_6kapd")
+script = ExtResource("2_x0086")

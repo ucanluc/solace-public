@@ -1,7 +1,7 @@
 using Godot;
 using Solace.addons.solace_core_plugin.core;
 
-namespace Solace.content.user_interface.application;
+namespace Solace.addons.solace_core_plugin.user_interface.application;
 
 public partial class QuitButton : Button
 {

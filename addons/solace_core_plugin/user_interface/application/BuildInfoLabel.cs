@@ -1,7 +1,8 @@
 ﻿using Godot;
 
-namespace Solace.content.user_interface.application;
+namespace Solace.addons.solace_core_plugin.user_interface.application;
 
+[Tool]
 public partial class BuildInfoLabel : Label
 {
     private const string VersionNamePath = "application/config/version";
