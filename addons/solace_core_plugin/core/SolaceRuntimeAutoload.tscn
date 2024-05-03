@@ -7,7 +7,9 @@
 [node name="SolaceRuntimeAutoload" type="Node"]
 script = ExtResource("1_cmpu5")
 
-[node name="SolaceSignalInjection" type="Node" parent="."]
+[node name="SignalInjection" type="Node" parent="."]
 script = ExtResource("2_hdbd7")
 
 [node name="DebugUI" parent="." instance=ExtResource("3_tm4xu")]
+
+[node name="Networking" type="Node" parent="."]

@@ -20,8 +20,39 @@ script = ExtResource("1_f6mwl")
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
-text = "Debug Line 1
-Debug Line 2
-"
+text = "Engine FPS: 145
+Update Delta: 0
+Monitor FPS: 145
+Frame Time: 0.005476
+Physics Time: 0.003807
+Navigation Time: 2.7E-05
+Static Memory Used: 374,223,407.00
+Static Memory Available: 623,548,051.00
+Msg Buffer Max Mem Used: 1,064,960.00
+Object #: 71705
+Resource #: 206
+Node #: 19522
+Orphan Node #: 981
+Render Object #: 0
+Render Primitive #: 0
+Render Draw Calls: 0
+VRAM Used: 168,792,504.00
+Texture Mem Used: 117,147,648.00
+Render Buffer Mem Used: 12,010,000.00
+2D Phys Active Obj #: 0
+2D Phys Collision Pair #: 0
+2D Phys Island #: 0
+3D Phys Active Obj #: 0
+3D Phys Collision Pair #: 0
+3D Phys Island #: 0
+Nav Active Map #: 0
+Nav Region #: 0
+Nav Agent #: 0
+Nav Link #: 0
+Nav Poly #: 0
+Nav Edge #: 0
+Nav Edge Merge #: 0
+Nav Edge Connection #: 0
+Nav Edge Free #: 0"
 label_settings = SubResource("LabelSettings_exenx")
 script = ExtResource("2_uykxm")
