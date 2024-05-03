@@ -81,7 +81,7 @@ public partial class SignalInjection:Node
     /// Starts from the scene root if no node is provided.
     /// </summary>
     /// <param name="node"></param>
-    private void QueueExistingChildren(Node node = null)
+    private void QueueExistingChildren(Node? node = null)
     {
         var children = node == null ? GetTree().Root.GetChildren() : node.GetChildren();
 

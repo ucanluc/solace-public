@@ -1,3 +1,8 @@
-[gd_scene format=3 uid="uid://dchrcgr3jrp6r"]
+[gd_scene load_steps=3 format=3 uid="uid://dchrcgr3jrp6r"]
+
+[ext_resource type="Script" path="res://main/Main.cs" id="1_ffqh3"]
+[ext_resource type="Resource" uid="uid://dvqsx0rlaa38v" path="res://apps/runtime_hook/RuntimeHookAppDef.tres" id="2_20vnu"]
 
 [node name="Main" type="Node"]
+script = ExtResource("1_ffqh3")
+_appToLoad = ExtResource("2_20vnu")
