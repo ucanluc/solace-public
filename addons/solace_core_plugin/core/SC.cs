@@ -22,4 +22,15 @@ public static class SC
         SolacePrint.Print($"*: {text}", printType);
 
     #endregion
+
+    /// <summary>
+    /// Request a graceful quit out of the active application
+    /// </summary>
+    /// <returns>False: cannot handle quit request, True: will quit application/program</returns>
+    public static bool QuitApplication()
+    {
+        //TODO: handle via application stack
+        SC.PrintWarn(nameof(SC), "Not implemented: Cannot handle quit request");
+        return false;
+    }
 }

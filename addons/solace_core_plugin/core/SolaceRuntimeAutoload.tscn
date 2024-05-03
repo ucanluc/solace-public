@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://cwjiammkso2y8"]
+[gd_scene load_steps=3 format=3 uid="uid://cwjiammkso2y8"]
 
 [ext_resource type="Script" path="res://addons/solace_core_plugin/core/SolaceRuntimeAutoload.cs" id="1_cmpu5"]
+[ext_resource type="Script" path="res://addons/solace_core_plugin/core/injection/SignalInjection.cs" id="2_hdbd7"]
 
 [node name="SolaceRuntimeAutoload" type="Node"]
 script = ExtResource("1_cmpu5")
+
+[node name="SolaceSignalInjection" type="Node" parent="."]
+script = ExtResource("2_hdbd7")
