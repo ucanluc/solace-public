@@ -8,7 +8,7 @@ namespace Solace.addons.solace_core_plugin.core.application;
 /// </summary>
 [Tool] // make it capable of running in the editor
 [GlobalClass] // makes it easier to use the resource in the inspector
-public class AppDefinitionResource : Resource
+public partial class AppDefinitionResource : Resource
 {
     [Export] private PackedScene? _appEntryNode;
 
