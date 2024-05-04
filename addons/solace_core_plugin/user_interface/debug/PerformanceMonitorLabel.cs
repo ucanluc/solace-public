@@ -10,11 +10,6 @@ public partial class PerformanceMonitorLabel : Label
     public override void _EnterTree()
     {
         base._EnterTree();
-        // Update once on entry if we are in the editor to check visually.
-        if (Engine.IsEditorHint())
-        {
-            UpdateDebugText(0);
-        }
     }
 
     public override void _Process(double delta)
