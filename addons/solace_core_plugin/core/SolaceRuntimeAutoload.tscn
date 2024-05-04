@@ -11,5 +11,3 @@ script = ExtResource("1_cmpu5")
 script = ExtResource("2_hdbd7")
 
 [node name="DebugUI" parent="." instance=ExtResource("3_tm4xu")]
-
-[node name="Networking" type="Node" parent="."]
