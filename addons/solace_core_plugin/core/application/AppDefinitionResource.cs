@@ -34,27 +34,8 @@ public partial class AppDefinitionResource : Resource
         }
 
         var nodeInstance = _appEntryNode.Instantiate();
-
-        if (nodeInstance is not AppNode appInstance)
-        {
-            SC.Print(nameof(AppDefinitionResource),
-                $"Cannot load app; " +
-                $"the node '{nodeInstance.Name}' defined in '{ResourceName}' needs to be of type {nameof(AppNode)}");
-            return;
-        }
-
-        SetupApp(appInstance);
-        parent.AddChild(appInstance);
-        RegisterApp(appInstance);
+        
+        parent.AddChild(nodeInstance);
     }
-
-    private void RegisterApp(AppNode appInstance)
-    {
-        // TODO: App handling
-    }
-
-    private void SetupApp(AppNode appInstance)
-    {
-        // TODO: App handling
-    }
+    
 }

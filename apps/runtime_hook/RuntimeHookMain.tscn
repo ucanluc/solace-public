@@ -1,6 +1,5 @@
-[gd_scene load_steps=5 format=3 uid="uid://duwb0iweib585"]
+[gd_scene load_steps=4 format=3 uid="uid://duwb0iweib585"]
 
-[ext_resource type="Script" path="res://addons/solace_core_plugin/core/application/AppNode.cs" id="1_gurne"]
 [ext_resource type="Script" path="res://addons/solace_core_plugin/user_interface/application/QuitButton.cs" id="2_x0086"]
 [ext_resource type="PackedScene" uid="uid://5teofidrdn1m" path="res://apps/runtime_hook/network/NetworkInstancePanel.tscn" id="3_2f3n5"]
 
@@ -11,7 +10,6 @@ MarginContainer/constants/margin_right = 10
 MarginContainer/constants/margin_top = 10
 
 [node name="RuntimeHookMain" type="Node"]
-script = ExtResource("1_gurne")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
