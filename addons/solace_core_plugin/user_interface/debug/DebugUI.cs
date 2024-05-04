@@ -28,7 +28,7 @@ public partial class DebugUI : Control
     public override void _Input(InputEvent @event)
     {
         // Toggle the visibility of this UI.
-        if (@event.IsActionPressed("menu_debug"))
+        if (@event.IsActionPressed("sc_menu_debug"))
         {
             Visible = !Visible;
         }
