@@ -2,13 +2,13 @@
 
 public struct AtlasTile
 {
-    public bool clearCornerNW;
-    public bool clearCornerSW;
-    public bool clearCornerNE;
-    public bool clearCornerSE;
-    public bool wallN;
-    public bool wallS;
-    public bool wallE;
-    public bool wallW;
+    public bool openCornerNW;
+    public bool openCornerSW;
+    public bool openCornerNE;
+    public bool openCornerSE;
+    public bool openWallN;
+    public bool openWallS;
+    public bool openWallE;
+    public bool openWallW;
     
 }
