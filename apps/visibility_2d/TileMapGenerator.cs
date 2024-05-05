@@ -5,6 +5,10 @@ using Solace.addons.solace_core_plugin.core;
 
 namespace Solace.apps.visibility_2d;
 
+/// <summary>
+/// Creates a tilemap image for wall/corner variations.
+/// Intended as an editor tool for a quick & dirty map generation.
+/// </summary>
 [Tool]
 public partial class TileMapGenerator : TileMap
 {
@@ -38,7 +42,7 @@ public partial class TileMapGenerator : TileMap
         {
             SC.PrintErr(nameof(TileMapGenerator), "Texture creation is editor only; aborting.");
         }
-        
+
         SC.Print(nameof(TileMapGenerator), "Recreating the texture...");
 
         var tiles = GetAtlasTileTypes();
@@ -48,7 +52,7 @@ public partial class TileMapGenerator : TileMap
         DrawAtlasTiles(tiles, sqrtTileCount, image);
 
         _customAtlas = ImageTexture.CreateFromImage(image);
-        
+
         image.SavePng("res://test_tile_atlas.png");
     }
 
