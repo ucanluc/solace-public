@@ -38,6 +38,12 @@ public static class SolacePrint
 
     private static void EnqueuePrint(string s)
     {
+        if (!SolaceRuntime.Active)
+        {
+            GD.Print(s);
+            return;
+        }
+
         PrintingQueue.Enqueue(s);
     }
 
