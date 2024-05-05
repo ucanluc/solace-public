@@ -38,8 +38,7 @@ public partial class TileMapGenerator : TileMap
         {
             SC.PrintErr(nameof(TileMapGenerator), "Texture creation is editor only; aborting.");
         }
-
-
+        
         SC.Print(nameof(TileMapGenerator), "Recreating the texture...");
 
         var tiles = GetAtlasTileTypes();
@@ -49,7 +48,7 @@ public partial class TileMapGenerator : TileMap
         DrawAtlasTiles(tiles, sqrtTileCount, image);
 
         _customAtlas = ImageTexture.CreateFromImage(image);
-
+        
         image.SavePng("res://test_tile_atlas.png");
     }
 
@@ -191,32 +190,97 @@ public partial class TileMapGenerator : TileMap
                         tileTextureStartCoordY + TileSubblockEdgeLengthInPixels
                     ), verticalWallRect), airFillColor);
             }
-            
+
+            if (tile.openCornerNW)
+            {
+                image.FillRect(new Rect2I(
+                    new Vector2I(
+                        tileTextureStartCoordX,
+                        tileTextureStartCoordY
+                    ), subblockRect), airFillColor);
+            }
+
+            if (tile.openCornerNE)
+            {
+                image.FillRect(new Rect2I(
+                    new Vector2I(
+                        tileTextureStartCoordX + TileTextureEdgeLengthInPixels - TileSubblockEdgeLengthInPixels,
+                        tileTextureStartCoordY
+                    ), subblockRect), airFillColor);
+            }
+
+            if (tile.openCornerSW)
+            {
+                image.FillRect(new Rect2I(
+                    new Vector2I(
+                        tileTextureStartCoordX,
+                        tileTextureStartCoordY + TileTextureEdgeLengthInPixels - TileSubblockEdgeLengthInPixels
+                    ), subblockRect), airFillColor);
+            }
+
+            if (tile.openCornerSE)
+            {
+                image.FillRect(new Rect2I(
+                    new Vector2I(
+                        tileTextureStartCoordX + TileTextureEdgeLengthInPixels - TileSubblockEdgeLengthInPixels,
+                        tileTextureStartCoordY + TileTextureEdgeLengthInPixels - TileSubblockEdgeLengthInPixels
+                    ), subblockRect), airFillColor);
+            }
         }
     }
 
+    /// <summary>
+    /// Creates the edge/corner variations for atlas tiles.
+    /// </summary>
+    /// <returns> an array of all unique 'atlas tiles', which lists which edges/corners of the tile are open.</returns>
     private AtlasTile[] GetAtlasTileTypes()
     {
-        var cornerTiles = new AtlasTile[16];
-        var wallTiles = new AtlasTile[16];
-        // create corner & wall spots
-        for (var i = 1; i < 16; i++)
-        {
-            cornerTiles[i].openCornerNW = (i & 1) == 1;
-            cornerTiles[i].openCornerSW = (i >> 1 & 1) == 1;
-            cornerTiles[i].openCornerNE = (i >> 2 & 1) == 1;
-            cornerTiles[i].openCornerSE = (i >> 3 & 1) == 1;
-
-            wallTiles[i].openWallN = (i & 1) == 1;
-            wallTiles[i].openWallE = (i >> 1 & 1) == 1;
-            wallTiles[i].openWallS = (i >> 2 & 1) == 1;
-            wallTiles[i].openWallW = (i >> 3 & 1) == 1;
-        }
-
-
         var allTiles = new List<AtlasTile>();
-        allTiles.AddRange(cornerTiles);
-        allTiles.AddRange(wallTiles);
+
+        for (var i = 0; i < 16; i++)
+        {
+            // get all wall variations by doing a binary count
+            var openWallN = (i & 1) == 1;
+            var openWallE = (i >> 1 & 1) == 1;
+            var openWallS = (i >> 2 & 1) == 1;
+            var openWallW = (i >> 3 & 1) == 1;
+
+            // check combinations of corners that are 'on their own', without a wall attachment here.
+            // starting from 0 also adds the 'default' corners.
+            // going up to 16 also adds the 'fully empty tile' also.
+            for (var j = 0; j < 16; j++)
+            {
+                // get which variation we are on
+                var varyNE = (j & 1) == 1;
+                var varyNW = (j >> 1 & 1) == 1;
+                var varySE = (j >> 2 & 1) == 1;
+                var varySW = (j >> 3 & 1) == 1;
+
+                // get which corners are isolated, therefore can be varied.
+                var isolatedNE = openWallN && openWallE;
+                var isolatedNW = openWallN && openWallW;
+                var isolatedSE = openWallS && openWallE;
+                var isolatedSW = openWallS && openWallW;
+
+                if ((varyNE && !isolatedNE)
+                    || (varyNW && !isolatedNW)
+                    || (varySE && !isolatedSE)
+                    || (varySW && !isolatedSW)) continue;
+
+                var newCornerVariation = new AtlasTile()
+                {
+                    openWallN = openWallN,
+                    openWallE = openWallE,
+                    openWallS = openWallS,
+                    openWallW = openWallW,
+                    openCornerNE = varyNE,
+                    openCornerNW = varyNW,
+                    openCornerSE = varySE,
+                    openCornerSW = varySW
+                };
+                allTiles.Add(newCornerVariation);
+            }
+        }
 
         return allTiles.ToArray();
     }
