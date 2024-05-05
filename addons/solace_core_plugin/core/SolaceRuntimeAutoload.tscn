@@ -10,4 +10,6 @@ script = ExtResource("1_cmpu5")
 [node name="SignalInjection" type="Node" parent="."]
 script = ExtResource("2_hdbd7")
 
-[node name="DebugUI" parent="." instance=ExtResource("3_tm4xu")]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="DebugUI" parent="CanvasLayer" instance=ExtResource("3_tm4xu")]
