@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://ccte75gi0s8t6"]
+[gd_scene load_steps=11 format=3 uid="uid://ccte75gi0s8t6"]
 
 [ext_resource type="Texture2D" uid="uid://xw04n66d2q6b" path="res://addons/kenney/2d/tilesheet_topdown.png" id="1_2nff4"]
 [ext_resource type="TileSet" uid="uid://brevrqvxfp0aw" path="res://addons/solace_blocky/tilemap/topdown_tile_set.tres" id="1_iwxtr"]
 [ext_resource type="Script" path="res://apps/visibility_2d/TopdownCharacter.cs" id="2_atv6f"]
 [ext_resource type="Script" path="res://apps/visibility_2d/TileMapGenerator.cs" id="2_kpfyl"]
+[ext_resource type="Script" path="res://apps/visibility_2d/TopdownNPC.cs" id="5_w5opt"]
 
 [sub_resource type="Image" id="Image_8inaf"]
 data = {
@@ -24,12 +25,17 @@ region = Rect2(513, 2, 12, 12)
 [sub_resource type="CircleShape2D" id="CircleShape2D_2aboi"]
 radius = 8.0
 
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_l6dnf"]
+vertices = PackedVector2Array(513, -177, 536, 442, -392, 432, -462, -151, -108, -292)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-473, -158, -401, 442, 547, 453, 523, -186, -109, -303)])
+source_geometry_group_name = &"navigation_polygon_source_group"
+
 [node name="Visibility2dMain" type="Node"]
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource("1_iwxtr")
 format = 2
-layer_0/tile_data = PackedInt32Array(65537, 327681, 0, 65538, 65537, 0, 2, 196609, 4, 1, 131073, 2, 3, 131073, 2)
 script = ExtResource("2_kpfyl")
 _customAtlas = SubResource("ImageTexture_ffc2t")
 
@@ -49,3 +55,21 @@ zoom = Vector2(4, 4)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TopdownCharacter"]
 shape = SubResource("CircleShape2D_2aboi")
+
+[node name="Node2D" type="CharacterBody2D" parent="." node_paths=PackedStringArray("targetObject")]
+position = Vector2(139, 100)
+script = ExtResource("5_w5opt")
+targetObject = NodePath("../TopdownCharacter")
+_movementSpeed = 50.0
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Node2D"]
+
+[node name="GunCharacterSprite2D2" type="Sprite2D" parent="Node2D"]
+texture = SubResource("AtlasTexture_81u1x")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Node2D"]
+shape = SubResource("CircleShape2D_2aboi")
+disabled = true
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_l6dnf")
