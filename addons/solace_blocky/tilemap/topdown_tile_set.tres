@@ -240,7 +240,7 @@ outlines = Array[PackedVector2Array]([PackedVector2Array(-12, -12, -12, -16, 12,
 source_geometry_group_name = &"navigation_polygon_source_group"
 agent_radius = 0.0
 
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_8uc3l"]
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_l2stk"]
 vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)])
@@ -608,7 +608,7 @@ texture_region_size = Vector2i(32, 32)
 4:6/0 = 0
 4:6/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 4:6/0/physics_layer_0/angular_velocity = 0.0
-4:6/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_8uc3l")
+4:6/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_l2stk")
 
 [resource]
 tile_size = Vector2i(32, 32)

@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="AppDefinitionResource" load_steps=3 format=3 uid="uid://dw843jbuq8mq0"]
+
+[ext_resource type="PackedScene" uid="uid://mdwyw8gkdvj" path="res://apps/generator_level/GeneratorLevelAppMain.tscn" id="1_hptfd"]
+[ext_resource type="Script" path="res://addons/solace_core_plugin/core/application/AppDefinitionResource.cs" id="2_hh831"]
+
+[resource]
+script = ExtResource("2_hh831")
+_appEntryNode = ExtResource("1_hptfd")

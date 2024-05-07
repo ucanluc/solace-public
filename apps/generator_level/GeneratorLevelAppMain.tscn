@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://mdwyw8gkdvj"]
+
+[ext_resource type="Script" path="res://apps/generator_level/LevelGenerator.cs" id="1_pwi33"]
+
+[node name="GeneratorLevelAppMain" type="Node"]
+
+[node name="LevelGenerator" type="Node" parent="."]
+script = ExtResource("1_pwi33")
