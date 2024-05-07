@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Godot;
 using Solace.addons.solace_core_plugin.core;
 
-namespace Solace.apps.visibility_2d;
+namespace Solace.apps.reference_visibility;
 
 /// <summary>
 /// Creates a tilemap image for wall/corner variations.

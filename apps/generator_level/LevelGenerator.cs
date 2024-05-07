@@ -1,5 +1,7 @@
-using Godot;
 using System;
+using Godot;
+
+namespace Solace.apps.generator_level;
 
 public partial class LevelGenerator : Node
 {

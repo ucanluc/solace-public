@@ -1,4 +1,6 @@
-﻿namespace Solace.addons.solace_core_plugin.core;
+﻿using Solace.addons.solace_core_plugin.core.debug;
+
+namespace Solace.addons.solace_core_plugin.core;
 
 /// <summary>
 ///  Solace Core's runtime singleton; attaches into Godot's lifecycles.

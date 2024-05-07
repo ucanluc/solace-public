@@ -1,4 +1,4 @@
-﻿namespace Solace.apps.visibility_2d;
+﻿namespace Solace.apps.reference_visibility;
 
 public struct AtlasTile
 {

@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Buffers.Text;
 using System.Collections.Generic;
 using Godot;
 
-namespace Solace.addons.solace_core_plugin.core;
+namespace Solace.addons.solace_core_plugin.core.debug;
 
 /// <summary>
 /// Solace Core's Console/Logging utilities

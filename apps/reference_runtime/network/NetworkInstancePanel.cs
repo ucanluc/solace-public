@@ -2,7 +2,7 @@ using Godot;
 using Solace.addons.solace_core_plugin.core;
 using Solace.addons.solace_core_plugin.core.network;
 
-namespace Solace.apps.runtime_hook.network;
+namespace Solace.apps.reference_runtime.network;
 
 public partial class NetworkInstancePanel : PanelContainer
 {
