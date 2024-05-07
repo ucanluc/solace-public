@@ -15,7 +15,7 @@ public partial class TileMapGenerator : TileMap
     private const int TileTextureEdgeLengthInPixels = 32;
     private const int MarginInPixels = 1;
     private const int SeparationInPixels = 1;
-    private const int TileSubdivision = 8;
+    private const int TileSubdivision = SolaceConstants.BlueprintSubdivisionPerMeter;
     private const int TileSubblockEdgeLengthInPixels = TileTextureEdgeLengthInPixels / TileSubdivision;
     private const int OutlineWidth = TileSubblockEdgeLengthInPixels / 2;
     private const int OutlineMargin = TileSubblockEdgeLengthInPixels - OutlineWidth;
@@ -48,7 +48,7 @@ public partial class TileMapGenerator : TileMap
         }
 
         SC.Print(nameof(TileMapGenerator), "Reassigning the tile data...");
-        
+
         throw new NotImplementedException();
     }
 

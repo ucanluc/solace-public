@@ -1,3 +1,8 @@
-[gd_scene format=3 uid="uid://mdwyw8gkdvj"]
+[gd_scene load_steps=2 format=3 uid="uid://mdwyw8gkdvj"]
+
+[ext_resource type="Script" path="res://apps/level_gen/LevelGenerator.cs" id="1_0hqki"]
 
 [node name="LevelGenAppMain" type="Node"]
+
+[node name="LevelGenerator" type="Node" parent="."]
+script = ExtResource("1_0hqki")
