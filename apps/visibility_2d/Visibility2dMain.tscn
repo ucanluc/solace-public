@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://ccte75gi0s8t6"]
+[gd_scene load_steps=15 format=3 uid="uid://ccte75gi0s8t6"]
 
 [ext_resource type="Texture2D" uid="uid://xw04n66d2q6b" path="res://addons/kenney/2d/tilesheet_topdown.png" id="1_2nff4"]
 [ext_resource type="TileSet" uid="uid://brevrqvxfp0aw" path="res://addons/solace_blocky/tilemap/topdown_tile_set.tres" id="1_iwxtr"]
 [ext_resource type="Script" path="res://apps/visibility_2d/TopdownCharacter.cs" id="2_atv6f"]
 [ext_resource type="Script" path="res://apps/visibility_2d/TileMapGenerator.cs" id="2_kpfyl"]
+[ext_resource type="Script" path="res://content/camera/ToggleCamera2D.cs" id="5_ma0rh"]
 [ext_resource type="Script" path="res://apps/visibility_2d/TopdownNPC.cs" id="5_w5opt"]
 
 [sub_resource type="Image" id="Image_8inaf"]
@@ -25,9 +26,21 @@ region = Rect2(513, 2, 12, 12)
 [sub_resource type="CircleShape2D" id="CircleShape2D_2aboi"]
 radius = 8.0
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_a84g8"]
+size = Vector3(100, 1, 100)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ymu4w"]
+size = Vector3(100, 1, 100)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lpq1t"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ck2jj"]
+
 [node name="Visibility2dMain" type="Node"]
 
-[node name="TileMap" type="TileMap" parent="."]
+[node name="SubViewport" type="SubViewport" parent="."]
+
+[node name="TileMap" type="TileMap" parent="SubViewport"]
 position = Vector2(-84, 1)
 tile_set = ExtResource("1_iwxtr")
 format = 2
@@ -35,34 +48,58 @@ layer_0/tile_data = PackedInt32Array(-3, 196609, 4, 65533, 196609, 0, -65538, 19
 script = ExtResource("2_kpfyl")
 _customAtlas = SubResource("ImageTexture_ffc2t")
 
-[node name="TopdownCharacter" type="CharacterBody2D" parent="."]
+[node name="TopdownCharacter" type="CharacterBody2D" parent="SubViewport"]
 script = ExtResource("2_atv6f")
 Speed = 100
 
-[node name="CharacterSprite2D" type="Sprite2D" parent="TopdownCharacter"]
+[node name="CharacterSprite2D" type="Sprite2D" parent="SubViewport/TopdownCharacter"]
 visible = false
 texture = SubResource("AtlasTexture_81u1x")
 
-[node name="GunCharacterSprite2D" type="Sprite2D" parent="TopdownCharacter"]
+[node name="GunCharacterSprite2D" type="Sprite2D" parent="SubViewport/TopdownCharacter"]
 texture = SubResource("AtlasTexture_81u1x")
 
-[node name="Camera2D" type="Camera2D" parent="TopdownCharacter"]
+[node name="Camera2D" type="Camera2D" parent="SubViewport/TopdownCharacter"]
+enabled = false
 zoom = Vector2(4, 4)
+script = ExtResource("5_ma0rh")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TopdownCharacter"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewport/TopdownCharacter"]
 shape = SubResource("CircleShape2D_2aboi")
 
-[node name="Node2D" type="CharacterBody2D" parent="." node_paths=PackedStringArray("targetObject")]
+[node name="Node2D" type="CharacterBody2D" parent="SubViewport" node_paths=PackedStringArray("targetObject")]
 position = Vector2(139, 100)
 script = ExtResource("5_w5opt")
 targetObject = NodePath("../TopdownCharacter")
 _movementSpeed = 50.0
 
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Node2D"]
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="SubViewport/Node2D"]
 
-[node name="GunCharacterSprite2D2" type="Sprite2D" parent="Node2D"]
+[node name="GunCharacterSprite2D2" type="Sprite2D" parent="SubViewport/Node2D"]
 texture = SubResource("AtlasTexture_81u1x")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Node2D"]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="SubViewport/Node2D"]
 shape = SubResource("CircleShape2D_2aboi")
-disabled = true
+
+[node name="Node3D" type="Node3D" parent="."]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Node3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/StaticBody3D"]
+shape = SubResource("BoxShape3D_a84g8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D/StaticBody3D"]
+mesh = SubResource("BoxMesh_ymu4w")
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.63192, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/CharacterBody3D"]
+shape = SubResource("CapsuleShape3D_lpq1t")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D/CharacterBody3D"]
+mesh = SubResource("CapsuleMesh_ck2jj")
+
+[node name="Camera3D" type="Camera3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.53719, 35.7665)
+current = true

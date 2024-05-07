@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=49 format=3 uid="uid://brevrqvxfp0aw"]
+[gd_resource type="TileSet" load_steps=50 format=3 uid="uid://brevrqvxfp0aw"]
 
 [ext_resource type="Texture2D" uid="uid://cppwi278aufpq" path="res://addons/solace_blocky/tilemap/test_tile_atlas.png" id="1_yxqhu"]
 
@@ -237,6 +237,13 @@ agent_radius = 0.0
 vertices = PackedVector2Array(12, -12, 16, -12, 16, 12, 12, 12, 12, 16, -16, 16, -16, -12, -12, -12, 12, -16, -12, -16)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(3, 4, 5, 6, 7), PackedInt32Array(0, 3, 7), PackedInt32Array(8, 0, 7, 9)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-12, -12, -12, -16, 12, -16, 12, -12, 16, -12, 16, 12, 12, 12, 12, 16, -16, 16, -16, -12)])
+source_geometry_group_name = &"navigation_polygon_source_group"
+agent_radius = 0.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_8uc3l"]
+vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)])
 source_geometry_group_name = &"navigation_polygon_source_group"
 agent_radius = 0.0
 
@@ -598,6 +605,10 @@ texture_region_size = Vector2i(32, 32)
 0:0/0/physics_layer_0/angular_velocity = 0.0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(16, -16, 12, -12, -12, -12, -12, 12, 12, 12, 12, -12, 16, -16, 16, 16, -16, 16, -16, -16)
 0:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_07elj")
+4:6/0 = 0
+4:6/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+4:6/0/physics_layer_0/angular_velocity = 0.0
+4:6/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_8uc3l")
 
 [resource]
 tile_size = Vector2i(32, 32)

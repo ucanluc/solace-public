@@ -22,6 +22,7 @@ public partial class TileMapGenerator : TileMap
 
     [Export] private ImageTexture? _customAtlas;
     [Export] private bool _recreateTexture = false;
+    [Export] private bool _reassignTileData = false;
 
     public override void _Process(double delta)
     {
@@ -31,6 +32,24 @@ public partial class TileMapGenerator : TileMap
             _recreateTexture = false;
             RecreateTexture();
         }
+
+        if (_reassignTileData)
+        {
+            _reassignTileData = false;
+            ReassignTileData();
+        }
+    }
+
+    private void ReassignTileData()
+    {
+        if (!Engine.IsEditorHint())
+        {
+            SC.PrintErr(nameof(TileMapGenerator), "Tileset data reassignment is editor only; aborting.");
+        }
+
+        SC.Print(nameof(TileMapGenerator), "Reassigning the tile data...");
+        
+        throw new NotImplementedException();
     }
 
     /// <summary>
