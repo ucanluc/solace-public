@@ -1,11 +1,26 @@
 using Godot;
 using System;
+using Solace.addons.solace_core_plugin.core;
+using Solace.addons.solace_core_plugin.core.entity;
 
-public partial class PlayerCharacterBody3D : CharacterBody3D
+public partial class PlayerCharacterBody3D : CharacterBody3D, IEntity3D
 {
-    
-    
-    
+    [Export] public int EntityId { get; set; } = -1;
+
+    public Vector3 EntityGlobalRotation
+    {
+        get => Camera.GlobalRotation;
+        set => Camera.LookAt(Position + value);
+    }
+
+    public Vector3 EntityPosition3D
+    {
+        get => Position;
+        set => Position = value;
+    }
+
+    [Export] private CharacterList _characterList;
+
     [Export] public Node3D Head { get; set; }
     [Export] public Camera3D Camera { get; set; }
 
@@ -14,7 +29,7 @@ public partial class PlayerCharacterBody3D : CharacterBody3D
     [Export] private float _sprintingSpeed = 5.85f;
     [Export] private float _crouchingSpeed = 2.7f;
     // crunch
-    
+
     [Export] private float _jumpVelocity = 5f;
 
     [Export] private float _lerpSpeed = 10f;
@@ -26,6 +41,18 @@ public partial class PlayerCharacterBody3D : CharacterBody3D
     private float _cameraXRotation;
     private float _gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
+
+    public override void _EnterTree()
+    {
+        base._EnterTree();
+        _characterList.RegisterEntity3D(EntityId, this);
+    }
+
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+        _characterList.UnregisterEntity3D(EntityId);
+    }
 
     public override void _Ready()
     {
@@ -78,7 +105,7 @@ public partial class PlayerCharacterBody3D : CharacterBody3D
 
         var inputDirection = Input.GetVector("sc_move_left", "sc_move_right", "sc_move_backward", "sc_move_forward");
         var desiredDirection = Head.Transform.Basis * new Vector3(inputDirection.X, 0, -inputDirection.Y).Normalized();
-        _currentDirection = _currentDirection.Lerp(desiredDirection, (float)(_lerpSpeed*delta));
+        _currentDirection = _currentDirection.Lerp(desiredDirection, (float)(_lerpSpeed * delta));
 
 
         // var direction = Vector3.Zero;

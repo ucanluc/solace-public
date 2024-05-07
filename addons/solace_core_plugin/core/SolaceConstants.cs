@@ -6,6 +6,11 @@
 public static class SolaceConstants
 {
     /// <summary>
+    /// Conversion between 3d and 2d objects are done to 3.125 cm of precision. 
+    /// </summary>
+    public const int GodotPixelsPerMeter = 32;
+    
+    /// <summary>
     /// Topdown building layout is calculated over 12.5 cm x 12.5 cm squares.
     /// </summary>
     public const int BlueprintSubdivisionPerMeter = 8;
