@@ -1,0 +1,62 @@
+[gd_scene load_steps=9 format=3 uid="uid://8intrxwtokw3"]
+
+[ext_resource type="Script" path="res://apps/generator_level/PlayerCharacterBody3D.cs" id="1_jk0ig"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_32h8o"]
+
+[sub_resource type="Sky" id="Sky_4k0ro"]
+sky_material = SubResource("ProceduralSkyMaterial_32h8o")
+
+[sub_resource type="Environment" id="Environment_42ihw"]
+background_mode = 2
+sky = SubResource("Sky_4k0ro")
+ambient_light_source = 3
+reflected_light_source = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bk00s"]
+size = Vector3(100, 1, 100)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6lxme"]
+size = Vector3(100, 1, 100)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_u7w5v"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_spype"]
+
+[node name="3DLevelScene" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_42ihw")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.146447, 0.853553, -0.5, -0.5, 0.5, 0.707107, 0.853553, 0.146447, 0.5, 0, 17.01, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_bk00s")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("BoxMesh_6lxme")
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="." node_paths=PackedStringArray("Head", "Camera")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.63192, 0)
+script = ExtResource("1_jk0ig")
+Head = NodePath("")
+Camera = NodePath("")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_u7w5v")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+layers = 524288
+mesh = SubResource("CapsuleMesh_spype")
+
+[node name="Head" type="Node3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.62, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D/Head"]
+cull_mask = 524287
+current = true
