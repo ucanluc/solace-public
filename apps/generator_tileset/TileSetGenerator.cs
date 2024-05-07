@@ -1,17 +1,15 @@
+using Godot;
 using System;
 using System.Collections.Generic;
-using Godot;
 using Solace.addons.solace_core_plugin.core;
+using Solace.addons.solace_core_plugin.lib.tile;
 
-namespace Solace.apps.reference_visibility;
-
-/// <summary>
-/// Creates a tilemap image for wall/corner variations.
-/// Intended as an editor tool for a quick & dirty map generation.
-/// </summary>
 [Tool]
-public partial class TileMapGenerator : TileMap
+public partial class TileSetGenerator : Node
 {
+    // TODO: refactor to use the image generation lib,
+    // TODO: use the parameters set in scene UI instead.
+
     private const int TileTextureEdgeLengthInPixels = 32;
     private const int MarginInPixels = 1;
     private const int SeparationInPixels = 1;
@@ -22,7 +20,6 @@ public partial class TileMapGenerator : TileMap
 
     [Export] private ImageTexture? _customAtlas;
     [Export] private bool _recreateTexture = false;
-    [Export] private bool _reassignTileData = false;
 
     public override void _Process(double delta)
     {
@@ -32,24 +29,6 @@ public partial class TileMapGenerator : TileMap
             _recreateTexture = false;
             RecreateTexture();
         }
-
-        if (_reassignTileData)
-        {
-            _reassignTileData = false;
-            ReassignTileData();
-        }
-    }
-
-    private void ReassignTileData()
-    {
-        if (!Engine.IsEditorHint())
-        {
-            SC.PrintErr(nameof(TileMapGenerator), "Tileset data reassignment is editor only; aborting.");
-        }
-
-        SC.Print(nameof(TileMapGenerator), "Reassigning the tile data...");
-
-        throw new NotImplementedException();
     }
 
     /// <summary>
@@ -57,14 +36,9 @@ public partial class TileMapGenerator : TileMap
     /// </summary>
     private void RecreateTexture()
     {
-        if (!Engine.IsEditorHint())
-        {
-            SC.PrintErr(nameof(TileMapGenerator), "Texture creation is editor only; aborting.");
-        }
+        SC.Print(nameof(TileSetGenerator), "Recreating the texture...");
 
-        SC.Print(nameof(TileMapGenerator), "Recreating the texture...");
-
-        var tiles = GetAtlasTileTypes();
+        var tiles = TileCombinations.GetUniqueEightWayTiles();
         var sqrtTileCount = Mathf.CeilToInt(Mathf.Sqrt(tiles.Length));
 
         var image = CreateEmptyAtlasImage(sqrtTileCount);
@@ -72,7 +46,7 @@ public partial class TileMapGenerator : TileMap
 
         _customAtlas = ImageTexture.CreateFromImage(image);
 
-        image.SavePng("res://test_tile_atlas.png");
+        image.SavePng(Engine.IsEditorHint() ? "res://generated_tile_atlas.png" : "usr://generated_tile_atlas.png");
     }
 
     private static Image CreateEmptyAtlasImage(int sqrtTileCount)
@@ -87,7 +61,7 @@ public partial class TileMapGenerator : TileMap
         return image;
     }
 
-    private static void DrawAtlasTiles(AtlasTile[] tiles, int sqrtTileCount, Image image)
+    private static void DrawAtlasTiles(EightWayTile[] tiles, int sqrtTileCount, Image image)
     {
         var tileSizeInPixels = new Vector2I(TileTextureEdgeLengthInPixels, TileTextureEdgeLengthInPixels);
 
@@ -250,61 +224,5 @@ public partial class TileMapGenerator : TileMap
                     ), subblockRect), airFillColor);
             }
         }
-    }
-
-    /// <summary>
-    /// Creates the edge/corner variations for atlas tiles.
-    /// </summary>
-    /// <returns> an array of all unique 'atlas tiles', which lists which edges/corners of the tile are open.</returns>
-    private AtlasTile[] GetAtlasTileTypes()
-    {
-        var allTiles = new List<AtlasTile>();
-
-        for (var i = 0; i < 16; i++)
-        {
-            // get all wall variations by doing a binary count
-            var openWallN = (i & 1) == 1;
-            var openWallE = (i >> 1 & 1) == 1;
-            var openWallS = (i >> 2 & 1) == 1;
-            var openWallW = (i >> 3 & 1) == 1;
-
-            // check combinations of corners that are 'on their own', without a wall attachment here.
-            // starting from 0 also adds the 'default' corners.
-            // going up to 16 also adds the 'fully empty tile' also.
-            for (var j = 0; j < 16; j++)
-            {
-                // get which variation we are on
-                var varyNE = (j & 1) == 1;
-                var varyNW = (j >> 1 & 1) == 1;
-                var varySE = (j >> 2 & 1) == 1;
-                var varySW = (j >> 3 & 1) == 1;
-
-                // get which corners are isolated, therefore can be varied.
-                var isolatedNE = openWallN && openWallE;
-                var isolatedNW = openWallN && openWallW;
-                var isolatedSE = openWallS && openWallE;
-                var isolatedSW = openWallS && openWallW;
-
-                if ((varyNE && !isolatedNE)
-                    || (varyNW && !isolatedNW)
-                    || (varySE && !isolatedSE)
-                    || (varySW && !isolatedSW)) continue;
-
-                var newCornerVariation = new AtlasTile()
-                {
-                    openWallN = openWallN,
-                    openWallE = openWallE,
-                    openWallS = openWallS,
-                    openWallW = openWallW,
-                    openCornerNE = varyNE,
-                    openCornerNW = varyNW,
-                    openCornerSE = varySE,
-                    openCornerSW = varySW
-                };
-                allTiles.Add(newCornerVariation);
-            }
-        }
-
-        return allTiles.ToArray();
     }
 }

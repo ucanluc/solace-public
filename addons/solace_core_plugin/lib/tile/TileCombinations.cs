@@ -4,7 +4,7 @@ namespace Solace.addons.solace_core_plugin.lib.tile;
 
 public static class TileCombinations
 {
-    private static EightWayTile[] GetUniqueEightWayTiles()
+    public static EightWayTile[] GetUniqueEightWayTiles()
     {
         var allTiles = new List<EightWayTile>();
 
