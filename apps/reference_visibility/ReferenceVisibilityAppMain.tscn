@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://ccte75gi0s8t6"]
+[gd_scene load_steps=7 format=3 uid="uid://ccte75gi0s8t6"]
 
 [ext_resource type="TileSet" uid="uid://brevrqvxfp0aw" path="res://addons/solace_blocky/tilemap/topdown_tile_set.tres" id="1_doneq"]
 [ext_resource type="Script" path="res://apps/reference_visibility/TopdownCharacter.cs" id="3_j5mlt"]
@@ -12,77 +12,42 @@ region = Rect2(513, 2, 12, 12)
 [sub_resource type="CircleShape2D" id="CircleShape2D_2aboi"]
 radius = 8.0
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_a84g8"]
-size = Vector3(100, 1, 100)
-
-[sub_resource type="BoxMesh" id="BoxMesh_ymu4w"]
-size = Vector3(100, 1, 100)
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lpq1t"]
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_ck2jj"]
-
 [node name="ReferenceVisibilityAppMain" type="Node"]
 
-[node name="SubViewport" type="SubViewport" parent="."]
-
-[node name="TileMap" type="TileMap" parent="SubViewport"]
+[node name="TileMap" type="TileMap" parent="."]
 position = Vector2(-84, 1)
 tile_set = ExtResource("1_doneq")
 format = 2
 layer_0/tile_data = PackedInt32Array(-3, 196609, 4, 65533, 196609, 0, -65538, 196609, 4, -2, 196609, 4, 65534, 196609, 4, -65537, 1, 3, -1, 196609, 4, 65535, 1, 2, -65539, 1, 1, -131072, 1, 1, -65536, 196609, 4, 0, 196609, 0, -131071, 196609, 4, -65535, 196609, 4, 1, 196609, 4, -131070, 1, 3, -65534, 196609, 4, 2, 1, 2, -65542, 1, 1, -6, 196609, 4, 65530, 196609, 0, -65541, 196609, 4, -5, 196609, 4, 65531, 196609, 4, -65540, 1, 3, -4, 196609, 4, 65532, 1, 2, -262150, 1, 1, -196614, 196609, 4, -131078, 196609, 0, -262149, 196609, 4, -196613, 196609, 4, -131077, 196609, 4, -262148, 1, 3, -196612, 196609, 4, -131076, 1, 2, -262147, 1, 1, -196611, 196609, 4, -131075, 196609, 0, -262146, 196609, 4, -196610, 196609, 4, -131074, 196609, 4, -262145, 1, 3, -196609, 196609, 4, -131073, 1, 2, -327680, 1, 1, -262144, 196609, 4, -196608, 196609, 0, -327679, 196609, 4, -262143, 196609, 4, -196607, 196609, 4, -327678, 1, 3, -262142, 196609, 4, -196606, 1, 2, -131069, 1, 1, -65533, 196609, 4, 3, 196609, 0, -131068, 196609, 4, -65532, 196609, 4, 4, 196609, 4, -131067, 1, 3, -65531, 196609, 4, 5, 1, 2, 65539, 1, 1, 131075, 196609, 4, 196611, 196609, 0, 65540, 196609, 4, 131076, 196609, 4, 196612, 196609, 4, 65541, 1, 3, 131077, 196609, 4, 196613, 1, 2, 65536, 1, 1, 131072, 196609, 4, 196608, 196609, 0, 65537, 196609, 4, 131073, 196609, 4, 196609, 196609, 4, 65538, 1, 3, 131074, 196609, 4, 196610, 1, 2, 131069, 1, 1, 196605, 196609, 4, 262141, 196609, 0, 131070, 196609, 4, 196606, 196609, 4, 262142, 196609, 4, 131071, 1, 3, 196607, 196609, 4, 262143, 1, 2, 131066, 1, 1, 196602, 196609, 4, 262138, 196609, 0, 131067, 196609, 4, 196603, 196609, 4, 262139, 196609, 4, 131068, 1, 3, 196604, 196609, 4, 262140, 1, 2, 65542, 1, 1, 131078, 196609, 4, 196614, 196609, 0, 65543, 196609, 4, 131079, 196609, 4, 196615, 196609, 4, 65544, 1, 3, 131080, 196609, 4, 196616, 1, 2, -131066, 1, 1, -65530, 196609, 4, 6, 196609, 0, -131065, 196609, 4, -65529, 196609, 4, 7, 196609, 4, -131064, 1, 3, -65528, 196609, 4, 8, 1, 2, -327674, 1, 1, -262138, 196609, 4, -196602, 196609, 0, -327673, 196609, 4, -262137, 196609, 4, -196601, 196609, 4, -327672, 1, 3, -262136, 196609, 4, -196600, 1, 2, -327677, 1, 1, -262141, 196609, 4, -196605, 196609, 0, -327676, 196609, 4, -262140, 196609, 4, -196604, 196609, 4, -327675, 1, 3, -262139, 196609, 4, -196603, 1, 2, 327674, 1, 1, 393210, 196609, 4, 458746, 196609, 0, 327675, 196609, 4, 393211, 196609, 4, 458747, 196609, 4, 327676, 1, 3, 393212, 196609, 4, 458748, 1, 2, 327677, 1, 1, 393213, 196609, 4, 458749, 196609, 0, 327678, 196609, 4, 393214, 196609, 4, 458750, 196609, 4, 327679, 1, 3, 393215, 196609, 4, 458751, 1, 2, 262144, 1, 1, 327680, 196609, 4, 393216, 196609, 0, 262145, 196609, 4, 327681, 196609, 4, 393217, 196609, 4, 262146, 1, 3, 327682, 196609, 4, 393218, 1, 2, 262147, 1, 1, 327683, 196609, 4, 393219, 196609, 0, 262148, 196609, 4, 327684, 196609, 4, 393220, 196609, 4, 262149, 1, 3, 327685, 196609, 4, 393221, 1, 2, 262150, 1, 1, 327686, 196609, 4, 393222, 196609, 0, 262151, 196609, 4, 327687, 196609, 4, 393223, 196609, 4, 262152, 1, 3, 327688, 196609, 4, 393224, 1, 2, 524282, 1, 1, 589818, 196609, 4, 655354, 196609, 0, 524283, 196609, 4, 589819, 196609, 4, 655355, 196609, 4, 524284, 1, 3, 589820, 196609, 4, 655356, 1, 2, 524285, 1, 1, 589821, 196609, 4, 655357, 196609, 0, 524286, 196609, 4, 589822, 196609, 4, 655358, 196609, 4, 524287, 1, 3, 589823, 196609, 4, 655359, 1, 2, 458752, 1, 1, 524288, 196609, 4, 589824, 196609, 0, 458753, 196609, 4, 524289, 196609, 4, 589825, 196609, 4, 458754, 1, 3, 524290, 196609, 4, 589826, 1, 2, 458755, 1, 1, 524291, 196609, 4, 589827, 196609, 0, 458756, 196609, 4, 524292, 196609, 4, 589828, 196609, 4, 458757, 1, 3, 524293, 196609, 4, 589829, 1, 2, 458758, 1, 1, 524294, 196609, 4, 589830, 196609, 0, 458759, 196609, 4, 524295, 196609, 4, 589831, 196609, 4, 458760, 1, 3, 524296, 196609, 4, 589832, 1, 2)
 
-[node name="TopdownCharacter" type="CharacterBody2D" parent="SubViewport"]
+[node name="TopdownCharacter" type="CharacterBody2D" parent="."]
 script = ExtResource("3_j5mlt")
 Speed = 100
 
-[node name="CharacterSprite2D" type="Sprite2D" parent="SubViewport/TopdownCharacter"]
+[node name="CharacterSprite2D" type="Sprite2D" parent="TopdownCharacter"]
 visible = false
 texture = SubResource("AtlasTexture_81u1x")
 
-[node name="GunCharacterSprite2D" type="Sprite2D" parent="SubViewport/TopdownCharacter"]
+[node name="GunCharacterSprite2D" type="Sprite2D" parent="TopdownCharacter"]
 texture = SubResource("AtlasTexture_81u1x")
 
-[node name="Camera2D" type="Camera2D" parent="SubViewport/TopdownCharacter"]
+[node name="Camera2D" type="Camera2D" parent="TopdownCharacter"]
 enabled = false
 zoom = Vector2(4, 4)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewport/TopdownCharacter"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopdownCharacter"]
 shape = SubResource("CircleShape2D_2aboi")
 
-[node name="Node2D" type="CharacterBody2D" parent="SubViewport" node_paths=PackedStringArray("targetObject")]
+[node name="Node2D" type="CharacterBody2D" parent="." node_paths=PackedStringArray("targetObject")]
 position = Vector2(139, 100)
 script = ExtResource("6_nqd8m")
 targetObject = NodePath("../TopdownCharacter")
 _movementSpeed = 50.0
 
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="SubViewport/Node2D"]
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Node2D"]
 
-[node name="GunCharacterSprite2D2" type="Sprite2D" parent="SubViewport/Node2D"]
+[node name="GunCharacterSprite2D2" type="Sprite2D" parent="Node2D"]
 texture = SubResource("AtlasTexture_81u1x")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="SubViewport/Node2D"]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Node2D"]
 shape = SubResource("CircleShape2D_2aboi")
-
-[node name="Node3D" type="Node3D" parent="."]
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Node3D"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/StaticBody3D"]
-shape = SubResource("BoxShape3D_a84g8")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D/StaticBody3D"]
-mesh = SubResource("BoxMesh_ymu4w")
-
-[node name="CharacterBody3D" type="CharacterBody3D" parent="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.63192, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/CharacterBody3D"]
-shape = SubResource("CapsuleShape3D_lpq1t")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D/CharacterBody3D"]
-mesh = SubResource("CapsuleMesh_ck2jj")
-
-[node name="Camera3D" type="Camera3D" parent="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.53719, 35.7665)
-current = true
