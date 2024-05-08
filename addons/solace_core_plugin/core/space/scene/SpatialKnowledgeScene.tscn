@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://dene0awcjrqc5"]
+
+[ext_resource type="Script" path="res://addons/solace_core_plugin/core/space/scene/SpatialKnowledgeScene.cs" id="1_6p4b0"]
+
+[node name="SpatialKnowledgeScene" type="Node"]
+script = ExtResource("1_6p4b0")
+
+[node name="SpatialScene2D" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="SpatialScene3D" type="Node3D" parent="."]
+unique_name_in_owner = true

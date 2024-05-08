@@ -1,4 +1,5 @@
 ﻿using Solace.addons.solace_core_plugin.core.debug;
+using Solace.addons.solace_core_plugin.core.entity;
 
 namespace Solace.addons.solace_core_plugin.core;
 
@@ -13,10 +14,13 @@ public static class SC
 
     public static void PrintErr(string name, string text) =>
         SolacePrint.Print($"{name}: {text}", SolacePrint.PrintType.Error);
+
     public static void PrintWarn(string name, string text) =>
         SolacePrint.Print($"{name}: {text}", SolacePrint.PrintType.Warning);
+
     public static void PrintVerbose(string name, string text) =>
         SolacePrint.Print($"{name}: {text}", SolacePrint.PrintType.Verbose);
+
     public static void Print(string name, string text) =>
         SolacePrint.Print($"{name}: {text}", SolacePrint.PrintType.NamedObject);
 
@@ -34,5 +38,10 @@ public static class SC
         //TODO: handle via application stack
         SC.PrintWarn(nameof(SC), "Not implemented: Cannot handle quit request");
         return false;
+    }
+
+    public static void RegisterEntity(IEntityInstance entityInstance)
+    {
+        throw new System.NotImplementedException();
     }
 }
