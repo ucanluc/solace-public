@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bclloxc3scoo7"]
+[gd_scene load_steps=17 format=3 uid="uid://bclloxc3scoo7"]
 
 [ext_resource type="Script" path="res://apps/reference_inverse_kinematics/TwoBoneIK.cs" id="1_0c7jp"]
 
@@ -19,6 +19,14 @@ size = Vector3(10, 1, 10)
 [sub_resource type="BoxMesh" id="BoxMesh_ff84s"]
 size = Vector3(10, 1, 10)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oh2p8"]
+albedo_color = Color(1, 1, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_rlkim"]
+material = SubResource("StandardMaterial3D_oh2p8")
+radius = 0.05
+height = 0.1
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a5ww3"]
 albedo_color = Color(0.968627, 0, 0.0196078, 1)
 
@@ -28,7 +36,7 @@ radius = 0.05
 height = 0.1
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y7jnh"]
-albedo_color = Color(0.967333, 1, 0.02, 1)
+albedo_color = Color(0.53, 1, 0.945167, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_bonox"]
 material = SubResource("StandardMaterial3D_y7jnh")
@@ -40,14 +48,14 @@ albedo_color = Color(0, 0.116667, 1, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_om4hy"]
 material = SubResource("StandardMaterial3D_d5gab")
-size = Vector3(0.1, 0.1, 0.9)
+size = Vector3(0.063, 0.063, 0.9)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f66rv"]
-albedo_color = Color(0, 1, 0.0333333, 1)
+albedo_color = Color(0, 0.883333, 1, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_af38i"]
 material = SubResource("StandardMaterial3D_f66rv")
-size = Vector3(0.1, 0.1, 0.9)
+size = Vector3(0.063, 0.063, 0.9)
 
 [node name="ReferenceInverseKinematicsAppMain" type="Node"]
 
@@ -55,6 +63,7 @@ size = Vector3(0.1, 0.1, 0.9)
 environment = SubResource("Environment_wdrle")
 
 [node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -4.95143, 1.32162, 0.0536607)
 
 [node name="StaticPlatform3D" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.626801, 0)
@@ -65,44 +74,52 @@ shape = SubResource("BoxShape3D_n3xmp")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticPlatform3D"]
 mesh = SubResource("BoxMesh_ff84s")
 
-[node name="TwoBoneIK" type="Node3D" parent="." node_paths=PackedStringArray("_bone1", "_bone2", "_endPoint", "_target")]
+[node name="TwoBoneIK" type="Node3D" parent="." node_paths=PackedStringArray("_rootBone", "_elbowBone", "_endEffector", "_target", "_hint")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.24179, 0)
 script = ExtResource("1_0c7jp")
-_bone1 = NodePath("Bone1")
-_bone2 = NodePath("Bone1/Bone2")
-_endPoint = NodePath("Bone1/Bone2/EndPoint")
+_rootBone = NodePath("RootBone")
+_elbowBone = NodePath("RootBone/ElbowBone")
+_endEffector = NodePath("RootBone/ElbowBone/EndPoint")
 _target = NodePath("Target")
+_hint = NodePath("HintPoint")
+
+[node name="HintPoint" type="Node3D" parent="TwoBoneIK"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0438904, 1.04676, 0.558198)
+
+[node name="JointCenter" type="MeshInstance3D" parent="TwoBoneIK/HintPoint"]
+mesh = SubResource("SphereMesh_rlkim")
 
 [node name="Target" type="Node3D" parent="TwoBoneIK"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.232841, 1.97791)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.178313, 0.122151, 0.89825)
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="TwoBoneIK/Target"]
 mesh = SubResource("SphereMesh_08ngx")
-skeleton = NodePath("../../Bone1/Bone2/EndPoint")
+skeleton = NodePath("../../RootBone/ElbowBone/EndPoint")
 
-[node name="Bone1" type="Node3D" parent="TwoBoneIK"]
+[node name="RootBone" type="Node3D" parent="TwoBoneIK"]
+transform = Transform3D(-0.999781, -0.0196471, -0.00724579, 0, 0.346016, -0.938228, 0.0209406, -0.938023, -0.34594, 0, 0, 0)
 
-[node name="JointCenter" type="MeshInstance3D" parent="TwoBoneIK/Bone1"]
+[node name="JointCenter" type="MeshInstance3D" parent="TwoBoneIK/RootBone"]
 mesh = SubResource("SphereMesh_bonox")
-skeleton = NodePath("../Bone2/EndPoint")
+skeleton = NodePath("../ElbowBone/EndPoint")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="TwoBoneIK/Bone1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TwoBoneIK/RootBone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
 mesh = SubResource("BoxMesh_om4hy")
 
-[node name="Bone2" type="Node3D" parent="TwoBoneIK/Bone1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+[node name="ElbowBone" type="Node3D" parent="TwoBoneIK/RootBone"]
+transform = Transform3D(0.961202, -0.225102, 0.159438, -0.258807, -0.535931, 0.803615, -0.0954476, -0.8137, -0.573396, 5.31867e-06, -4.53293e-05, -1.00015)
 
-[node name="JointCenter" type="MeshInstance3D" parent="TwoBoneIK/Bone1/Bone2"]
+[node name="JointCenter" type="MeshInstance3D" parent="TwoBoneIK/RootBone/ElbowBone"]
 mesh = SubResource("SphereMesh_bonox")
 skeleton = NodePath("../EndPoint")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="TwoBoneIK/Bone1/Bone2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TwoBoneIK/RootBone/ElbowBone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
 mesh = SubResource("BoxMesh_af38i")
 
-[node name="EndPoint" type="Node3D" parent="TwoBoneIK/Bone1/Bone2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+[node name="EndPoint" type="Node3D" parent="TwoBoneIK/RootBone/ElbowBone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 
-[node name="JointCenter" type="MeshInstance3D" parent="TwoBoneIK/Bone1/Bone2/EndPoint"]
+[node name="JointCenter" type="MeshInstance3D" parent="TwoBoneIK/RootBone/ElbowBone/EndPoint"]
 mesh = SubResource("SphereMesh_bonox")
