@@ -1,11 +1,11 @@
 [gd_scene load_steps=21 format=3 uid="uid://mdwyw8gkdvj"]
 
-[ext_resource type="Script" path="res://apps/generator_level/LevelGenerator.cs" id="1_pwi33"]
+[ext_resource type="Script" path="res://apps/reference_knowledge/LevelGenerator.cs" id="1_pwi33"]
 [ext_resource type="TileSet" uid="uid://brevrqvxfp0aw" path="res://addons/solace_blocky/tilemap/topdown_tile_set.tres" id="2_0tg78"]
-[ext_resource type="Script" path="res://apps/generator_level/MockBodyInstance2D.cs" id="4_07lot"]
+[ext_resource type="Script" path="res://apps/reference_knowledge/MockBodyInstance2D.cs" id="4_07lot"]
 [ext_resource type="Texture2D" uid="uid://xw04n66d2q6b" path="res://addons/kenney/2d/tilesheet_topdown.png" id="5_bjcj4"]
-[ext_resource type="Script" path="res://apps/generator_level/NPCCharacterBody3D.cs" id="6_o1x3s"]
-[ext_resource type="Script" path="res://apps/generator_level/PlayerCharacterBodyInstance3D.cs" id="7_wqj77"]
+[ext_resource type="Script" path="res://apps/reference_knowledge/NPCCharacterBody3D.cs" id="6_o1x3s"]
+[ext_resource type="Script" path="res://apps/reference_knowledge/PlayerCharacterBodyInstance3D.cs" id="7_wqj77"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3swd4"]
 
@@ -55,7 +55,7 @@ albedo_color = Color(0.0166664, 0, 1, 1)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6rcsq"]
 albedo_color = Color(1, 0, 0.0166664, 1)
 
-[node name="GeneratorLevelAppMain" type="Node"]
+[node name="ReferenceKnowledgeAppMain" type="Node"]
 
 [node name="LevelGenerator" type="Node" parent="."]
 script = ExtResource("1_pwi33")
@@ -93,8 +93,8 @@ shape = SubResource("CircleShape2D_0oh08")
 
 [node name="AnimatableBody2D" type="AnimatableBody2D" parent="ServerSpace/Node2D" node_paths=PackedStringArray("rotationTarget")]
 script = ExtResource("4_07lot")
-rotationTarget = NodePath(".")
 EntityId = 1
+rotationTarget = NodePath(".")
 
 [node name="Camera2D" type="Camera2D" parent="ServerSpace/Node2D/AnimatableBody2D"]
 
