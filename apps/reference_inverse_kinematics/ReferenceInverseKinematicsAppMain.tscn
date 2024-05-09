@@ -1,3 +1,108 @@
-[gd_scene format=3 uid="uid://bclloxc3scoo7"]
+[gd_scene load_steps=15 format=3 uid="uid://bclloxc3scoo7"]
+
+[ext_resource type="Script" path="res://apps/reference_inverse_kinematics/TwoBoneIK.cs" id="1_0c7jp"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6i5c4"]
+
+[sub_resource type="Sky" id="Sky_asywr"]
+sky_material = SubResource("ProceduralSkyMaterial_6i5c4")
+
+[sub_resource type="Environment" id="Environment_wdrle"]
+background_mode = 2
+sky = SubResource("Sky_asywr")
+ambient_light_source = 3
+reflected_light_source = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_n3xmp"]
+size = Vector3(10, 1, 10)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ff84s"]
+size = Vector3(10, 1, 10)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a5ww3"]
+albedo_color = Color(0.968627, 0, 0.0196078, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_08ngx"]
+material = SubResource("StandardMaterial3D_a5ww3")
+radius = 0.05
+height = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y7jnh"]
+albedo_color = Color(0.967333, 1, 0.02, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_bonox"]
+material = SubResource("StandardMaterial3D_y7jnh")
+radius = 0.05
+height = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d5gab"]
+albedo_color = Color(0, 0.116667, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_om4hy"]
+material = SubResource("StandardMaterial3D_d5gab")
+size = Vector3(0.1, 0.1, 0.9)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f66rv"]
+albedo_color = Color(0, 1, 0.0333333, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_af38i"]
+material = SubResource("StandardMaterial3D_f66rv")
+size = Vector3(0.1, 0.1, 0.9)
 
 [node name="ReferenceInverseKinematicsAppMain" type="Node"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_wdrle")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+
+[node name="StaticPlatform3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.626801, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticPlatform3D"]
+shape = SubResource("BoxShape3D_n3xmp")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticPlatform3D"]
+mesh = SubResource("BoxMesh_ff84s")
+
+[node name="TwoBoneIK" type="Node3D" parent="." node_paths=PackedStringArray("_bone1", "_bone2", "_endPoint", "_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.24179, 0)
+script = ExtResource("1_0c7jp")
+_bone1 = NodePath("Bone1")
+_bone2 = NodePath("Bone1/Bone2")
+_endPoint = NodePath("Bone1/Bone2/EndPoint")
+_target = NodePath("Target")
+
+[node name="Target" type="Node3D" parent="TwoBoneIK"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.232841, 1.97791)
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="TwoBoneIK/Target"]
+mesh = SubResource("SphereMesh_08ngx")
+skeleton = NodePath("../../Bone1/Bone2/EndPoint")
+
+[node name="Bone1" type="Node3D" parent="TwoBoneIK"]
+
+[node name="JointCenter" type="MeshInstance3D" parent="TwoBoneIK/Bone1"]
+mesh = SubResource("SphereMesh_bonox")
+skeleton = NodePath("../Bone2/EndPoint")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TwoBoneIK/Bone1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
+mesh = SubResource("BoxMesh_om4hy")
+
+[node name="Bone2" type="Node3D" parent="TwoBoneIK/Bone1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+
+[node name="JointCenter" type="MeshInstance3D" parent="TwoBoneIK/Bone1/Bone2"]
+mesh = SubResource("SphereMesh_bonox")
+skeleton = NodePath("../EndPoint")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TwoBoneIK/Bone1/Bone2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
+mesh = SubResource("BoxMesh_af38i")
+
+[node name="EndPoint" type="Node3D" parent="TwoBoneIK/Bone1/Bone2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+
+[node name="JointCenter" type="MeshInstance3D" parent="TwoBoneIK/Bone1/Bone2/EndPoint"]
+mesh = SubResource("SphereMesh_bonox")
