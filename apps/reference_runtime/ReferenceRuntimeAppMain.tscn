@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://duwb0iweib585"]
+[gd_scene load_steps=3 format=3 uid="uid://duwb0iweib585"]
 
 [ext_resource type="Script" path="res://addons/solace_core_plugin/user_interface/application/QuitButton.cs" id="1_p0wd8"]
-[ext_resource type="PackedScene" uid="uid://5teofidrdn1m" path="res://apps/reference_runtime/network/NetworkInstancePanel.tscn" id="2_x4q5e"]
 
 [sub_resource type="Theme" id="Theme_3yyys"]
 MarginContainer/constants/margin_bottom = 10
@@ -61,15 +60,15 @@ size_flags_horizontal = 3
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Menu/MarginContainer/HBoxContainer/PanelContainer3"]
 layout_mode = 2
 
-[node name="DebugConsoleLabel" type="Label" parent="CanvasLayer/Menu/MarginContainer/HBoxContainer/PanelContainer3/MarginContainer"]
+[node name="PanelContainer4" type="PanelContainer" parent="CanvasLayer/Menu/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Menu/MarginContainer/HBoxContainer/PanelContainer4"]
+layout_mode = 2
+
+[node name="DebugConsoleLabel" type="Label" parent="CanvasLayer/Menu/MarginContainer/HBoxContainer/PanelContainer4/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 1
 text = "Console Test"
 vertical_alignment = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Menu/MarginContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="NetworkInstancePanel" parent="CanvasLayer/Menu/MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource("2_x4q5e")]
-layout_mode = 2

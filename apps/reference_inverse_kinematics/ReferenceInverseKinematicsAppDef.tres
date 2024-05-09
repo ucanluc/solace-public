@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="AppDefinitionResource" load_steps=3 format=3 uid="uid://cpyod2ticywx1"]
+
+[ext_resource type="Script" path="res://addons/solace_core_plugin/core/application/AppDefinitionResource.cs" id="1_47apd"]
+[ext_resource type="PackedScene" uid="uid://bclloxc3scoo7" path="res://apps/reference_inverse_kinematics/ReferenceInverseKinematicsAppMain.tscn" id="1_jp1q2"]
+
+[resource]
+script = ExtResource("1_47apd")
+_appEntryNode = ExtResource("1_jp1q2")

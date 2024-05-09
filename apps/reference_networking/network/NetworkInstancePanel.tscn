@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://5teofidrdn1m"]
 
-[ext_resource type="Script" path="res://apps/reference_runtime/network/NetworkInstancePanel.cs" id="1_jt4u5"]
+[ext_resource type="Script" path="res://apps/reference_networking/network/NetworkInstancePanel.cs" id="1_jt4u5"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_g1vpe"]
 
