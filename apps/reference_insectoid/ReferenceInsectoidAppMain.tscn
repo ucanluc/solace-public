@@ -1,3 +1,125 @@
-[gd_scene format=3 uid="uid://sbqnoubna1qg"]
+[gd_scene load_steps=12 format=3 uid="uid://sbqnoubna1qg"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_80twd"]
+
+[sub_resource type="Sky" id="Sky_4r2jq"]
+sky_material = SubResource("ProceduralSkyMaterial_80twd")
+
+[sub_resource type="Environment" id="Environment_3xc5h"]
+background_mode = 2
+sky = SubResource("Sky_4r2jq")
+ambient_light_source = 3
+reflected_light_source = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ruwq0"]
+size = Vector3(100, 1, 100)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cqvgi"]
+size = Vector3(100, 1, 100)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4u36u"]
+size = Vector3(10, 10, 10)
+
+[sub_resource type="BoxMesh" id="BoxMesh_07h14"]
+size = Vector3(10, 10, 10)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_gdgjm"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_hjit1"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_crj83"]
+size = Vector3(0.1, 0.1, 1.9)
+
+[sub_resource type="SphereMesh" id="SphereMesh_ybp7i"]
+radius = 0.05
+height = 0.1
 
 [node name="ReferenceInsectoidAppMain" type="Node"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_3xc5h")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.541293, 0.892456)
+
+[node name="Level" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.628836, 0)
+
+[node name="Platform" type="StaticBody3D" parent="Level"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/Platform"]
+shape = SubResource("BoxShape3D_ruwq0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/Platform"]
+mesh = SubResource("BoxMesh_cqvgi")
+
+[node name="StaticBox" type="StaticBody3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, 35.5893)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox2" type="StaticBody3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.861, 5.5, 35.5893)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox2"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox2"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox3" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.851278, 0, -0.524714, 0, 1, 0, 0.524714, 0, 0.851278, -30.4307, 5.5, 35.5893)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox3"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox3"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox4" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.851278, 0, -0.524714, 0, 1, 0, 0.524714, 0, 0.851278, -18.5889, 5.5, 35.5893)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox4"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox4"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="InsectoidCharacterBody" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.41715, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InsectoidCharacterBody"]
+shape = SubResource("SphereShape3D_gdgjm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="InsectoidCharacterBody"]
+mesh = SubResource("SphereMesh_hjit1")
+
+[node name="InsectoidLimb" type="Node3D" parent="InsectoidCharacterBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.518445)
+
+[node name="LimbMesh" type="MeshInstance3D" parent="InsectoidCharacterBody/InsectoidLimb"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+mesh = SubResource("BoxMesh_crj83")
+
+[node name="JointMesh" type="MeshInstance3D" parent="InsectoidCharacterBody/InsectoidLimb"]
+mesh = SubResource("SphereMesh_ybp7i")
+
+[node name="InsectoidLimb2" type="Node3D" parent="InsectoidCharacterBody/InsectoidLimb"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+
+[node name="LimbMesh" type="MeshInstance3D" parent="InsectoidCharacterBody/InsectoidLimb/InsectoidLimb2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+mesh = SubResource("BoxMesh_crj83")
+
+[node name="JointMesh" type="MeshInstance3D" parent="InsectoidCharacterBody/InsectoidLimb/InsectoidLimb2"]
+mesh = SubResource("SphereMesh_ybp7i")
+
+[node name="InsectoidLimb3" type="Node3D" parent="InsectoidCharacterBody/InsectoidLimb/InsectoidLimb2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+
+[node name="JointMesh" type="MeshInstance3D" parent="InsectoidCharacterBody/InsectoidLimb/InsectoidLimb2/InsectoidLimb3"]
+mesh = SubResource("SphereMesh_ybp7i")
