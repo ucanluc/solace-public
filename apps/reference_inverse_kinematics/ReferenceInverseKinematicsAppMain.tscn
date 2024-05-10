@@ -1,6 +1,7 @@
-[gd_scene load_steps=17 format=3 uid="uid://bclloxc3scoo7"]
+[gd_scene load_steps=18 format=3 uid="uid://bclloxc3scoo7"]
 
 [ext_resource type="Script" path="res://apps/reference_inverse_kinematics/TwoBoneIK.cs" id="1_0c7jp"]
+[ext_resource type="PackedScene" uid="uid://cbue8mqsomhje" path="res://addons/solace_blocky/character/CharacterArmature.tscn" id="2_jjx0s"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6i5c4"]
 
@@ -124,3 +125,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 
 [node name="JointCenter" type="MeshInstance3D" parent="TwoBoneIK/RootBone/ElbowBone/EndPoint"]
 mesh = SubResource("SphereMesh_bonox")
+
+[node name="CharacterArmature" parent="." instance=ExtResource("2_jjx0s")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.09906, -0.126801, 0.544866)
