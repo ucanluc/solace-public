@@ -25,17 +25,47 @@ public partial class InsectoidCharacterBody : CharacterBody3D
         var spaceState = GetWorld3D().DirectSpaceState;
         _approximator.UpdateSnapshot(spaceState, GlobalPosition, raycastDistance);
 
-        _groundMarker.Position = _approximator.Snapshot.GroundNormal;
-        _skyMarker.Position = _approximator.Snapshot.SkyDirection;
+        _groundMarker.GlobalPosition = GlobalPosition + _approximator.Snapshot.GroundNormal;
+        _skyMarker.GlobalPosition = GlobalPosition + _approximator.Snapshot.SkyDirection;
         _positionMarker.GlobalPosition = _approximator.Snapshot.GroundPoint;
 
         var velocity = Velocity;
 
+
         var inputDirection = Input.GetVector("sc_move_left", "sc_move_right", "sc_move_backward", "sc_move_forward");
         var verticalDirection = Input.GetAxis("sc_modifier_careful", "sc_modifier_rush");
-        var desiredDirection = _directionReference.Transform.Basis *
-                               new Vector3(inputDirection.X, verticalDirection, -inputDirection.Y).Normalized();
-        _currentDirection = _currentDirection.Lerp(desiredDirection, (float)(_lerpSpeed * delta));
+        var inputLocalSpace = new Vector3(inputDirection.X, verticalDirection, -inputDirection.Y).Normalized();
+
+
+        var currentForward = (GlobalBasis * Vector3.Forward).Normalized();
+        var desiredForward = (_directionReference.GlobalBasis * Vector3.Forward).Normalized();
+        var rotationAxisForForward = currentForward.Cross(desiredForward).Normalized();
+        if (rotationAxisForForward.IsZeroApprox())
+        {
+            rotationAxisForForward = Vector3.Up;
+        }
+
+        var angleDiff = currentForward.SignedAngleTo(desiredForward, rotationAxisForForward);
+        var referenceAdjustedBasis = GlobalBasis.Rotated(rotationAxisForForward, angleDiff);
+
+
+        // rotate from the current 'up' direction, to the desired 'up' direction; as found by the sdf approximator.
+        var currentUp = (referenceAdjustedBasis * Vector3.Up).Normalized();
+        var desiredUp = _approximator.Snapshot.GroundNormal;
+        var rotationAxisForUp = currentUp.Cross(desiredUp).Normalized();
+        if (rotationAxisForUp.IsZeroApprox())
+        {
+            rotationAxisForUp = Vector3.Forward;
+        }
+
+        var angleDifferenceForUp = currentUp.SignedAngleTo(desiredUp, rotationAxisForUp);
+        var desiredBasisForUp = referenceAdjustedBasis.Rotated(rotationAxisForUp, angleDifferenceForUp);
+
+
+        var inputGlobalSpace = desiredBasisForUp * inputLocalSpace;
+        GlobalBasis = desiredBasisForUp;
+
+        _currentDirection = _currentDirection.Lerp(inputGlobalSpace, (float)(_lerpSpeed * delta));
 
         velocity.X = _currentDirection.X * _currentSpeed;
         velocity.Y = _currentDirection.Y * _currentSpeed;
@@ -43,6 +73,7 @@ public partial class InsectoidCharacterBody : CharacterBody3D
 
 
         Velocity = velocity;
+
         MoveAndSlide();
     }
 }
