@@ -29,9 +29,10 @@ public class SdfRaycastTracker
 
     public void UpdateRaycast(PhysicsDirectSpaceState3D spaceState, Vector3 queryOrigin, float raycastDistance)
     {
-        // execute a raycast in the natural direction to get space state.
         var raycastEndPoint = queryOrigin + (RaycastDirection * raycastDistance);
 
+        // update tracking depending on the previous natural state.
+        // assume that the 'natural state' will stay as is, and preemptively track for the opposite state.
         if (HasSavedMiss && HasNaturalHit)
         {
             // do a raycast to the missed spot to "Track that empty area"
@@ -48,7 +49,7 @@ public class SdfRaycastTracker
         }
 
         // do a natural raycast to get the exact state of the assigned direction.
-        // result of the natural raycast overwrites the tracking result.
+        // result of the natural raycast overwrites the tracking result
         SetupNaturalRaycast(queryOrigin, raycastEndPoint);
         HasNaturalHit = ExecuteRaycast(spaceState);
     }
