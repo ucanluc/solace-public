@@ -82,6 +82,7 @@ _elbowBone = NodePath("RootBone/ElbowBone")
 _endEffector = NodePath("RootBone/ElbowBone/EndPoint")
 _target = NodePath("Target")
 _hint = NodePath("HintPoint")
+_pauseInEditor = true
 
 [node name="HintPoint" type="Node3D" parent="TwoBoneIK"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0438904, 1.04676, 0.558198)
@@ -90,14 +91,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0438904, 1.04676, 0.558198)
 mesh = SubResource("SphereMesh_rlkim")
 
 [node name="Target" type="Node3D" parent="TwoBoneIK"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.178313, 0.122151, 0.89825)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.323774, 0.0526949, 0.847271)
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="TwoBoneIK/Target"]
 mesh = SubResource("SphereMesh_08ngx")
 skeleton = NodePath("../../RootBone/ElbowBone/EndPoint")
 
 [node name="RootBone" type="Node3D" parent="TwoBoneIK"]
-transform = Transform3D(-0.999781, -0.0196471, -0.00724579, 0, 0.346016, -0.938228, 0.0209406, -0.938023, -0.34594, 0, 0, 0)
+transform = Transform3D(-0.999357, -0.0324531, -0.0152415, 0, 0.4251, -0.905146, 0.035854, -0.904564, -0.424827, 0, 0, 0)
 
 [node name="JointCenter" type="MeshInstance3D" parent="TwoBoneIK/RootBone"]
 mesh = SubResource("SphereMesh_bonox")
@@ -108,7 +109,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
 mesh = SubResource("BoxMesh_om4hy")
 
 [node name="ElbowBone" type="Node3D" parent="TwoBoneIK/RootBone"]
-transform = Transform3D(0.961202, -0.225102, 0.159438, -0.258807, -0.535931, 0.803615, -0.0954476, -0.8137, -0.573396, 5.31867e-06, -4.53293e-05, -1.00015)
+transform = Transform3D(0.828107, -0.477822, 0.293128, -0.507397, -0.416624, 0.754303, -0.238298, -0.773376, -0.587455, 5.80121e-06, -4.67896e-05, -1.00016)
 
 [node name="JointCenter" type="MeshInstance3D" parent="TwoBoneIK/RootBone/ElbowBone"]
 mesh = SubResource("SphereMesh_bonox")
