@@ -10,6 +10,7 @@ public partial class InsectoidCharacterBody : CharacterBody3D
     [Export] private Node3D _skyMarker;
     [Export] private Node3D _groundMarker;
     [Export] private Node3D _positionMarker;
+    [Export] private Node3D _heightMarker;
 
     private Vector3 _currentDirection = Vector3.Zero;
 
@@ -28,6 +29,8 @@ public partial class InsectoidCharacterBody : CharacterBody3D
         _groundMarker.GlobalPosition = GlobalPosition + _approximator.Snapshot.GroundNormal;
         _skyMarker.GlobalPosition = GlobalPosition + _approximator.Snapshot.SkyDirection;
         _positionMarker.GlobalPosition = _approximator.Snapshot.GroundPoint;
+        _heightMarker.GlobalPosition = GlobalPosition + ((GlobalBasis * Vector3.Down) * _approximator.Snapshot
+            .DistanceToGround);
 
         var velocity = Velocity;
 

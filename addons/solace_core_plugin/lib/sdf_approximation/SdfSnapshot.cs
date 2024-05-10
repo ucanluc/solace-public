@@ -170,8 +170,11 @@ public class SdfSnapshot
         GroundPoint += _origin;
 
         // consider the alignment of the ground point to the sky to get the height.
+        // The height is projected to the ground plane.
         var relativeGround = GroundPoint - _origin;
-        var sign = relativeGround.Normalized().Dot(SkyDirection) > 0 ? 1 : -1;
-        DistanceToGround = (sign * relativeGround.Length()) - ObjectRadius;
+        var groundParallel = relativeGround.Project(GroundNormal).Normalized();
+        var groundHeightVector = relativeGround.Project(groundParallel);
+        var sign = groundHeightVector.Normalized().Dot(SkyDirection) > 0 ? -1 : 1;
+        DistanceToGround = (sign * groundHeightVector.Length()) - ObjectRadius;
     }
 }

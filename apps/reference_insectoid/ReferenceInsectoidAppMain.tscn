@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://sbqnoubna1qg"]
+[gd_scene load_steps=22 format=3 uid="uid://sbqnoubna1qg"]
 
 [ext_resource type="Script" path="res://apps/reference_insectoid/CameraRig.cs" id="1_kgke2"]
 [ext_resource type="Script" path="res://apps/reference_insectoid/InsectoidCharacterBody.cs" id="1_ysi34"]
@@ -53,8 +53,15 @@ albedo_color = Color(0, 1, 0, 1)
 material = SubResource("StandardMaterial3D_bsght")
 size = Vector3(0.1, 0.1, 0.1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e4prh"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q6ime"]
 albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rnb7h"]
+material = SubResource("StandardMaterial3D_q6ime")
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e4prh"]
+albedo_color = Color(1, 0.513726, 0, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_tui71"]
 material = SubResource("StandardMaterial3D_e4prh")
@@ -124,7 +131,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.63146, 5.47662)
 
 [node name="Camera3D2" type="Camera3D" parent="CameraRig/CameraRigOrbit"]
 
-[node name="InsectoidCharacterBody" type="CharacterBody3D" parent="." node_paths=PackedStringArray("_directionReference", "_skyMarker", "_groundMarker", "_positionMarker")]
+[node name="InsectoidCharacterBody" type="CharacterBody3D" parent="." node_paths=PackedStringArray("_directionReference", "_skyMarker", "_groundMarker", "_positionMarker", "_heightMarker")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.41715, 0)
 collision_layer = 2
 script = ExtResource("1_ysi34")
@@ -132,6 +139,7 @@ _directionReference = NodePath("../CameraRig/CameraRigOrbit/Camera3D2")
 _skyMarker = NodePath("BlueMarker")
 _groundMarker = NodePath("GreenMarker")
 _positionMarker = NodePath("RedMarker")
+_heightMarker = NodePath("OrangeMarker")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InsectoidCharacterBody"]
 shape = SubResource("BoxShape3D_boav0")
@@ -175,6 +183,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 mesh = SubResource("BoxMesh_mk5ls")
 
 [node name="RedMarker" type="MeshInstance3D" parent="InsectoidCharacterBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+mesh = SubResource("BoxMesh_rnb7h")
+
+[node name="OrangeMarker" type="MeshInstance3D" parent="InsectoidCharacterBody"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 mesh = SubResource("BoxMesh_tui71")
 
