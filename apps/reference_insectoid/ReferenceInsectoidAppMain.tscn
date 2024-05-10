@@ -1,4 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://sbqnoubna1qg"]
+[gd_scene load_steps=20 format=3 uid="uid://sbqnoubna1qg"]
+
+[ext_resource type="Script" path="res://apps/reference_insectoid/CameraRig.cs" id="1_kgke2"]
+[ext_resource type="Script" path="res://apps/reference_insectoid/InsectoidCharacterBody.cs" id="1_ysi34"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_80twd"]
 
@@ -23,9 +26,11 @@ size = Vector3(10, 10, 10)
 [sub_resource type="BoxMesh" id="BoxMesh_07h14"]
 size = Vector3(10, 10, 10)
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_gdgjm"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_boav0"]
+size = Vector3(0.5, 0.5, 0.5)
 
-[sub_resource type="SphereMesh" id="SphereMesh_hjit1"]
+[sub_resource type="BoxMesh" id="BoxMesh_ur11r"]
+size = Vector3(0.5, 0.5, 0.5)
 
 [sub_resource type="BoxMesh" id="BoxMesh_crj83"]
 size = Vector3(0.1, 0.1, 1.9)
@@ -34,13 +39,31 @@ size = Vector3(0.1, 0.1, 1.9)
 radius = 0.05
 height = 0.1
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hdr0d"]
+albedo_color = Color(0, 0, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_q2a4e"]
+material = SubResource("StandardMaterial3D_hdr0d")
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bsght"]
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_mk5ls"]
+material = SubResource("StandardMaterial3D_bsght")
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e4prh"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_tui71"]
+material = SubResource("StandardMaterial3D_e4prh")
+size = Vector3(0.1, 0.1, 0.1)
+
 [node name="ReferenceInsectoidAppMain" type="Node"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_3xc5h")
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.541293, 0.892456)
 
 [node name="Level" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.628836, 0)
@@ -89,17 +112,36 @@ shape = SubResource("BoxShape3D_4u36u")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox4"]
 mesh = SubResource("BoxMesh_07h14")
 
-[node name="InsectoidCharacterBody" type="CharacterBody3D" parent="."]
+[node name="CameraRig" type="Node3D" parent="." node_paths=PackedStringArray("_cameraOrbitNode", "_cameraNode", "_followTarget")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.41715, 0)
+script = ExtResource("1_kgke2")
+_cameraOrbitNode = NodePath("CameraRigOrbit")
+_cameraNode = NodePath("CameraRigOrbit/Camera3D2")
+_followTarget = NodePath("../InsectoidCharacterBody")
+
+[node name="CameraRigOrbit" type="Node3D" parent="CameraRig"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.63146, 5.47662)
+
+[node name="Camera3D2" type="Camera3D" parent="CameraRig/CameraRigOrbit"]
+
+[node name="InsectoidCharacterBody" type="CharacterBody3D" parent="." node_paths=PackedStringArray("_directionReference", "_skyMarker", "_groundMarker", "_positionMarker")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.41715, 0)
+collision_layer = 2
+script = ExtResource("1_ysi34")
+_directionReference = NodePath("../CameraRig")
+_skyMarker = NodePath("BlueMarker")
+_groundMarker = NodePath("GreenMarker")
+_positionMarker = NodePath("RedMarker")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InsectoidCharacterBody"]
-shape = SubResource("SphereShape3D_gdgjm")
+shape = SubResource("BoxShape3D_boav0")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="InsectoidCharacterBody"]
-mesh = SubResource("SphereMesh_hjit1")
+mesh = SubResource("BoxMesh_ur11r")
 
 [node name="InsectoidLimb" type="Node3D" parent="InsectoidCharacterBody"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.518445)
+visible = false
 
 [node name="LimbMesh" type="MeshInstance3D" parent="InsectoidCharacterBody/InsectoidLimb"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
@@ -123,3 +165,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
 
 [node name="JointMesh" type="MeshInstance3D" parent="InsectoidCharacterBody/InsectoidLimb/InsectoidLimb2/InsectoidLimb3"]
 mesh = SubResource("SphereMesh_ybp7i")
+
+[node name="BlueMarker" type="MeshInstance3D" parent="InsectoidCharacterBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+mesh = SubResource("BoxMesh_q2a4e")
+
+[node name="GreenMarker" type="MeshInstance3D" parent="InsectoidCharacterBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+mesh = SubResource("BoxMesh_mk5ls")
+
+[node name="RedMarker" type="MeshInstance3D" parent="InsectoidCharacterBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+mesh = SubResource("BoxMesh_tui71")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.146447, 0.853553, -0.5, -0.5, 0.5, 0.707107, 0.853553, 0.146447, 0.5, 0, 0, 0)

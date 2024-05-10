@@ -1,11 +1,11 @@
 [gd_scene load_steps=4 format=3 uid="uid://dchrcgr3jrp6r"]
 
 [ext_resource type="Script" path="res://main/Main.cs" id="1_ffqh3"]
-[ext_resource type="Resource" uid="uid://cpyod2ticywx1" path="res://apps/reference_inverse_kinematics/ReferenceInverseKinematicsAppDef.tres" id="2_0ohc1"]
+[ext_resource type="Resource" uid="uid://dkidnjwhtuauk" path="res://apps/reference_insectoid/ReferenceInsectoidAppDef.tres" id="2_o62k2"]
 [ext_resource type="PackedScene" uid="uid://6idf853bwbjf" path="res://content/audio/user_interface/UserInterfaceAudioInjector.tscn" id="3_ow0px"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_ffqh3")
-_appToLoad = ExtResource("2_0ohc1")
+_appToLoad = ExtResource("2_o62k2")
 
 [node name="UserInterfaceAudioInjector" parent="." instance=ExtResource("3_ow0px")]

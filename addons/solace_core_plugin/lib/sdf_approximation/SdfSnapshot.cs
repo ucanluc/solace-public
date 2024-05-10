@@ -147,7 +147,9 @@ public class SdfSnapshot
     public void Finalise()
     {
         SkyDirection = SkyDirection.Normalized();
+        GroundNormal = GroundNormal.Normalized();
         GroundPoint /= _groundPointWeightTotal;
+        GroundPoint += _origin;
         GroundHeight = (GroundPoint - _origin).Length() - ObjectRadius;
     }
 }
