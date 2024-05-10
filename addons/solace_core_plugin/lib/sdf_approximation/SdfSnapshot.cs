@@ -62,41 +62,49 @@ public class SdfSnapshot
 
     /// <summary>
     /// Derives weighted values from the given tracker's status.
-    /// 
     /// </summary>
-    /// <param name="tracker"></param>
+    /// <param name="tracker">Tracker to read from.</param>
     public void IntegrateTracker(SdfRaycastTracker tracker)
     {
-        if (!tracker.HasCurrentHit)
+        if (!tracker.HasNaturalHit)
         {
+            // Tracker has missed; We know that there is empty space there.
             SkyDirection += tracker.RaycastDirection;
             return;
         }
 
+        // calculate the base variables
+        // hit vectors are integrated with the origin as a basis, for weighted averaging.
         var hitVector = (tracker.HitPosition - _origin);
         var maxDistance = Mathf.Clamp(_raycastDist - ObjectRadius, 0, _raycastDist);
         var hitDistance = Mathf.Clamp(hitVector.Length() - ObjectRadius, 0, maxDistance);
         var hitNormal = tracker.HitNormal.Normalized();
         var hitDirection = hitVector.Normalized();
 
+        // Closer hits are more important for tracking the ground.
         var groundWeight =
             hitDistance > float.Epsilon
                 ? Clamp01(maxDistance / hitDistance)
                 : 1f;
 
+        // Distant hits are more important for tracking the sky.
         var skyWeight =
             maxDistance > float.Epsilon
                 ? Clamp01(hitDistance / maxDistance)
                 : 0f;
 
+        // Optional; Normal fit; prefers hits with aligned normals. 
         var normalFitWeight =
             NormalFitVector.Length() > float.Epsilon
                 ? Dot01(hitNormal, NormalFitVector)
                 : 1;
+
+        // Optional; Directional fit; prefers hits in given direction.
         var dirFitWeight =
             DirFitVector.Length() > float.Epsilon
                 ? Dot01(hitDirection, DirFitVector)
                 : 1;
+
 
         // weights are exponential akin to "Least squares fitting";
         // https://mathworld.wolfram.com/LeastSquaresFitting.html
@@ -105,9 +113,10 @@ public class SdfSnapshot
         normalFitWeight *= normalFitWeight;
         dirFitWeight *= dirFitWeight;
 
+        // Combine and integrate the weights to relevant data.
         var trackerWeight = groundWeight * dirFitWeight * normalFitWeight;
         GroundNormal += hitNormal * trackerWeight;
-        GroundPoint += hitVector;
+        GroundPoint += hitVector * trackerWeight;
         _groundPointWeightTotal += trackerWeight;
 
         SkyDirection += (-hitDirection) * skyWeight;
@@ -132,6 +141,11 @@ public class SdfSnapshot
     }
 
 
+    /// <summary>
+    /// Clear the saved snapshot data, and prepare for integrating new data.
+    /// </summary>
+    /// <param name="queryOrigin">Global position of the snapshot location</param>
+    /// <param name="raycastDistance">Distance to use as a reference while integrating.</param>
     public void Clear(Vector3 queryOrigin, float raycastDistance)
     {
         GroundNormal = Vector3.Zero;
@@ -144,6 +158,9 @@ public class SdfSnapshot
     }
 
 
+    /// <summary>
+    /// Does the postprocessing necessary for the integrated data to become useful.
+    /// </summary>
     public void Finalise()
     {
         SkyDirection = SkyDirection.Normalized();
