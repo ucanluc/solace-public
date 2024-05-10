@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://cc84wnnkg3374"
-path="res://.godot/imported/character_nodes.gltf-365e764c284975433d0be37214bdc346.scn"
+path="res://.godot/imported/character_nodes.gltf-87aa852a3d0fdf543304c1e4220c98f4.scn"
 
 [deps]
 
-source_file="res://addons/solace_blocky/character/character_nodes.gltf"
-dest_files=["res://.godot/imported/character_nodes.gltf-365e764c284975433d0be37214bdc346.scn"]
+source_file="res://addons/solace_blocky/character/source/character_nodes.gltf"
+dest_files=["res://.godot/imported/character_nodes.gltf-87aa852a3d0fdf543304c1e4220c98f4.scn"]
 
 [params]
 

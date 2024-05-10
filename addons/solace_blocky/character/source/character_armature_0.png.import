@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://boxer4yk1w4sy"
-path="res://.godot/imported/character_nodes_0.png-9701a0022dd9f956421a0c4d7aafda99.ctex"
+uid="uid://b5huv53eijxnq"
+path="res://.godot/imported/character_armature_0.png-75c8279e436578d2604205248e24c25f.ctex"
 metadata={
 "vram_texture": false
 }
@@ -13,8 +13,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://addons/solace_blocky/character/character_nodes_0.png"
-dest_files=["res://.godot/imported/character_nodes_0.png-9701a0022dd9f956421a0c4d7aafda99.ctex"]
+source_file="res://addons/solace_blocky/character/source/character_armature_0.png"
+dest_files=["res://.godot/imported/character_armature_0.png-75c8279e436578d2604205248e24c25f.ctex"]
 
 [params]
 
