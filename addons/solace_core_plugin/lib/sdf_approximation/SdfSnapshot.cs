@@ -55,7 +55,7 @@ public class SdfSnapshot
     /// This is our height from the assumed ground plane.
     /// May be negative, depending on assumed ground, and object radius.
     /// </summary>
-    public float GroundHeight { get; private set; }
+    public float DistanceToGround { get; private set; }
 
     private float _groundPointWeightTotal, _raycastDist;
     private Vector3 _origin;
@@ -70,6 +70,7 @@ public class SdfSnapshot
         {
             // Tracker has missed; We know that there is empty space there.
             SkyDirection += tracker.RaycastDirection;
+            //TODO: Use tracker results for fine adjustment
             return;
         }
 
@@ -167,6 +168,10 @@ public class SdfSnapshot
         GroundNormal = GroundNormal.Normalized();
         GroundPoint /= _groundPointWeightTotal;
         GroundPoint += _origin;
-        GroundHeight = (GroundPoint - _origin).Length() - ObjectRadius;
+
+        // consider the alignment of the ground point to the sky to get the height.
+        var relativeGround = GroundPoint - _origin;
+        var sign = relativeGround.Normalized().Dot(SkyDirection) > 0 ? 1 : -1;
+        DistanceToGround = (sign * relativeGround.Length()) - ObjectRadius;
     }
 }

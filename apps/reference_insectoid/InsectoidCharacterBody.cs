@@ -17,7 +17,7 @@ public partial class InsectoidCharacterBody : CharacterBody3D
     private float _currentSpeed = 4.5f;
     private float raycastDistance = 10f;
 
-    private readonly SdfApproximator _approximator = new(50, 0b1);
+    private readonly SdfApproximator _approximator = new(250, 0b1);
 
 
     public override void _PhysicsProcess(double delta)
