@@ -66,18 +66,17 @@ public class SdfSnapshot
     /// <param name="tracker">Tracker to read from.</param>
     public void IntegrateTracker(SdfRaycastTracker tracker)
     {
+        if (tracker.HasArchivedHit) tracker.DrawPosition(tracker.HitPosition, Colors.White, 1f);
+        if (tracker.HasArchivedMiss) tracker.DrawPosition(tracker.MissPosition, Colors.Black, 1f);
+
         if (!tracker.HasNaturalHit)
         {
             // Tracker has missed; We know that there is empty space there.
             SkyDirection += tracker.RaycastDirection;
-            DebugDraw3D.DrawLine(tracker.MissPosition, tracker.MissPosition - (tracker.RaycastDirection * 0.1f),
-                Colors.White);
 
-            if (tracker.HasSavedHit)
-            {
-                DebugDraw3D.DrawLine(tracker.HitPosition, tracker.HitPosition - (tracker.RaycastDirection * 0.1f),
-                    Colors.Yellow);
-            }
+
+            if (tracker.HasSavedHit) tracker.DrawPosition(tracker.HitPosition, Colors.Yellow, 1f);
+            if (tracker.HasSavedMiss) tracker.DrawPosition(tracker.MissPosition, Colors.Red, 1f);
 
             //TODO: Use tracker results for fine adjustment
             return;
@@ -94,7 +93,7 @@ public class SdfSnapshot
         // Closer hits are more important for tracking the ground.
         var groundWeight =
             hitDistance > float.Epsilon
-                ? Clamp01((maxDistance / hitDistance)-1)
+                ? Clamp01((maxDistance / hitDistance) - 1)
                 : 1f;
 
         // Distant hits are more important for tracking the sky.
@@ -130,15 +129,9 @@ public class SdfSnapshot
         _groundPointWeightTotal += trackerWeight;
 
         SkyDirection += (-hitDirection) * skyWeight;
-
-        if (tracker.HasSavedMiss)
-        {
-            DebugDraw3D.DrawLine(tracker.MissPosition, tracker.MissPosition - (tracker.RaycastDirection * 0.1f),
-                Colors.Blue);
-        }
-
-        DebugDraw3D.DrawLine(tracker.HitPosition, tracker.HitPosition - (tracker.RaycastDirection * trackerWeight),
-            Colors.Green);
+        
+        if (tracker.HasSavedMiss) tracker.DrawPosition(tracker.MissPosition, Colors.Blue, 1f);
+        if (tracker.HasSavedHit) tracker.DrawPosition(tracker.HitPosition, Colors.Green, trackerWeight);
     }
 
     /// <summary>

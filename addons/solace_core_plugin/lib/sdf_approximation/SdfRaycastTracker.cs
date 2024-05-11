@@ -9,12 +9,15 @@ namespace Solace.addons.solace_core_plugin.lib.sdf_approximation;
 public class SdfRaycastTracker
 {
     public readonly Vector3 RaycastDirection;
-
     public Vector3 MissPosition { get; private set; }
     public Vector3 HitPosition { get; private set; }
     public Vector3 HitNormal { get; private set; }
-    public bool HasSavedHit => HasNaturalHit || HasTrackerHit;
-    public bool HasSavedMiss => !HasNaturalHit || !HasTrackerHit;
+
+    public bool HasArchivedMiss { get; private set; }
+    public bool HasArchivedHit { get; private set; }
+
+    public bool HasSavedHit { get; private set; }
+    public bool HasSavedMiss { get; private set; }
 
     public bool HasNaturalHit { get; private set; }
     public bool HasTrackerHit { get; private set; }
@@ -31,21 +34,30 @@ public class SdfRaycastTracker
     {
         var raycastEndPoint = queryOrigin + (RaycastDirection * raycastDistance);
 
-        // update tracking depending on the previous natural state.
-        // assume that the 'natural state' will stay as is, and preemptively track for the opposite state.
-        if (HasSavedMiss && HasNaturalHit)
+        // Tracking raycasts validate / renew saved locations
+        if (HasNaturalHit)
         {
-            // do a raycast to the missed spot to "Track that empty area"
+            // do a raycast to "Track the old, empty area"
             var trackerTarget = MissPosition;
-            SetupTrackingRaycast(queryOrigin, raycastEndPoint, trackerTarget, raycastDistance);
+            SetupTrackingRaycast(queryOrigin, trackerTarget, raycastDistance);
             HasTrackerHit = ExecuteRaycast(spaceState);
+            HasSavedMiss = !HasTrackerHit;
+            if (!HasSavedMiss)
+            {
+                HasArchivedMiss = true;
+            }
         }
-        else if (HasSavedHit && !HasNaturalHit)
+        else
         {
-            // do a raycast to the hit spot to "Track that full area"
+            // do a raycast to "Track the old, full area"
             var trackerTarget = HitPosition;
-            SetupTrackingRaycast(queryOrigin, raycastEndPoint, trackerTarget, raycastDistance);
+            SetupTrackingRaycast(queryOrigin, trackerTarget, raycastDistance);
             HasTrackerHit = ExecuteRaycast(spaceState);
+            HasSavedHit = HasTrackerHit;
+            if (!HasSavedHit)
+            {
+                HasArchivedHit = true;
+            }
         }
 
         // do a natural raycast to get the exact state of the assigned direction.
@@ -68,10 +80,14 @@ public class SdfRaycastTracker
         {
             HitPosition = (Vector3)result["position"];
             HitNormal = (Vector3)result["normal"];
+            HasSavedHit = true;
+            HasArchivedHit = false;
         }
         else
         {
             MissPosition = _queryParameters.To;
+            HasSavedMiss = true;
+            HasArchivedMiss = false;
         }
 
         return hasHit;
@@ -79,26 +95,39 @@ public class SdfRaycastTracker
 
     /// <summary>
     /// Sets up the parameters for 'tracking raycast';
-    /// Projects the given target to the current 'raycast sphere',
-    /// And steps towards the 'natural' position over time.
+    /// Tracking raycasts are expected to track as many 'edges' as possible,
+    /// especially as they get closer.
     /// </summary>
     /// <param name="queryOrigin">Center of the raycast sphere, in global coordinates</param>
-    /// <param name="raycastEndPoint">The 'natural' end point for the raycast, global coordinates.</param>
     /// <param name="positionToTrack">Global position of the desired location to track.</param>
-    /// <param name="maxLength">The maximum raycast allowed for tracking.</param>
+    /// <param name="raycastDistance">The maximum raycast allowed for tracking.</param>
     private void SetupTrackingRaycast(
         Vector3 queryOrigin,
-        Vector3 raycastEndPoint,
         Vector3 positionToTrack,
-        float maxLength
+        float raycastDistance
     )
     {
-        var oldTargetDirection = (positionToTrack - queryOrigin).Normalized();
-        var oldTargetProjected = queryOrigin + (oldTargetDirection * maxLength);
-        var pointIterationDirection = (raycastEndPoint - oldTargetProjected);
-        var trackedTargetGlobalPosition = oldTargetProjected + (pointIterationDirection.Normalized() * 0.1f);
-        var newCastDirection = trackedTargetGlobalPosition - queryOrigin;
+        var raycastEndPoint = queryOrigin + (RaycastDirection * raycastDistance);
+        var targetVector = positionToTrack - queryOrigin;
+        var targetDirection = targetVector.Normalized();
+
+        var realignmentVector = raycastEndPoint - positionToTrack;
+        var realignmentDirection = realignmentVector.Normalized();
+
+        var iterationVector = realignmentVector
+                              * realignmentDirection.Dot(targetDirection);
+        var newTargetPosition = positionToTrack + iterationVector;
+
+        var newTargetVector = (newTargetPosition - queryOrigin);
+        var newTargetDirection = newTargetVector.Normalized();
+        var projectedEndPoint = queryOrigin + (newTargetDirection * raycastDistance);
+
         _queryParameters.From = queryOrigin;
-        _queryParameters.To = newCastDirection;
+        _queryParameters.To = projectedEndPoint;
+    }
+
+    public void DrawPosition(Vector3 pointToDraw, Color color, float lineLength)
+    {
+        DebugDraw3D.DrawLine(pointToDraw, pointToDraw - (RaycastDirection * lineLength), color);
     }
 }
