@@ -6,6 +6,11 @@ namespace Solace.addons.solace_core_plugin.lib.sdf_approximation;
 public class SdfSnapshot
 {
     /// <summary>
+    /// Optional; Ignores secondary/cached values, only using the immediately accessible data. 
+    /// </summary>
+    public bool IgnoreArchived { private get; set; }
+
+    /// <summary>
     /// Optional; tweaks weights based on distance to origin.
     /// </summary>
     public float ObjectRadius { private get; set; }
@@ -66,23 +71,16 @@ public class SdfSnapshot
     /// <param name="tracker">Tracker to read from.</param>
     public void IntegrateTracker(SdfRaycastTracker tracker)
     {
-        if (tracker.HasArchivedHit) tracker.DrawPosition(tracker.HitPosition, Colors.White, 1f);
-        if (tracker.HasArchivedMiss) tracker.DrawPosition(tracker.MissPosition, Colors.Black, 1f);
+        // calculate the base variables
+        var missDirection = (tracker.MissPosition - _origin).Normalized();
+        SkyDirection += missDirection;
 
-        if (!tracker.HasNaturalHit)
+        if (IgnoreArchived && !tracker.HasNaturalHit)
         {
-            // Tracker has missed; We know that there is empty space there.
-            SkyDirection += tracker.RaycastDirection;
-
-
-            if (tracker.HasSavedHit) tracker.DrawPosition(tracker.HitPosition, Colors.Yellow, 1f);
-            if (tracker.HasSavedMiss) tracker.DrawPosition(tracker.MissPosition, Colors.Red, 1f);
-
-            //TODO: Use tracker results for fine adjustment
+            //
             return;
         }
 
-        // calculate the base variables
         // hit vectors are integrated with the origin as a basis, for weighted averaging.
         var hitVector = (tracker.HitPosition - _origin);
         var maxDistance = Mathf.Clamp(_raycastDist - ObjectRadius, 0, _raycastDist);
@@ -129,9 +127,21 @@ public class SdfSnapshot
         _groundPointWeightTotal += trackerWeight;
 
         SkyDirection += (-hitDirection) * skyWeight;
-        
-        if (tracker.HasSavedMiss) tracker.DrawPosition(tracker.MissPosition, Colors.Blue, 1f);
-        if (tracker.HasSavedHit) tracker.DrawPosition(tracker.HitPosition, Colors.Green, trackerWeight);
+
+
+        if (tracker.HasArchivedHit) tracker.DrawPosition(tracker.HitPosition, Colors.White, trackerWeight);
+        if (tracker.HasArchivedMiss) tracker.DrawPosition(tracker.MissPosition, Colors.Black, trackerWeight);
+
+        if (!tracker.HasNaturalHit)
+        {
+            if (tracker.HasSavedHit) tracker.DrawPosition(tracker.HitPosition, Colors.Yellow, trackerWeight);
+            if (tracker.HasSavedMiss) tracker.DrawPosition(tracker.MissPosition, Colors.Red, trackerWeight);
+        }
+        else
+        {
+            if (tracker.HasSavedMiss) tracker.DrawPosition(tracker.MissPosition, Colors.Blue, trackerWeight);
+            if (tracker.HasSavedHit) tracker.DrawPosition(tracker.HitPosition, Colors.Green, trackerWeight);
+        }
     }
 
     /// <summary>
