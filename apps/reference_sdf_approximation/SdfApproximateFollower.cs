@@ -1,9 +1,9 @@
 using Godot;
 using Solace.addons.solace_core_plugin.lib.sdf_approximation;
 
-namespace Solace.apps.reference_insectoid;
+namespace Solace.apps.reference_sdf_approximation;
 
-public partial class InsectoidCharacterBody : CharacterBody3D
+public partial class SdfApproximateFollower : CharacterBody3D
 {
     [Export] private float _lerpSpeed = 10f;
     [Export] private Node3D _directionReference;

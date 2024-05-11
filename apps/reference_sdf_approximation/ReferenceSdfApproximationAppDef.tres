@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="AppDefinitionResource" load_steps=3 format=3 uid="uid://dcjscjoq1e53c"]
+
+[ext_resource type="PackedScene" uid="uid://sbqnoubna1qg" path="res://apps/reference_sdf_approximation/ReferenceSdfApproximationAppMain.tscn" id="1_8w6vb"]
+[ext_resource type="Script" path="res://addons/solace_core_plugin/core/application/AppDefinitionResource.cs" id="1_p4fkf"]
+
+[resource]
+script = ExtResource("1_p4fkf")
+_appEntryNode = ExtResource("1_8w6vb")

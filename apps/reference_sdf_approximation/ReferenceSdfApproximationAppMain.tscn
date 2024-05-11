@@ -1,0 +1,211 @@
+[gd_scene load_steps=20 format=3 uid="uid://sbqnoubna1qg"]
+
+[ext_resource type="Script" path="res://apps/reference_sdf_approximation/SdfFollowerCameraRig.cs" id="1_m5cjo"]
+[ext_resource type="Script" path="res://apps/reference_sdf_approximation/SdfApproximateFollower.cs" id="2_u4f7l"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_80twd"]
+
+[sub_resource type="Sky" id="Sky_4r2jq"]
+sky_material = SubResource("ProceduralSkyMaterial_80twd")
+
+[sub_resource type="Environment" id="Environment_3xc5h"]
+background_mode = 2
+sky = SubResource("Sky_4r2jq")
+ambient_light_source = 3
+reflected_light_source = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ruwq0"]
+size = Vector3(100, 1, 100)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cqvgi"]
+size = Vector3(100, 1, 100)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4u36u"]
+size = Vector3(10, 10, 10)
+
+[sub_resource type="BoxMesh" id="BoxMesh_07h14"]
+size = Vector3(10, 10, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_boav0"]
+size = Vector3(0.5, 0.5, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ur11r"]
+size = Vector3(0.5, 0.5, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hdr0d"]
+albedo_color = Color(0, 0, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_q2a4e"]
+material = SubResource("StandardMaterial3D_hdr0d")
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bsght"]
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_mk5ls"]
+material = SubResource("StandardMaterial3D_bsght")
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q6ime"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rnb7h"]
+material = SubResource("StandardMaterial3D_q6ime")
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e4prh"]
+albedo_color = Color(1, 0.513726, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_tui71"]
+material = SubResource("StandardMaterial3D_e4prh")
+size = Vector3(0.1, 0.1, 0.1)
+
+[node name="ReferenceSdfApproximationAppMain" type="Node"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_3xc5h")
+
+[node name="Level" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.628836, 0)
+
+[node name="Platform" type="StaticBody3D" parent="Level"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/Platform"]
+shape = SubResource("BoxShape3D_ruwq0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/Platform"]
+mesh = SubResource("BoxMesh_cqvgi")
+
+[node name="StaticBox" type="StaticBody3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, 35.5893)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox5" type="StaticBody3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.1145, 5.5, -27.4426)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox5"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox5"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox6" type="StaticBody3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.6835, 5.5, -34.5945)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox6"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox6"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox7" type="StaticBody3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.6861, 5.5, -26.4701)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox7"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox7"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox8" type="StaticBody3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41.8724, 5.5, -5.92556)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox8"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox8"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox9" type="StaticBody3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36.9151, 5.5, -5.92556)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox9"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox9"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox2" type="StaticBody3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.861, 5.5, 35.5893)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox2"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox2"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox3" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.851278, 0, -0.524714, 0, 1, 0, 0.524714, 0, 0.851278, -30.4307, 5.5, 35.5893)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox3"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox3"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox4" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.851278, 0, -0.524714, 0, 1, 0, 0.524714, 0, 0.851278, -18.5889, 5.5, 35.5893)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox4"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox4"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.146447, 0.853553, -0.5, -0.5, 0.5, 0.707107, 0.853553, 0.146447, 0.5, 0, 0, 0)
+
+[node name="SdfFollower" type="Node3D" parent="."]
+
+[node name="SdfFollowerCameraRig" type="Node3D" parent="SdfFollower" node_paths=PackedStringArray("_cameraOrbitNode", "_cameraNode", "_followTarget")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.41715, 0)
+script = ExtResource("1_m5cjo")
+_cameraOrbitNode = NodePath("CameraRigOrbit")
+_cameraNode = NodePath("CameraRigOrbit/Camera3D")
+_followTarget = NodePath("../SdfApproximateFollower")
+
+[node name="CameraRigOrbit" type="Node3D" parent="SdfFollower/SdfFollowerCameraRig"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.63146, 5.47662)
+
+[node name="Camera3D" type="Camera3D" parent="SdfFollower/SdfFollowerCameraRig/CameraRigOrbit"]
+
+[node name="SdfApproximateFollower" type="CharacterBody3D" parent="SdfFollower" node_paths=PackedStringArray("_directionReference", "_skyMarker", "_groundMarker", "_positionMarker", "_heightMarker")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.41715, 0)
+collision_layer = 2
+script = ExtResource("2_u4f7l")
+_directionReference = NodePath("../SdfFollowerCameraRig/CameraRigOrbit/Camera3D")
+_skyMarker = NodePath("BlueMarker")
+_groundMarker = NodePath("GreenMarker")
+_positionMarker = NodePath("RedMarker")
+_heightMarker = NodePath("OrangeMarker")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SdfFollower/SdfApproximateFollower"]
+shape = SubResource("BoxShape3D_boav0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SdfFollower/SdfApproximateFollower"]
+mesh = SubResource("BoxMesh_ur11r")
+
+[node name="BlueMarker" type="MeshInstance3D" parent="SdfFollower/SdfApproximateFollower"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+mesh = SubResource("BoxMesh_q2a4e")
+
+[node name="GreenMarker" type="MeshInstance3D" parent="SdfFollower/SdfApproximateFollower"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+mesh = SubResource("BoxMesh_mk5ls")
+
+[node name="RedMarker" type="MeshInstance3D" parent="SdfFollower/SdfApproximateFollower"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+mesh = SubResource("BoxMesh_rnb7h")
+
+[node name="OrangeMarker" type="MeshInstance3D" parent="SdfFollower/SdfApproximateFollower"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+mesh = SubResource("BoxMesh_tui71")

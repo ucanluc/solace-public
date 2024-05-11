@@ -1,7 +1,8 @@
 using Godot;
-using System;
 
-public partial class CameraRig : Node3D
+namespace Solace.apps.reference_sdf_approximation;
+
+public partial class SdfFollowerCameraRig : Node3D
 {
     [Export] private float _mouseSensitivity = 0.3f;
     private float _cameraXRotation;
