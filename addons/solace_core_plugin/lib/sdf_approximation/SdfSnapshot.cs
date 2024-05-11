@@ -10,6 +10,8 @@ public class SdfSnapshot
     /// </summary>
     public bool IgnoreArchived { private get; set; }
 
+    public bool DrawDebugLines { private get; set; }
+
     /// <summary>
     /// Optional; tweaks weights based on distance to origin.
     /// </summary>
@@ -72,15 +74,24 @@ public class SdfSnapshot
     public void IntegrateTracker(SdfRaycastTracker tracker)
     {
         // calculate the base variables
+
+        // Misses are always newly acquired.
         var missDirection = (tracker.MissPosition - _origin).Normalized();
         SkyDirection += missDirection;
 
         if (IgnoreArchived && !tracker.HasNaturalHit)
         {
-            //
+            if (DrawDebugLines) DrawTrackerDebug(tracker, 1);
             return;
         }
 
+        var trackerWeight = IntegrateTrackerHit(tracker);
+
+        if (DrawDebugLines) DrawTrackerDebug(tracker, trackerWeight);
+    }
+
+    private float IntegrateTrackerHit(SdfRaycastTracker tracker)
+    {
         // hit vectors are integrated with the origin as a basis, for weighted averaging.
         var hitVector = (tracker.HitPosition - _origin);
         var maxDistance = Mathf.Clamp(_raycastDist - ObjectRadius, 0, _raycastDist);
@@ -127,8 +138,11 @@ public class SdfSnapshot
         _groundPointWeightTotal += trackerWeight;
 
         SkyDirection += (-hitDirection) * skyWeight;
+        return trackerWeight;
+    }
 
-
+    private static void DrawTrackerDebug(SdfRaycastTracker tracker, float trackerWeight)
+    {
         if (tracker.HasArchivedHit) tracker.DrawPosition(tracker.HitPosition, Colors.White, trackerWeight);
         if (tracker.HasArchivedMiss) tracker.DrawPosition(tracker.MissPosition, Colors.Black, trackerWeight);
 
