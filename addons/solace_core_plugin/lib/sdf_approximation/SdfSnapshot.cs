@@ -70,6 +70,15 @@ public class SdfSnapshot
         {
             // Tracker has missed; We know that there is empty space there.
             SkyDirection += tracker.RaycastDirection;
+            DebugDraw3D.DrawLine(tracker.MissPosition, tracker.MissPosition - (tracker.RaycastDirection * 0.1f),
+                Colors.White);
+
+            if (tracker.HasSavedHit)
+            {
+                DebugDraw3D.DrawLine(tracker.HitPosition, tracker.HitPosition - (tracker.RaycastDirection * 0.1f),
+                    Colors.Yellow);
+            }
+
             //TODO: Use tracker results for fine adjustment
             return;
         }
@@ -85,7 +94,7 @@ public class SdfSnapshot
         // Closer hits are more important for tracking the ground.
         var groundWeight =
             hitDistance > float.Epsilon
-                ? Clamp01(maxDistance / hitDistance)
+                ? Clamp01((maxDistance / hitDistance)-1)
                 : 1f;
 
         // Distant hits are more important for tracking the sky.
@@ -121,6 +130,15 @@ public class SdfSnapshot
         _groundPointWeightTotal += trackerWeight;
 
         SkyDirection += (-hitDirection) * skyWeight;
+
+        if (tracker.HasSavedMiss)
+        {
+            DebugDraw3D.DrawLine(tracker.MissPosition, tracker.MissPosition - (tracker.RaycastDirection * 0.1f),
+                Colors.Blue);
+        }
+
+        DebugDraw3D.DrawLine(tracker.HitPosition, tracker.HitPosition - (tracker.RaycastDirection * trackerWeight),
+            Colors.Green);
     }
 
     /// <summary>
