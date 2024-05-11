@@ -191,21 +191,17 @@ shape = SubResource("BoxShape3D_boav0")
 mesh = SubResource("BoxMesh_ur11r")
 
 [node name="BlueMarker" type="MeshInstance3D" parent="SdfFollower/SdfApproximateFollower"]
-unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 mesh = SubResource("BoxMesh_q2a4e")
 
 [node name="GreenMarker" type="MeshInstance3D" parent="SdfFollower/SdfApproximateFollower"]
-unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 mesh = SubResource("BoxMesh_mk5ls")
 
 [node name="RedMarker" type="MeshInstance3D" parent="SdfFollower/SdfApproximateFollower"]
-unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 mesh = SubResource("BoxMesh_rnb7h")
 
 [node name="OrangeMarker" type="MeshInstance3D" parent="SdfFollower/SdfApproximateFollower"]
-unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 mesh = SubResource("BoxMesh_tui71")
