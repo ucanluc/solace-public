@@ -128,6 +128,6 @@ public class SdfRaycastTracker
 
     public void DrawPosition(Vector3 pointToDraw, Color color, float lineLength)
     {
-        DebugDraw3D.DrawLine(pointToDraw, pointToDraw - (RaycastDirection * lineLength), color);
+        DebugDraw3D.DrawLine(pointToDraw+RaycastDirection*(lineLength), pointToDraw - (RaycastDirection * lineLength), color);
     }
 }

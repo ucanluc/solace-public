@@ -18,6 +18,8 @@ public class SdfSnapshot
     /// </summary>
     public float ObjectRadius { private get; set; }
 
+    public float AccuracyRatio { get; private set; }
+
     /// <summary>
     /// Optional; set to prioritise hits with aligned normals.
     /// If length = 0; Disabled
@@ -39,37 +41,54 @@ public class SdfSnapshot
     /// <summary>
     /// Derived output:
     /// This direction is "UP"; If you want to stay parallel to the surface.
-    /// According to the surface normals nearby.
+    /// According to nearby surface normals.
+    /// This is the closest value to the main output of a Signed Distance field; if we were using one.
     /// </summary>
     public Vector3 GroundNormal { get; private set; }
 
 
     /// <summary>
     /// Derived output:
-    /// This direction is "UP"; If you want to get away from any solid objects.
-    /// According to the most empty space available.
-    /// This is the main output of a Signed Distance field; if we were using one.
+    /// This direction is "UP"; If you want the most clear space above your horizon.
+    /// According to most space available.
     /// </summary>
     public Vector3 SkyDirection { get; private set; }
 
+    /// <summary>
+    /// Derived output:
+    /// This point in global space is the most distant from known objects.
+    /// Aka. the assumed center of the nearby "sky volume" in global space.
+    /// </summary>
     public Vector3 SkyPosition { get; private set; }
 
     /// <summary>
     /// Derived output;
-    /// This point is the assumed center of the "ground plane" in global space
-    /// According to the raycast hit locations.
+    /// This point in global space is the closest to known objects.
+    /// Aka. the assumed center of the "ground plane" in global space
     /// </summary>
     public Vector3 GroundPosition { get; private set; }
 
+    /// <summary>
+    /// Derived output;
+    /// This direction is "DOWN"; if you want to keep the most solid surfaces below your horizon.
+    /// According to most collisions available.
+    /// </summary>
     public Vector3 GroundDirection { get; private set; }
 
     /// <summary>
     /// Derived output;
     /// This is our height from the assumed ground plane.
-    /// May be negative, depending on assumed ground, and object radius.
+    /// May be negative if we are below the assumed ground plane;
+    /// Already includes object radius.
     /// </summary>
     public float DistanceToGround { get; private set; }
 
+    /// <summary>
+    /// Derived output;
+    /// This is our height from the assumed sky center-plane.
+    /// May be negative if we are above the assumed center-plane
+    /// Already includes object radius.
+    /// </summary>
     public float DistanceToSky { get; private set; }
 
     private float _trackerHitsWeightTotal, _trackerMissesWeightTotal, _raycastDist;
@@ -105,6 +124,15 @@ public class SdfSnapshot
         var missDistance = Mathf.Clamp(missVector.Length() - ObjectRadius, 0, maxDistance);
         var skyWeight = RangeUtilities.WeightedRange01(missDistance, maxDistance);
         var missDirection = missVector.Normalized();
+
+        // Optional; Directional fit; prefers hits in given direction.
+        var dirFitWeight =
+            DirFitVector.Length() > float.Epsilon
+                ? VectorUtilities.Dot01(missDirection, DirFitVector)
+                : 1;
+
+        skyWeight *= dirFitWeight * dirFitWeight;
+
         SkyDirection += missDirection * skyWeight;
         SkyPosition += missVector * skyWeight;
         _trackerMissesWeightTotal += skyWeight;
@@ -158,7 +186,6 @@ public class SdfSnapshot
         GroundDirection += hitDirection * trackerWeight;
         _trackerHitsWeightTotal += trackerWeight;
 
-
         return trackerWeight;
     }
 
@@ -209,6 +236,10 @@ public class SdfSnapshot
         GroundNormal = GroundNormal.Normalized();
         GroundDirection = GroundDirection.Normalized();
 
+        AccuracyRatio = _trackerMissesWeightTotal > float.Epsilon
+            ? _trackerHitsWeightTotal / _trackerMissesWeightTotal
+            : _trackerHitsWeightTotal / float.Epsilon;
+
         GroundPosition /= _trackerHitsWeightTotal;
         GroundPosition += _origin;
 
@@ -218,15 +249,16 @@ public class SdfSnapshot
         // consider the alignment of the ground point to the sky to get the height.
         // The height is projected to the ground plane.
         var relativeGround = GroundPosition - _origin;
-        var groundParallel = relativeGround.Project(GroundNormal).Normalized();
+        var groundParallel = relativeGround.Project(SkyDirection).Normalized();
         var groundHeightVector = relativeGround.Project(groundParallel);
         var groundHeightSign = groundHeightVector.Normalized().Dot(SkyDirection) > 0 ? -1 : 1;
-        DistanceToGround = (groundHeightSign * groundHeightVector.Length()) - ObjectRadius;
+        DistanceToGround = groundHeightSign * (groundHeightVector.Length() );
+
 
         var relativeSky = SkyPosition - _origin;
-        var skyParallel = relativeSky.Project(GroundNormal).Normalized();
+        var skyParallel = relativeSky.Project(GroundDirection).Normalized();
         var skyHeightVector = relativeSky.Project(skyParallel);
         var skyHeightSign = skyHeightVector.Normalized().Dot(GroundDirection) > 0 ? -1 : 1;
-        DistanceToSky = (skyHeightSign * skyHeightVector.Length()) - ObjectRadius;
+        DistanceToSky = skyHeightSign * (skyHeightVector.Length());
     }
 }

@@ -1,5 +1,6 @@
 using Godot;
 using Solace.addons.solace_core_plugin.lib.sdf_approximation;
+using Solace.addons.solace_core_plugin.lib.utilities;
 
 namespace Solace.apps.reference_sdf_approximation;
 
@@ -14,27 +15,33 @@ public partial class SdfApproximateFollower : CharacterBody3D
     [Export] private Node3D _roofProjectionMarker;
     [Export] private Node3D _skyDirectionMarker;
     [Export] private Node3D _groundDirectionMarker;
+    [Export] private Label3D _accuracyLabel3D;
 
     private Vector3 _currentDirection = Vector3.Zero;
 
 
     private float _currentSpeed = 4.5f;
-    private float raycastDistance = 10f;
+    private float raycastDistance = 10;
 
-    private readonly SdfApproximator _approximator = new(250, 0b1);
+    private readonly SdfApproximator _approximator = new(100, 0b1);
 
 
     public override void _Ready()
     {
         base._Ready();
         _approximator.Snapshot.DrawDebugLines = true;
+        _approximator.Snapshot.ObjectRadius = 5f;
     }
 
     public override void _PhysicsProcess(double delta)
     {
+        _approximator.Snapshot.NormalFitVector = GlobalBasis * (Vector3.Up*0.5f);
+
         var spaceState = GetWorld3D().DirectSpaceState;
         _approximator.UpdateSnapshot(spaceState, GlobalPosition, raycastDistance);
 
+        _accuracyLabel3D.Text = $"Accuracy Ratio:  {_approximator.Snapshot.AccuracyRatio:F}";
+        
         _groundNormalMarker.GlobalPosition = GlobalPosition + _approximator.Snapshot.GroundNormal;
 
         _groundPositionMarker.GlobalPosition = _approximator.Snapshot.GroundPosition;
