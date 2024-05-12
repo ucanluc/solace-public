@@ -11,7 +11,7 @@ public static class VectorUtilities
     /// <param name="targetVector">First vector</param>
     /// <param name="fitVector">Second vector</param>
     /// <returns>The dot product normalised to 0~1</returns>
-    public static float Dot01(Vector3 targetVector, Vector3 fitVector)
+    public static float Dot01(this Vector3 targetVector, Vector3 fitVector)
     {
         return ((targetVector.Dot(fitVector) + 1f) / 2f).Clamp01();
     }

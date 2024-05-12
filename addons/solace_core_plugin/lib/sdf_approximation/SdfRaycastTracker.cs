@@ -1,5 +1,6 @@
 ﻿using Godot;
 using Godot.Collections;
+using Solace.addons.solace_core_plugin.lib.utilities;
 
 namespace Solace.addons.solace_core_plugin.lib.sdf_approximation;
 
@@ -95,8 +96,10 @@ public class SdfRaycastTracker
 
     /// <summary>
     /// Sets up the parameters for 'tracking raycast';
-    /// Tracking raycasts are expected to track as many 'edges' as possible,
-    /// especially as they get closer.
+    /// Tracking raycasts are expected to track as many 'opposites' as possible,
+    /// i.e. a hit if we already know of a miss, and vice versa.
+    /// especially as the known state get closer to raycasting origin.
+    /// The tracking raycasts should also be evenly distributed.
     /// </summary>
     /// <param name="queryOrigin">Center of the raycast sphere, in global coordinates</param>
     /// <param name="positionToTrack">Global position of the desired location to track.</param>
@@ -114,10 +117,13 @@ public class SdfRaycastTracker
         var realignmentVector = raycastEndPoint - positionToTrack;
         var realignmentDirection = realignmentVector.Normalized();
 
+        // change between doing a realignment and exploring the area
         var iterationVector = realignmentVector
                               * realignmentDirection.Dot(targetDirection);
+
         var newTargetPosition = positionToTrack + iterationVector;
 
+        // reproject point as a raycast
         var newTargetVector = (newTargetPosition - queryOrigin);
         var newTargetDirection = newTargetVector.Normalized();
         var projectedEndPoint = queryOrigin + (newTargetDirection * raycastDistance);
@@ -128,6 +134,7 @@ public class SdfRaycastTracker
 
     public void DrawPosition(Vector3 pointToDraw, Color color, float lineLength)
     {
-        DebugDraw3D.DrawLine(pointToDraw+RaycastDirection*(lineLength), pointToDraw - (RaycastDirection * lineLength), color);
+        DebugDraw3D.DrawLine(pointToDraw + RaycastDirection * (lineLength),
+            pointToDraw - (RaycastDirection * lineLength), color);
     }
 }
