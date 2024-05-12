@@ -54,4 +54,34 @@ public static class VectorUtilities
 
         angleDiff = currentVector.SignedAngleTo(targetVector, rotationAxis);
     }
+
+    /// <summary>
+    /// Decomposes given position relative to a plane;
+    /// giving height to plane surface, orthogonal vector, and plane parallel vector.
+    /// The height may be negative, depending on alignment with the plane's normal.
+    /// </summary>
+    /// <param name="pointToProject">Point coordinates to project on to the plane</param>
+    /// <param name="referencePointOnPlane">A point on the plane to get parallel alignment to.</param>
+    /// <param name="planeNormal">The normal of the plane surface.</param>
+    /// <param name="pointHeightVector">Height vector of the first point, relative to the plane surface</param>
+    /// <param name="planeParallelTranslation">
+    /// Translation of the projected point, from the reference point.
+    /// </param>
+    /// <returns>The distance from the point to the plane; parallel with the plane normal.</returns>
+    public static float DecomposeWithPlane(
+        this Vector3 pointToProject,
+        Vector3 referencePointOnPlane, Vector3 planeNormal,
+        out Vector3 pointHeightVector,
+        out Vector3 planeParallelTranslation
+    )
+    {
+        // nearly the same as getting the point's height to plane, just with extra outputs.
+        var relativePoint = pointToProject - referencePointOnPlane;
+        planeParallelTranslation = relativePoint.Project(planeNormal);
+        pointHeightVector = relativePoint.Project(planeParallelTranslation.Normalized());
+        var pointHeightSign = pointHeightVector.Normalized().Dot(planeNormal) > 0 ? 1 : -1;
+        var distanceToPlane = pointHeightSign * pointHeightVector.Length();
+
+        return distanceToPlane;
+    }
 }

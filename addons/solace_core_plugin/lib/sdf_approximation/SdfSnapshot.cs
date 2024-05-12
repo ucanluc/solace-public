@@ -256,14 +256,21 @@ public class SdfSnapshot
     /// </summary>
     private void UpdateDerivedValues()
     {
-        DistanceToGround = _origin.DistanceToPlane(CompositeGroundPosition, SurfaceNormal);
-        DistanceToSky = _origin.DistanceToPlane(CompositeSkyPosition, -SurfaceNormal);
+        DistanceToGround = _origin.DecomposeWithPlane(
+            CompositeGroundPosition, SurfaceNormal,
+            out var skyHeightVector, out var skyTranslationVector
+        );
 
-        ProjectedGroundPosition = _origin - (SurfaceNormal * DistanceToGround);
-        ProjectedSkyPosition = _origin + (SurfaceNormal * DistanceToSky);
+        ProjectedGroundPosition =_origin- skyHeightVector;
+        GroundAligningMovement =-skyTranslationVector;
 
-        GroundAligningMovement = CompositeGroundPosition - ProjectedGroundPosition;
-        SkyAligningMovement = CompositeSkyPosition - ProjectedSkyPosition;
+        DistanceToSky = _origin.DecomposeWithPlane(
+            CompositeSkyPosition, -SurfaceNormal,
+            out var groundHeightVector, out var groundTranslationVector
+        );
+
+        ProjectedSkyPosition = _origin- groundHeightVector;
+        SkyAligningMovement = -groundTranslationVector;
 
         HeightRatio = RangeUtilities.RatioRange01(DistanceToGround, DistanceToSky);
     }
