@@ -17,7 +17,7 @@ public static class FloatUtilities
     /// <param name="value">Value to map from</param>
     /// <param name="smoothing">Decay rate; 1~16 recommended</param>
     /// <returns>Decay factor, between 0~1.</returns>
-    public static float DecayFrom1(this float value, int smoothing)
+    public static float DecayFrom1(this float value, int smoothing = 8)
     {
         return Mathf.Exp(-Mathf.Abs((value - 1) * smoothing));
     }
@@ -30,8 +30,9 @@ public static class FloatUtilities
     /// <param name="value">Value to map from</param>
     /// <param name="smoothing">Decay rate; 1~16 recommended</param>
     /// <returns>Decay factor, between 0~1.</returns>
-    public static float DecayFrom0(this float value, int smoothing)
+    public static float DecayFrom0(this float value, int smoothing = 8)
     {
         return Mathf.Exp(-Mathf.Abs(value * 4));
     }
+   
 }

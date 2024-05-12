@@ -30,6 +30,21 @@ public static class RangeUtilities
         return 1 - ExactRange01(current, max);
     }
 
+    /// <summary>
+    /// Converts two amounts to a ratio between 0~1 linearly.
+    /// Values outside the range are clamped to 0 or 1.
+    /// </summary>
+    /// <param name="includedValue">Included part of the ratio</param>
+    /// <param name="remainingValue">Excluded part of the ratio</param>
+    /// <returns>0~1; ratio of included to total</returns>
+    public static float RatioRange01(float includedValue, float remainingValue)
+    {
+        var sum = includedValue + remainingValue;
+        return sum > float.Epsilon
+            ? (includedValue / sum).Clamp01()
+            : 0f;
+    }
+
 
     /// <summary>
     /// Converts from [0,max] range to [~0,1] range exponentially.

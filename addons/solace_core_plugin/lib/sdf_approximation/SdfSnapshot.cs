@@ -102,6 +102,12 @@ public class SdfSnapshot
     /// </summary>
     public float DistanceToSky { get; private set; }
 
+    /// <summary>
+    /// Derived output;
+    /// 0~1 how far away we are from ground; as a ratio of total sky-ground distance.
+    /// </summary>
+    public float HeightRatio { get; private set; }
+
     private float _trackerHitsWeightTotal, _trackerMissesWeightTotal, _raycastDist;
     private Vector3 _origin;
 
@@ -226,10 +232,6 @@ public class SdfSnapshot
         SurfaceNormal = Vector3.Zero;
         CompositeGroundPosition = Vector3.Zero;
         CompositeSkyPosition = Vector3.Zero;
-        ProjectedGroundPosition = Vector3.Zero;
-        ProjectedSkyPosition = Vector3.Zero;
-        GroundAligningMovement = Vector3.Zero;
-        SkyAligningMovement = Vector3.Zero;
         _trackerHitsWeightTotal = 0;
         _trackerMissesWeightTotal = 0;
 
@@ -243,14 +245,17 @@ public class SdfSnapshot
     /// </summary>
     public void Finalise()
     {
-        SurfaceNormal = SurfaceNormal.Normalized();
+        FinaliseIntegrations();
+        UpdateDerivedValues();
 
-        CompositeGroundPosition /= _trackerHitsWeightTotal;
-        CompositeSkyPosition /= _trackerMissesWeightTotal;
+        if (DrawDebugLines) DrawDebug();
+    }
 
-        CompositeGroundPosition += _origin;
-        CompositeSkyPosition += _origin;
-
+    /// <summary>
+    /// Create values derived from integrated values.
+    /// </summary>
+    private void UpdateDerivedValues()
+    {
         DistanceToGround = _origin.DistanceToPlane(CompositeGroundPosition, SurfaceNormal);
         DistanceToSky = _origin.DistanceToPlane(CompositeSkyPosition, -SurfaceNormal);
 
@@ -260,7 +265,21 @@ public class SdfSnapshot
         GroundAligningMovement = CompositeGroundPosition - ProjectedGroundPosition;
         SkyAligningMovement = CompositeSkyPosition - ProjectedSkyPosition;
 
-        if (DrawDebugLines) DrawDebug();
+        HeightRatio = RangeUtilities.RatioRange01(DistanceToGround, DistanceToSky);
+    }
+
+    /// <summary>
+    /// Finalise sums 
+    /// </summary>
+    private void FinaliseIntegrations()
+    {
+        SurfaceNormal = SurfaceNormal.Normalized();
+
+        CompositeGroundPosition /= _trackerHitsWeightTotal;
+        CompositeSkyPosition /= _trackerMissesWeightTotal;
+
+        CompositeGroundPosition += _origin;
+        CompositeSkyPosition += _origin;
     }
 
     private void DrawDebug()
