@@ -21,6 +21,12 @@ public partial class SdfApproximateFollower : CharacterBody3D
     private readonly SdfApproximator _approximator = new(250, 0b1);
 
 
+    public override void _Ready()
+    {
+        base._Ready();
+        _approximator.Snapshot.DrawDebugLines = true;
+    }
+
     public override void _PhysicsProcess(double delta)
     {
         var spaceState = GetWorld3D().DirectSpaceState;

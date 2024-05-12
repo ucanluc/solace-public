@@ -1,5 +1,6 @@
 ﻿using System;
 using Godot;
+using Solace.addons.solace_core_plugin.lib.utilities;
 
 namespace Solace.addons.solace_core_plugin.lib.sdf_approximation;
 
@@ -76,8 +77,7 @@ public class SdfSnapshot
         // calculate the base variables
 
         // Misses are always newly acquired.
-        var missDirection = (tracker.MissPosition - _origin).Normalized();
-        SkyDirection += missDirection;
+        IntegrateTrackerMiss(tracker);
 
         if (IgnoreArchived && !tracker.HasNaturalHit)
         {
@@ -90,6 +90,20 @@ public class SdfSnapshot
         if (DrawDebugLines) DrawTrackerDebug(tracker, trackerWeight);
     }
 
+
+    private void IntegrateTrackerMiss(SdfRaycastTracker tracker)
+    {
+        var missDirection = (tracker.MissPosition - _origin).Normalized();
+        SkyDirection += missDirection;
+    }
+
+    /// <summary>
+    /// Update the derived values from the tracker hit data.
+    /// weights are exponential akin to "Least squares fitting";
+    /// https://mathworld.wolfram.com/LeastSquaresFitting.html
+    /// </summary>
+    /// <param name="tracker">Tracker to read from</param>
+    /// <returns>The importance weight of the tracker hit; between 0~1.</returns>
     private float IntegrateTrackerHit(SdfRaycastTracker tracker)
     {
         // hit vectors are integrated with the origin as a basis, for weighted averaging.
@@ -100,34 +114,23 @@ public class SdfSnapshot
         var hitDirection = hitVector.Normalized();
 
         // Closer hits are more important for tracking the ground.
-        var groundWeight =
-            hitDistance > float.Epsilon
-                ? Clamp01((maxDistance / hitDistance) - 1)
-                : 1f;
+        var groundWeight = RangeUtilities.WeightedRange01Inverted(hitDistance, maxDistance);
 
         // Distant hits are more important for tracking the sky.
-        var skyWeight =
-            maxDistance > float.Epsilon
-                ? Clamp01(hitDistance / maxDistance)
-                : 0f;
+        var skyWeight = RangeUtilities.WeightedRange01(hitDistance, maxDistance);
 
         // Optional; Normal fit; prefers hits with aligned normals. 
         var normalFitWeight =
             NormalFitVector.Length() > float.Epsilon
-                ? Dot01(hitNormal, NormalFitVector)
+                ? VectorUtilities.Dot01(hitNormal, NormalFitVector)
                 : 1;
 
         // Optional; Directional fit; prefers hits in given direction.
         var dirFitWeight =
             DirFitVector.Length() > float.Epsilon
-                ? Dot01(hitDirection, DirFitVector)
+                ? VectorUtilities.Dot01(hitDirection, DirFitVector)
                 : 1;
-
-
-        // weights are exponential akin to "Least squares fitting";
-        // https://mathworld.wolfram.com/LeastSquaresFitting.html
-        groundWeight *= groundWeight;
-        skyWeight *= skyWeight;
+        
         normalFitWeight *= normalFitWeight;
         dirFitWeight *= dirFitWeight;
 
@@ -156,24 +159,6 @@ public class SdfSnapshot
             if (tracker.HasSavedMiss) tracker.DrawPosition(tracker.MissPosition, Colors.Blue, trackerWeight);
             if (tracker.HasSavedHit) tracker.DrawPosition(tracker.HitPosition, Colors.Green, trackerWeight);
         }
-    }
-
-    /// <summary>
-    /// Creates a dot product normalised between 0~1.
-    /// The default -1~1 range for normalised vectors is mapped to 0~1.
-    /// </summary>
-    /// <param name="targetVector">First vector</param>
-    /// <param name="fitVector">Second vector</param>
-    /// <returns>The dot product normalised to 0~1</returns>
-    private static float Dot01(Vector3 targetVector, Vector3 fitVector)
-    {
-        return Clamp01((targetVector.Dot(fitVector) + 1f) / 2f);
-    }
-
-
-    private static float Clamp01(float value)
-    {
-        return Mathf.Clamp(value, 0, 1);
     }
 
 
