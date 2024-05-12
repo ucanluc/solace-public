@@ -15,4 +15,20 @@ public static class VectorUtilities
     {
         return ((targetVector.Dot(fitVector) + 1f) / 2f).Clamp01();
     }
+
+    /// <summary>
+    /// Give the distance to the projection of the point on the plane.
+    /// </summary>
+    /// <param name="point">Point coordinates</param>
+    /// <param name="planeOrigin">A point on the plane</param>
+    /// <param name="planeNormal">The normal of the plane surface.</param>
+    /// <returns></returns>
+    public static float DistanceToPlane(this Vector3 point, Vector3 planeOrigin, Vector3 planeNormal)
+    {
+        var relativePoint = point - planeOrigin;
+        var planeParallel = relativePoint.Project(planeNormal).Normalized();
+        var pointHeightVector = relativePoint.Project(planeParallel);
+        var pointHeightSign = pointHeightVector.Normalized().Dot(planeNormal) > 0 ? 1 : -1;
+        return pointHeightSign * pointHeightVector.Length();
+    }
 }

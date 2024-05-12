@@ -18,8 +18,6 @@ public class SdfSnapshot
     /// </summary>
     public float ObjectRadius { private get; set; }
 
-    public float AccuracyRatio { get; private set; }
-
     /// <summary>
     /// Optional; set to prioritise hits with aligned normals.
     /// If length = 0; Disabled
@@ -44,36 +42,49 @@ public class SdfSnapshot
     /// According to nearby surface normals.
     /// This is the closest value to the main output of a Signed Distance field; if we were using one.
     /// </summary>
-    public Vector3 GroundNormal { get; private set; }
-
-
-    /// <summary>
-    /// Derived output:
-    /// This direction is "UP"; If you want the most clear space above your horizon.
-    /// According to most space available.
-    /// </summary>
-    public Vector3 SkyDirection { get; private set; }
+    public Vector3 SurfaceNormal { get; private set; }
 
     /// <summary>
     /// Derived output:
     /// This point in global space is the most distant from known objects.
     /// Aka. the assumed center of the nearby "sky volume" in global space.
     /// </summary>
-    public Vector3 SkyPosition { get; private set; }
+    public Vector3 CompositeSkyPosition { get; private set; }
 
     /// <summary>
     /// Derived output;
     /// This point in global space is the closest to known objects.
     /// Aka. the assumed center of the "ground plane" in global space
     /// </summary>
-    public Vector3 GroundPosition { get; private set; }
+    public Vector3 CompositeGroundPosition { get; private set; }
 
     /// <summary>
     /// Derived output;
-    /// This direction is "DOWN"; if you want to keep the most solid surfaces below your horizon.
-    /// According to most collisions available.
+    /// This point is the center of the known ground volume, aligned with the current surface normal.
+    /// Also in global space.
     /// </summary>
-    public Vector3 GroundDirection { get; private set; }
+    public Vector3 ProjectedGroundPosition { get; private set; }
+
+    /// <summary>
+    /// Derived output;
+    /// This point is the center of the known sky volume, aligned with the current surface normal.
+    /// Also in global space.
+    /// </summary>
+    public Vector3 ProjectedSkyPosition { get; private set; }
+
+    /// <summary>
+    /// Derived output;
+    /// This is the movement/translation vector that centers us with the most ground,
+    /// Is parallel to the ground normal, and is in global space.
+    /// </summary>
+    public Vector3 GroundAligningMovement { get; private set; }
+
+    /// <summary>
+    /// Derived output;
+    /// This is the movement/translation vector that centers us with the most sky,
+    /// Is parallel to the ground normal, and is in global space.
+    /// </summary>
+    public Vector3 SkyAligningMovement { get; private set; }
 
     /// <summary>
     /// Derived output;
@@ -133,8 +144,7 @@ public class SdfSnapshot
 
         skyWeight *= dirFitWeight * dirFitWeight;
 
-        SkyDirection += missDirection * skyWeight;
-        SkyPosition += missVector * skyWeight;
+        CompositeSkyPosition += missVector * skyWeight;
         _trackerMissesWeightTotal += skyWeight;
         return skyWeight;
     }
@@ -181,9 +191,8 @@ public class SdfSnapshot
 
         // Combine and integrate the weights to relevant data.
         var trackerWeight = groundWeight * dirFitWeight * normalFitWeight;
-        GroundNormal += hitNormal * trackerWeight;
-        GroundPosition += hitVector * trackerWeight;
-        GroundDirection += hitDirection * trackerWeight;
+        SurfaceNormal += hitNormal * trackerWeight;
+        CompositeGroundPosition += hitVector * trackerWeight;
         _trackerHitsWeightTotal += trackerWeight;
 
         return trackerWeight;
@@ -214,11 +223,13 @@ public class SdfSnapshot
     /// <param name="raycastDistance">Distance to use as a reference while integrating.</param>
     public void Clear(Vector3 queryOrigin, float raycastDistance)
     {
-        GroundNormal = Vector3.Zero;
-        SkyDirection = Vector3.Zero;
-        GroundPosition = Vector3.Zero;
-        GroundDirection = Vector3.Zero;
-        SkyPosition = Vector3.Zero;
+        SurfaceNormal = Vector3.Zero;
+        CompositeGroundPosition = Vector3.Zero;
+        CompositeSkyPosition = Vector3.Zero;
+        ProjectedGroundPosition = Vector3.Zero;
+        ProjectedSkyPosition = Vector3.Zero;
+        GroundAligningMovement = Vector3.Zero;
+        SkyAligningMovement = Vector3.Zero;
         _trackerHitsWeightTotal = 0;
         _trackerMissesWeightTotal = 0;
 
@@ -228,37 +239,35 @@ public class SdfSnapshot
 
 
     /// <summary>
-    /// Does the postprocessing necessary for the integrated data to become useful.
+    /// Does the postprocessing necessary for the derived data to become useful.
     /// </summary>
     public void Finalise()
     {
-        SkyDirection = SkyDirection.Normalized();
-        GroundNormal = GroundNormal.Normalized();
-        GroundDirection = GroundDirection.Normalized();
+        SurfaceNormal = SurfaceNormal.Normalized();
 
-        AccuracyRatio = _trackerMissesWeightTotal > float.Epsilon
-            ? _trackerHitsWeightTotal / _trackerMissesWeightTotal
-            : _trackerHitsWeightTotal / float.Epsilon;
+        CompositeGroundPosition /= _trackerHitsWeightTotal;
+        CompositeSkyPosition /= _trackerMissesWeightTotal;
 
-        GroundPosition /= _trackerHitsWeightTotal;
-        GroundPosition += _origin;
+        CompositeGroundPosition += _origin;
+        CompositeSkyPosition += _origin;
 
-        SkyPosition /= _trackerMissesWeightTotal;
-        SkyPosition += _origin;
+        DistanceToGround = _origin.DistanceToPlane(CompositeGroundPosition, SurfaceNormal);
+        DistanceToSky = _origin.DistanceToPlane(CompositeSkyPosition, -SurfaceNormal);
 
-        // consider the alignment of the ground point to the sky to get the height.
-        // The height is projected to the ground plane.
-        var relativeGround = GroundPosition - _origin;
-        var groundParallel = relativeGround.Project(SkyDirection).Normalized();
-        var groundHeightVector = relativeGround.Project(groundParallel);
-        var groundHeightSign = groundHeightVector.Normalized().Dot(SkyDirection) > 0 ? -1 : 1;
-        DistanceToGround = groundHeightSign * (groundHeightVector.Length() );
+        ProjectedGroundPosition = _origin - (SurfaceNormal * DistanceToGround);
+        ProjectedSkyPosition = _origin + (SurfaceNormal * DistanceToSky);
 
+        GroundAligningMovement = CompositeGroundPosition - ProjectedGroundPosition;
+        SkyAligningMovement = CompositeSkyPosition - ProjectedSkyPosition;
 
-        var relativeSky = SkyPosition - _origin;
-        var skyParallel = relativeSky.Project(GroundDirection).Normalized();
-        var skyHeightVector = relativeSky.Project(skyParallel);
-        var skyHeightSign = skyHeightVector.Normalized().Dot(GroundDirection) > 0 ? -1 : 1;
-        DistanceToSky = skyHeightSign * (skyHeightVector.Length());
+        if (DrawDebugLines) DrawDebug();
+    }
+
+    private void DrawDebug()
+    {
+        DebugDraw3D.DrawLine(CompositeSkyPosition, ProjectedSkyPosition, Colors.Blue);
+        DebugDraw3D.DrawLine(CompositeGroundPosition, ProjectedGroundPosition, Colors.Red);
+        DebugDraw3D.DrawLine(_origin, ProjectedGroundPosition, Colors.Yellow);
+        DebugDraw3D.DrawLine(_origin, ProjectedSkyPosition, Colors.Cyan);
     }
 }

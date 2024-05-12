@@ -8,14 +8,6 @@ public partial class SdfApproximateFollower : CharacterBody3D
 {
     [Export] private float _lerpSpeed = 10f;
     [Export] private Node3D _directionReference;
-    [Export] private Node3D _skyPositionMarker;
-    [Export] private Node3D _groundNormalMarker;
-    [Export] private Node3D _groundPositionMarker;
-    [Export] private Node3D _surfaceProjectionMarker;
-    [Export] private Node3D _roofProjectionMarker;
-    [Export] private Node3D _skyDirectionMarker;
-    [Export] private Node3D _groundDirectionMarker;
-    [Export] private Label3D _accuracyLabel3D;
 
     private Vector3 _currentDirection = Vector3.Zero;
 
@@ -35,28 +27,10 @@ public partial class SdfApproximateFollower : CharacterBody3D
 
     public override void _PhysicsProcess(double delta)
     {
-        _approximator.Snapshot.NormalFitVector = GlobalBasis * (Vector3.Up*0.5f);
+        _approximator.Snapshot.NormalFitVector = GlobalBasis * (Vector3.Up * 0.5f);
 
         var spaceState = GetWorld3D().DirectSpaceState;
         _approximator.UpdateSnapshot(spaceState, GlobalPosition, raycastDistance);
-
-        _accuracyLabel3D.Text = $"Accuracy Ratio:  {_approximator.Snapshot.AccuracyRatio:F}";
-        
-        _groundNormalMarker.GlobalPosition = GlobalPosition + _approximator.Snapshot.GroundNormal;
-
-        _groundPositionMarker.GlobalPosition = _approximator.Snapshot.GroundPosition;
-        _groundDirectionMarker.GlobalPosition = GlobalPosition + _approximator.Snapshot.GroundDirection;
-        _surfaceProjectionMarker.GlobalPosition = GlobalPosition + ((GlobalBasis * Vector3.Down) * _approximator
-            .Snapshot
-            .DistanceToGround);
-
-        _skyPositionMarker.GlobalPosition = _approximator.Snapshot.SkyPosition;
-        _skyDirectionMarker.GlobalPosition = GlobalPosition + _approximator.Snapshot.SkyDirection;
-        _roofProjectionMarker.GlobalPosition = GlobalPosition + ((GlobalBasis * Vector3.Up) * _approximator.Snapshot
-            .DistanceToSky);
-
-
-        var velocity = Velocity;
 
 
         var inputDirection = Input.GetVector("sc_move_left", "sc_move_right", "sc_move_backward", "sc_move_forward");
@@ -78,7 +52,7 @@ public partial class SdfApproximateFollower : CharacterBody3D
 
         // rotate from the current 'up' direction, to the desired 'up' direction; as found by the sdf approximator.
         var currentUp = (referenceAdjustedBasis * Vector3.Up).Normalized();
-        var desiredUp = _approximator.Snapshot.GroundNormal;
+        var desiredUp = _approximator.Snapshot.SurfaceNormal;
         var rotationAxisForUp = currentUp.Cross(desiredUp).Normalized();
         if (rotationAxisForUp.IsZeroApprox())
         {
@@ -94,6 +68,8 @@ public partial class SdfApproximateFollower : CharacterBody3D
 
         _currentDirection = _currentDirection.Lerp(inputGlobalSpace, (float)(_lerpSpeed * delta));
 
+        var velocity = Velocity;
+        
         velocity.X = _currentDirection.X * _currentSpeed;
         velocity.Y = _currentDirection.Y * _currentSpeed;
         velocity.Z = _currentDirection.Z * _currentSpeed;
