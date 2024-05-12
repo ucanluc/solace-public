@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://sbqnoubna1qg"]
+[gd_scene load_steps=26 format=3 uid="uid://sbqnoubna1qg"]
 
 [ext_resource type="Script" path="res://apps/reference_sdf_approximation/SdfFollowerCameraRig.cs" id="1_m5cjo"]
 [ext_resource type="Script" path="res://apps/reference_sdf_approximation/SdfApproximateFollower.cs" id="2_u4f7l"]
@@ -37,6 +37,27 @@ albedo_color = Color(0, 0, 1, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_q2a4e"]
 material = SubResource("StandardMaterial3D_hdr0d")
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tfcvb"]
+albedo_color = Color(0, 1, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_66osb"]
+material = SubResource("StandardMaterial3D_tfcvb")
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rr2ie"]
+albedo_color = Color(1, 0, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_bv0fr"]
+material = SubResource("StandardMaterial3D_rr2ie")
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wwmpq"]
+albedo_color = Color(1, 1, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6m5s2"]
+material = SubResource("StandardMaterial3D_wwmpq")
 size = Vector3(0.1, 0.1, 0.1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bsght"]
@@ -104,7 +125,7 @@ shape = SubResource("BoxShape3D_4u36u")
 mesh = SubResource("BoxMesh_07h14")
 
 [node name="StaticBox7" type="StaticBody3D" parent="Level"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.6861, 5.5, -26.4701)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.6861, 5.5, -24.5631)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox7"]
 shape = SubResource("BoxShape3D_4u36u")
@@ -122,12 +143,30 @@ shape = SubResource("BoxShape3D_4u36u")
 mesh = SubResource("BoxMesh_07h14")
 
 [node name="StaticBox9" type="StaticBody3D" parent="Level"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36.9151, 5.5, -5.92556)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.2121, 5.5, -6.62317)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox9"]
 shape = SubResource("BoxShape3D_4u36u")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox9"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox10" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.577269, 0.54578, -0.607359, -0.376001, 0.837928, 0.3956, 0.724833, 0, 0.688924, -45.6207, 6.52096, -11.4146)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox10"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox10"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox11" type="StaticBody3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.2484, 14.3978, -15.1109)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox11"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox11"]
 mesh = SubResource("BoxMesh_07h14")
 
 [node name="StaticBox2" type="StaticBody3D" parent="Level"]
@@ -174,15 +213,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.63146, 5.47662)
 
 [node name="Camera3D" type="Camera3D" parent="SdfFollower/SdfFollowerCameraRig/CameraRigOrbit"]
 
-[node name="SdfApproximateFollower" type="CharacterBody3D" parent="SdfFollower" node_paths=PackedStringArray("_directionReference", "_skyMarker", "_groundMarker", "_positionMarker", "_heightMarker")]
+[node name="SdfApproximateFollower" type="CharacterBody3D" parent="SdfFollower" node_paths=PackedStringArray("_directionReference", "_skyPositionMarker", "_groundNormalMarker", "_groundPositionMarker", "_surfaceProjectionMarker", "_roofProjectionMarker", "_skyDirectionMarker", "_groundDirectionMarker")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.41715, 0)
 collision_layer = 2
 script = ExtResource("2_u4f7l")
 _directionReference = NodePath("../SdfFollowerCameraRig/CameraRigOrbit/Camera3D")
-_skyMarker = NodePath("BlueMarker")
-_groundMarker = NodePath("GreenMarker")
-_positionMarker = NodePath("RedMarker")
-_heightMarker = NodePath("OrangeMarker")
+_skyPositionMarker = NodePath("BlueMarker")
+_groundNormalMarker = NodePath("GreenMarker")
+_groundPositionMarker = NodePath("RedMarker")
+_surfaceProjectionMarker = NodePath("YellowMarker")
+_roofProjectionMarker = NodePath("CyanMarker")
+_skyDirectionMarker = NodePath("MagentaMarker")
+_groundDirectionMarker = NodePath("OrangeMarker")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SdfFollower/SdfApproximateFollower"]
 shape = SubResource("BoxShape3D_boav0")
@@ -193,6 +235,18 @@ mesh = SubResource("BoxMesh_ur11r")
 [node name="BlueMarker" type="MeshInstance3D" parent="SdfFollower/SdfApproximateFollower"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 mesh = SubResource("BoxMesh_q2a4e")
+
+[node name="CyanMarker" type="MeshInstance3D" parent="SdfFollower/SdfApproximateFollower"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+mesh = SubResource("BoxMesh_66osb")
+
+[node name="MagentaMarker" type="MeshInstance3D" parent="SdfFollower/SdfApproximateFollower"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+mesh = SubResource("BoxMesh_bv0fr")
+
+[node name="YellowMarker" type="MeshInstance3D" parent="SdfFollower/SdfApproximateFollower"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+mesh = SubResource("BoxMesh_6m5s2")
 
 [node name="GreenMarker" type="MeshInstance3D" parent="SdfFollower/SdfApproximateFollower"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)

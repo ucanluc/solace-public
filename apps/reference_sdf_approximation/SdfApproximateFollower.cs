@@ -7,10 +7,13 @@ public partial class SdfApproximateFollower : CharacterBody3D
 {
     [Export] private float _lerpSpeed = 10f;
     [Export] private Node3D _directionReference;
-    [Export] private Node3D _skyMarker;
-    [Export] private Node3D _groundMarker;
-    [Export] private Node3D _positionMarker;
-    [Export] private Node3D _heightMarker;
+    [Export] private Node3D _skyPositionMarker;
+    [Export] private Node3D _groundNormalMarker;
+    [Export] private Node3D _groundPositionMarker;
+    [Export] private Node3D _surfaceProjectionMarker;
+    [Export] private Node3D _roofProjectionMarker;
+    [Export] private Node3D _skyDirectionMarker;
+    [Export] private Node3D _groundDirectionMarker;
 
     private Vector3 _currentDirection = Vector3.Zero;
 
@@ -32,11 +35,19 @@ public partial class SdfApproximateFollower : CharacterBody3D
         var spaceState = GetWorld3D().DirectSpaceState;
         _approximator.UpdateSnapshot(spaceState, GlobalPosition, raycastDistance);
 
-        _groundMarker.GlobalPosition = GlobalPosition + _approximator.Snapshot.GroundNormal;
-        _skyMarker.GlobalPosition = GlobalPosition + _approximator.Snapshot.SkyDirection;
-        _positionMarker.GlobalPosition = _approximator.Snapshot.GroundPoint;
-        _heightMarker.GlobalPosition = GlobalPosition + ((GlobalBasis * Vector3.Down) * _approximator.Snapshot
+        _groundNormalMarker.GlobalPosition = GlobalPosition + _approximator.Snapshot.GroundNormal;
+
+        _groundPositionMarker.GlobalPosition = _approximator.Snapshot.GroundPosition;
+        _groundDirectionMarker.GlobalPosition = GlobalPosition + _approximator.Snapshot.GroundDirection;
+        _surfaceProjectionMarker.GlobalPosition = GlobalPosition + ((GlobalBasis * Vector3.Down) * _approximator
+            .Snapshot
             .DistanceToGround);
+
+        _skyPositionMarker.GlobalPosition = _approximator.Snapshot.SkyPosition;
+        _skyDirectionMarker.GlobalPosition = GlobalPosition + _approximator.Snapshot.SkyDirection;
+        _roofProjectionMarker.GlobalPosition = GlobalPosition + ((GlobalBasis * Vector3.Up) * _approximator.Snapshot
+            .DistanceToSky);
+
 
         var velocity = Velocity;
 
