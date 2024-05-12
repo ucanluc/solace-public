@@ -32,7 +32,7 @@ public static class FloatUtilities
     /// <returns>Decay factor, between 0~1.</returns>
     public static float DecayFrom0(this float value, int smoothing = 8)
     {
-        return Mathf.Exp(-Mathf.Abs(value * 4));
+        return Mathf.Exp(-Mathf.Abs(value * smoothing));
     }
    
 }
