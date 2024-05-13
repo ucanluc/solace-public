@@ -10,7 +10,7 @@ This project-of-projects contains tooling, references, assets and prototypes cre
 ### Active puzzles:
 - Syncing between concurrent 3D, 2D, and abstracted worlds
   - for large scale, low precision simulations in the background.
-- Hierarchical level generation specialised from (WFC)[https://github.com/mxgmn/WaveFunctionCollapse]
+- Hierarchical level generation specialised from [WFC](https://github.com/mxgmn/WaveFunctionCollapse).
   - for level generation during runtime with pre-generated assets, at different scales;
 - Tracking approximate 3D and 2D Visibility;
   - for allowing access to only 'what the character knows' for the player.
