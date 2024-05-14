@@ -1,6 +1,7 @@
-﻿namespace Examples;
+﻿using GdUnit4;
 
-using GdUnit4;
+namespace Solace.main.test;
+
 using static GdUnit4.Assertions;
 
 [TestSuite]

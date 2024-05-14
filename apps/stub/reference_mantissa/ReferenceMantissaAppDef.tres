@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="AppDefinitionResource" load_steps=3 format=3 uid="uid://dcul08c86qi15"]
+
+[ext_resource type="PackedScene" uid="uid://blxs142163pu1" path="res://apps/stub/reference_mantissa/ReferenceMantissaAppMain.tscn" id="1_5f8sd"]
+[ext_resource type="Script" path="res://addons/solace_core_plugin/core/application/AppDefinitionResource.cs" id="1_dchp7"]
+
+[resource]
+script = ExtResource("1_dchp7")
+_appEntryNode = ExtResource("1_5f8sd")

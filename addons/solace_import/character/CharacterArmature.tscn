@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=3 uid="uid://cbue8mqsomhje"]
+
+[ext_resource type="PackedScene" uid="uid://df4kcya7c81le" path="res://addons/solace_import/character/source/character_armature.gltf" id="1_3ytcg"]
+
+[node name="CharacterArmature" instance=ExtResource("1_3ytcg")]
+
+[node name="GeneralSkeleton" parent="char_root" index="0"]
+bones/1/position = Vector3(-3.10181e-07, 0.937499, 4.84288e-07)
+bones/1/rotation = Quaternion(-6.11815e-11, 1.8163e-12, 3.63789e-12, 1)
+bones/2/rotation = Quaternion(-3.63535e-11, -1.59609e-15, -5.06586e-17, 1)
+bones/3/rotation = Quaternion(3.72529e-09, 0, 0, 1)
+bones/4/rotation = Quaternion(7.45058e-09, 9.09495e-13, -2.84217e-14, 1)
+bones/5/rotation = Quaternion(4.33681e-19, 1.42109e-14, 3.63798e-12, 1)
+bones/8/rotation = Quaternion(0.500032, 0.499968, 0.500032, -0.499968)
+bones/9/rotation = Quaternion(-1.3411e-06, 1, 1.91033e-05, 2.08616e-07)
+bones/10/rotation = Quaternion(4.21468e-08, -0.707107, 0, 0.707107)
+bones/11/rotation = Quaternion(-2.81775e-08, 0.707107, 1.39694e-08, 0.707107)
+bones/13/rotation = Quaternion(0.499969, -0.500031, -0.499969, -0.500032)
+bones/14/rotation = Quaternion(-5.06639e-07, 1, -2.00123e-05, -1.93715e-07)
+bones/15/rotation = Quaternion(-3.16101e-08, 0.707107, -3.16101e-08, 0.707107)
+bones/16/rotation = Quaternion(3.36058e-10, -0.707107, -3.36058e-10, 0.707107)
+bones/18/rotation = Quaternion(8.25365e-09, 1.02958e-05, 1, -8.79665e-08)
+bones/19/rotation = Quaternion(2.32831e-09, 1, -1.97934e-05, -5.46152e-08)
+bones/20/rotation = Quaternion(-6.4311e-10, 0.707107, -0.707107, 2.32034e-09)
+bones/21/rotation = Quaternion(-6.58544e-10, 1, 5.96046e-08, -6.58544e-10)
+bones/22/rotation = Quaternion(5.43384e-12, 5.26844e-10, 1, -4.51109e-10)
+bones/23/rotation = Quaternion(0, 1, 1.39698e-09, -1.81899e-11)
+bones/24/rotation = Quaternion(-1.3068e-09, 0.707107, -0.707107, 3.39562e-10)
+bones/25/rotation = Quaternion(2.46954e-09, 1, -2.98023e-08, 1.07013e-08)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1"]

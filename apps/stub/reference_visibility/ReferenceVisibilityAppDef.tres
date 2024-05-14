@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="AppDefinitionResource" load_steps=3 format=3 uid="uid://bwuo7wvn62kv3"]
+
+[ext_resource type="PackedScene" uid="uid://ccte75gi0s8t6" path="res://apps/stub/reference_visibility/ReferenceVisibilityAppMain.tscn" id="1_fj34e"]
+[ext_resource type="Script" path="res://addons/solace_core_plugin/core/application/AppDefinitionResource.cs" id="2_vh53w"]
+
+[resource]
+script = ExtResource("2_vh53w")
+_appEntryNode = ExtResource("1_fj34e")

@@ -1,5 +1,6 @@
 using Godot;
-using System;
+
+namespace Solace.content.user_interface.validation;
 
 [Tool]
 public partial class NumeralHSlider : HSlider

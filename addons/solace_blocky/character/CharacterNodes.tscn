@@ -1,5 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bhd8drw02nuho"]
-
-[ext_resource type="PackedScene" uid="uid://cc84wnnkg3374" path="res://addons/solace_blocky/character/source/character_nodes.gltf" id="1_31t0h"]
-
-[node name="CharacterNodes" instance=ExtResource("1_31t0h")]
