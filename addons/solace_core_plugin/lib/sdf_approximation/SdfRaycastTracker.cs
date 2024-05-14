@@ -33,42 +33,30 @@ public class SdfRaycastTracker
 
     public void UpdateRaycast(PhysicsDirectSpaceState3D spaceState, Vector3 queryOrigin, float raycastDistance)
     {
-        var raycastEndPoint = queryOrigin + (RaycastDirection * raycastDistance);
+        // Track the opposite of what was found naturally last time.
+        var trackerTarget = HasNaturalHit ? MissPosition : HitPosition;
+        SetupTrackingRaycast(queryOrigin, trackerTarget, raycastDistance);
+        HasTrackerHit = ExecuteRaycast(spaceState);
 
-        // Tracking raycasts validate / renew saved locations
-        if (HasNaturalHit)
-        {
-            // do a raycast to "Track the old, empty area"
-            var trackerTarget = MissPosition;
-            SetupTrackingRaycast(queryOrigin, trackerTarget, raycastDistance);
-            HasTrackerHit = ExecuteRaycast(spaceState);
-            HasSavedMiss = !HasTrackerHit;
-            if (!HasSavedMiss)
-            {
-                HasArchivedMiss = true;
-            }
-        }
-        else
-        {
-            // do a raycast to "Track the old, full area"
-            var trackerTarget = HitPosition;
-            SetupTrackingRaycast(queryOrigin, trackerTarget, raycastDistance);
-            HasTrackerHit = ExecuteRaycast(spaceState);
-            HasSavedHit = HasTrackerHit;
-            if (!HasSavedHit)
-            {
-                HasArchivedHit = true;
-            }
-        }
-
-        // do a natural raycast to get the exact state of the assigned direction.
-        // result of the natural raycast overwrites the tracking result
-        SetupNaturalRaycast(queryOrigin, raycastEndPoint);
+        // Do a natural raycast to get the state of the assigned direction
+        // Overwrites the tracker result if they were the same.
+        SetupNaturalRaycast(queryOrigin, raycastDistance);
         HasNaturalHit = ExecuteRaycast(spaceState);
+
+        // Archive the empty area if we cannot find it again.
+        var hasAnyMiss = (!HasNaturalHit || !HasTrackerHit);
+        HasSavedMiss = hasAnyMiss;
+        HasArchivedMiss = !hasAnyMiss || HasArchivedMiss;
+
+        // Archive the full area if we cannot find it again.
+        var hasAnyHit = HasNaturalHit || HasTrackerHit;
+        HasSavedHit = hasAnyHit;
+        HasArchivedHit = !hasAnyHit || HasArchivedHit;
     }
 
-    private void SetupNaturalRaycast(Vector3 queryOrigin, Vector3 raycastEndPoint)
+    private void SetupNaturalRaycast(Vector3 queryOrigin, float raycastDistance)
     {
+        var raycastEndPoint = queryOrigin + (RaycastDirection * raycastDistance);
         _queryParameters.From = queryOrigin;
         _queryParameters.To = raycastEndPoint;
     }
