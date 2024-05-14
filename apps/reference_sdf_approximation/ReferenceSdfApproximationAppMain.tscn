@@ -1,7 +1,8 @@
-[gd_scene load_steps=16 format=3 uid="uid://sbqnoubna1qg"]
+[gd_scene load_steps=19 format=3 uid="uid://sbqnoubna1qg"]
 
 [ext_resource type="Script" path="res://apps/reference_sdf_approximation/SdfFollowerCameraRig.cs" id="1_m5cjo"]
 [ext_resource type="Script" path="res://apps/reference_sdf_approximation/SdfApproximateFollower.cs" id="2_u4f7l"]
+[ext_resource type="Script" path="res://apps/reference_sdf_approximation/PidRigidBody3D.cs" id="3_uqf7n"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_80twd"]
 
@@ -43,6 +44,13 @@ size = Vector3(1, 10, 10)
 size = Vector3(0.5, 0.5, 0.5)
 
 [sub_resource type="BoxMesh" id="BoxMesh_ur11r"]
+size = Vector3(0.5, 0.5, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fwtwk"]
+albedo_color = Color(0.180392, 1, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_p6fgj"]
+material = SubResource("StandardMaterial3D_fwtwk")
 size = Vector3(0.5, 0.5, 0.5)
 
 [node name="ReferenceSdfApproximationAppMain" type="Node"]
@@ -329,3 +337,16 @@ shape = SubResource("BoxShape3D_boav0")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="SdfFollower/SdfApproximateFollower"]
 mesh = SubResource("BoxMesh_ur11r")
+
+[node name="PidRigidBody3D" type="RigidBody3D" parent="SdfFollower" node_paths=PackedStringArray("imitationTarget")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.62364, 0)
+collision_layer = 4
+script = ExtResource("3_uqf7n")
+pidGain = Vector4(100, 30, 5, 10)
+imitationTarget = NodePath("../SdfApproximateFollower")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SdfFollower/PidRigidBody3D"]
+shape = SubResource("BoxShape3D_boav0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SdfFollower/PidRigidBody3D"]
+mesh = SubResource("BoxMesh_p6fgj")

@@ -8,7 +8,7 @@ public partial class SdfApproximateFollower : CharacterBody3D
 {
     [Export] private float _lerpSpeed = 10f;
     [Export] private Node3D _directionReference;
-
+    
     private Vector3 _currentDirection = Vector3.Zero;
 
 
