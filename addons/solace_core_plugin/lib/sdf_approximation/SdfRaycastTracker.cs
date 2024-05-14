@@ -84,10 +84,10 @@ public class SdfRaycastTracker
 
     /// <summary>
     /// Sets up the parameters for 'tracking raycast';
-    /// Tracking raycasts are expected to track as many 'opposites' as possible,
+    /// Tracking raycasts are expected to find as many 'opposites' as possible,
     /// i.e. a hit if we already know of a miss, and vice versa.
-    /// especially as the known state get closer to raycasting origin.
-    /// The tracking raycasts should also be evenly distributed.
+    /// especially as the point of interest gets closer to us, 
+    /// The tracking raycasts should be evenly distributed if possible.
     /// </summary>
     /// <param name="queryOrigin">Center of the raycast sphere, in global coordinates</param>
     /// <param name="positionToTrack">Global position of the desired location to track.</param>
@@ -98,26 +98,18 @@ public class SdfRaycastTracker
         float raycastDistance
     )
     {
-        var raycastEndPoint = queryOrigin + (RaycastDirection * raycastDistance);
-        var targetVector = positionToTrack - queryOrigin;
-        var targetDirection = targetVector.Normalized();
-
-        var realignmentVector = raycastEndPoint - positionToTrack;
-        var realignmentDirection = realignmentVector.Normalized();
-
-        // change between doing a realignment and exploring the area
-        var iterationVector = realignmentVector
-                              * realignmentDirection.Dot(targetDirection);
-
-        var newTargetPosition = positionToTrack + iterationVector;
-
-        // reproject point as a raycast
-        var newTargetVector = (newTargetPosition - queryOrigin);
-        var newTargetDirection = newTargetVector.Normalized();
-        var projectedEndPoint = queryOrigin + (newTargetDirection * raycastDistance);
+        // The cached point may be:
+        // getting closer; in which case we need to check towards the natural direction to see if it is still there.
+        // getting further away; in which case we need to check away from the natural direction to see where it has gone.
+        var newTargetPosition = positionToTrack
+            .ProjectToFocusHorizon(
+            queryOrigin,
+            RaycastDirection,
+            raycastDistance
+        );
 
         _queryParameters.From = queryOrigin;
-        _queryParameters.To = projectedEndPoint;
+        _queryParameters.To = newTargetPosition.ProjectPositionToSphereSurface(queryOrigin, raycastDistance);
     }
 
     public void DrawPosition(Vector3 pointToDraw, Color color, float lineLength)

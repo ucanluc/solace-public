@@ -84,4 +84,66 @@ public static class VectorUtilities
 
         return distanceToPlane;
     }
+
+    /// <summary>
+    /// Projects a given point to the given sphere's surface, viewed from the center of the sphere.
+    /// </summary>
+    /// <param name="targetPoint">Point to project</param>
+    /// <param name="sphereOrigin">Center point of the sphere; also the viewpoint</param>
+    /// <param name="sphereRadius">Distance between the center of the sphere to it's surface.</param>
+    /// <returns></returns>
+    public static Vector3 ProjectPositionToSphereSurface(this Vector3 targetPoint, Vector3 sphereOrigin,
+        float sphereRadius)
+    {
+        var newTargetVector = (targetPoint - sphereOrigin);
+        var newTargetDirection = newTargetVector.Normalized();
+        var projectedEndPoint = sphereOrigin + (newTargetDirection * sphereRadius);
+        return projectedEndPoint;
+    }
+
+    /// <summary>
+    /// Project a point in reference to a horizon point:
+    /// Point moves towards the horizon: *if and only if* it is close to line between the eye and horizon point.
+    /// Point moves away from the horizon point otherwise.
+    /// The movement made is directly towards or directly away from the given horizon point.
+    /// 'Focusing area' gets thicker towards the middle of the eye-horizon line.
+    /// </summary>
+    /// <param name="targetPosition">Point to reproject.</param>
+    /// <param name="perspectiveCenterPoint">View point position</param>
+    /// <param name="focusDirection">Things close to the line direction will move towards the horizon.</param>
+    /// <param name="horizonDistance">Horizon end distance; things beyond this will move away from the horizon.</param>
+    /// <returns>New expected position of the target.</returns>
+    /// <remarks>
+    /// With a moving eye, with focus in the velocity direction;
+    /// things getting closer will stay on the horizon.
+    /// Everything else will avoid the horizon.
+    /// </remarks>
+    public static Vector3 ProjectToFocusHorizon(
+        this Vector3 targetPosition,
+        Vector3 perspectiveCenterPoint,
+        Vector3 focusDirection,
+        float horizonDistance
+    )
+    {
+        var horizonPoint = perspectiveCenterPoint + (focusDirection * horizonDistance);
+        var targetDirectionFromEye = (targetPosition - perspectiveCenterPoint).Normalized();
+        var movementToFocusPoint = horizonPoint - targetPosition;
+        var focusPointDirection = movementToFocusPoint.Normalized();
+
+        // The dot product does this:
+        // Case 1: Object is beyond the focus point:
+        //      move away from focus, faster if further away.
+        // Case 2: Object is close to the line between us and focus,
+        //      move towards the focus; faster if closer to the line.
+        // Case 3: Object is distant to the line between us and focus,
+        //      move away from the focus, faster if further away.
+        // Case 4: Object is behind us:
+        //      Move away from focus point, faster if further back.
+        var focusingTranslation = movementToFocusPoint
+                                  * focusPointDirection.Dot(targetDirectionFromEye);
+
+        var newTargetPosition = targetPosition + focusingTranslation;
+
+        return newTargetPosition;
+    }
 }
