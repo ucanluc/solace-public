@@ -14,7 +14,7 @@ public partial class SdfApproximateFollower : CharacterBody3D
 
     private float _currentSpeed = 4.5f;
     private float _raycastDistance = 10;
-    private float _lastHeightRatio = 0.5f;
+    private float _lastHeight = 0.5f;
 
     private readonly SdfApproximator _approximator = new(100, 0b1);
 
@@ -70,14 +70,14 @@ public partial class SdfApproximateFollower : CharacterBody3D
         var inputDirection = Input.GetVector("sc_move_left", "sc_move_right", "sc_move_backward", "sc_move_forward");
         var verticalDirection = Input.GetAxis("sc_modifier_careful", "sc_modifier_rush");
 
-        var currentHeightRatio = _approximator.Snapshot.HeightRatio;
+        var currentHeight = _approximator.Snapshot.DistanceToGround;
         if (Mathf.IsZeroApprox(verticalDirection))
         {
-            verticalDirection = _lastHeightRatio - currentHeightRatio;
+            verticalDirection = _lastHeight - currentHeight;
         }
         else
         {
-            _lastHeightRatio = currentHeightRatio;
+            _lastHeight = currentHeight;
         }
 
         var inputLocalSpace = new Vector3(inputDirection.X, verticalDirection, -inputDirection.Y).Normalized();

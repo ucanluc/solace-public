@@ -103,10 +103,10 @@ public class SdfRaycastTracker
         // getting further away; in which case we need to check away from the natural direction to see where it has gone.
         var newTargetPosition = positionToTrack
             .ProjectToFocusHorizon(
-            queryOrigin,
-            RaycastDirection,
-            raycastDistance
-        );
+                queryOrigin,
+                RaycastDirection,
+                raycastDistance
+            );
 
         _queryParameters.From = queryOrigin;
         _queryParameters.To = newTargetPosition.ProjectPositionToSphereSurface(queryOrigin, raycastDistance);
