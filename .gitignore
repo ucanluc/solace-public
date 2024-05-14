@@ -5,3 +5,4 @@
 /build/
 # IDE specific ignores
 **/.idea
+*.TMP
