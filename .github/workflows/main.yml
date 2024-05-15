@@ -1,0 +1,47 @@
+name: ci-dev
+run-name: ${{ github.head_ref || github.ref_name }}-ci-dev
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '**.jpg'
+      - '**.png'
+      - '**.md'
+
+concurrency:
+  group: ci-dev-${{ github.event.number }}
+  cancel-in-progress: true
+
+jobs:
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    name: GdUnit4 - Test Runner Action
+    steps:
+      - uses: actions/checkout@v4
+      - uses: MikeSchulze/gdUnit4-action@v1.1.1
+        with:
+          # The version of Godot in which the tests should be run. (e.g., "4.2.1")
+          godot-version: '4.2.2'
+
+          # The Godot status (e.g., "stable", "rc1", "dev1")
+          # Default: stable
+          godot-status: 'stable'
+
+          # Set to true to run on Godot .Net version to run C# tests
+          # Default: false
+          godot-net: true
+
+          # Set to true to force running GDScript tests by using the Godot Mono executable
+          # Default: false
+          godot-force-mono: ''
+
+          # The version of GdUnit4 to use. (e.g. "v4.2.0", "latest", "master").
+          # Default: latest
+          version: 'latest'
+
+          # Comma-separated or newline-separated list of directories containing test to execute..
+          paths: 'res://test'
+
