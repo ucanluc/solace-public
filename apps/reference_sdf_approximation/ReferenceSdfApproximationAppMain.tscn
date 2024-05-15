@@ -342,7 +342,8 @@ mesh = SubResource("BoxMesh_ur11r")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.62364, 0)
 collision_layer = 4
 script = ExtResource("3_uqf7n")
-pidGain = Vector4(100, 30, 5, 10)
+positionGain = Vector4(50, 100, 20, 5)
+rotationGain = Vector4(5, 10, 3, 1)
 imitationTarget = NodePath("../SdfApproximateFollower")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SdfFollower/PidRigidBody3D"]
