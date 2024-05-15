@@ -23,4 +23,7 @@
     <!--Recommended by Rider-Godot integration-->
     <None Include="**/*.tscn" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="addons\solace_core_plugin\lib\generator\wfc\WFC_NOTES.md" />
+  </ItemGroup>
 </Project>
