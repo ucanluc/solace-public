@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using Solace.addons.solace_core_plugin.lib.PID;
+using Solace.addons.solace_core_plugin.lib.utilities;
 
 public partial class PidRigidBody3D : RigidBody3D
 {
@@ -19,14 +20,10 @@ public partial class PidRigidBody3D : RigidBody3D
     {
         base._PhysicsProcess(delta);
 
-
-        var targetRotation = imitationTarget.GlobalBasis.GetRotationQuaternion();
-        var targetPosition = imitationTarget.GlobalPosition;
-
-        var positionError = targetPosition - GlobalPosition;
-        var rotationError = targetRotation * GlobalBasis.GetRotationQuaternion().Inverse();
+        var positionError = imitationTarget.GlobalPosition - GlobalPosition;
+        var rotationError = GlobalBasis.FromToEuler(imitationTarget.GlobalBasis);
         _positionPid.Update(positionGain, positionError, LinearVelocity, delta);
-        _rotationPid.Update(rotationGain, rotationError.GetEuler(), AngularVelocity, delta);
+        _rotationPid.Update(rotationGain, rotationError, AngularVelocity, delta);
         ApplyForce(_positionPid.Result);
         ApplyTorque(_rotationPid.Result);
     }

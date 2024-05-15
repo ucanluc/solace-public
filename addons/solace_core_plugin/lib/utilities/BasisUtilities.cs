@@ -99,4 +99,26 @@ public static class BasisUtilities
         );
         return currentBasis.Rotated(rotationAxisForForward, angleDiff);
     }
+
+    /// <summary>
+    /// Get the rotation difference between this basis to another basis.
+    /// </summary>
+    /// <param name="fromBasis">Basis to start the rotation from</param>
+    /// <param name="toBasis">Basis to end the rotation at</param>
+    /// <returns>Normalised quaternion that converts from this basis to another.</returns>
+    public static Quaternion FromToQuaternion(this Basis fromBasis, Basis toBasis)
+    {
+        return fromBasis.GetRotationQuaternion().FromToRotation(toBasis.GetRotationQuaternion());
+    }
+    
+    /// <summary>
+    /// Get the rotation difference between this basis to another basis.
+    /// </summary>
+    /// <param name="fromBasis">Basis to start the rotation from</param>
+    /// <param name="toBasis">Basis to end the rotation at</param>
+    /// <returns>The rotation difference in the YXZ convention.</returns>
+    public static Vector3 FromToEuler(this Basis fromBasis, Basis toBasis)
+    {
+        return fromBasis.GetRotationQuaternion().FromToRotation(toBasis.GetRotationQuaternion()).GetEuler();
+    }
 }
