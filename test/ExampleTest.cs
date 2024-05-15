@@ -1,6 +1,6 @@
 ﻿using GdUnit4;
 
-namespace Solace.main.test;
+namespace Solace.test;
 
 using static GdUnit4.Assertions;
 
@@ -12,6 +12,4 @@ public class ExampleTest
     {
         AssertBool(true).IsTrue();
     }
-
-
 }

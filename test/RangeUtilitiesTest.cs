@@ -1,6 +1,8 @@
-﻿namespace Solace.addons.solace_core_plugin.lib.utilities.test;
+﻿using GdUnit4;
+using Solace.addons.solace_core_plugin.lib.utilities;
 
-using GdUnit4;
+namespace Solace.test;
+
 using static GdUnit4.Assertions;
 
 [TestSuite]
