@@ -1,4 +1,4 @@
-# Solace ![](https://github.com/ucanluc/solace-private/actions/workflows/main.yml/badge.svg)
+# Solace [![ci-dev](https://github.com/ucanluc/solace-public/actions/workflows/main.yml/badge.svg)](https://github.com/ucanluc/solace-public/actions/workflows/main.yml)
 This project-of-projects contains tooling, references, assets and prototypes created while developing the solace framework.
 
 ### About the Project(s)
