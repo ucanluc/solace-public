@@ -1,5 +1,4 @@
-![](https://github.com/ucanluc/solace-private/actions/workflows/main.yml/badge.svg)
-# Solace
+# Solace ![](https://github.com/ucanluc/solace-private/actions/workflows/main.yml/badge.svg)
 This project-of-projects contains tooling, references, assets and prototypes created while developing the solace framework.
 
 ### About the Project(s)
@@ -28,7 +27,7 @@ Features are designed to support a hobby project codenamed 'Solace Comes', which
   - to transfer entities between levels of precision.
 - An isolated 'simulation runtime' for the framework.
   - to track entities and background events at scale.
-- Utility libraries for physics, animations etc.
+- Utility libraries for physics, animations, placeholder asset generation etc.
   - to create diverse behaviour from limited assets using heuristics.
 
 ### Third Party / Thanks to:
