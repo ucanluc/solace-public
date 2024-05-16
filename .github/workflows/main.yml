@@ -18,10 +18,6 @@ jobs:
 
   unit-tests:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-      repository-projects: write
     name: GdUnit4 - Test Runner Action
     steps:
       - uses: actions/checkout@v4
