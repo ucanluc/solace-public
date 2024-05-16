@@ -1,3 +1,4 @@
+![](https://github.com/ucanluc/solace-private/actions/workflows/main.yml/badge.svg)
 # Solace
 This project-of-projects contains tooling, references, assets and prototypes created while developing the solace framework.
 
