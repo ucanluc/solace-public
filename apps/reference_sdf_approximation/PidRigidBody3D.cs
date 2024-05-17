@@ -5,16 +5,16 @@ using Solace.addons.solace_core_plugin.lib.utilities;
 
 public partial class PidRigidBody3D : RigidBody3D
 {
-    [Export] private Vector4 positionGain;
+    [Export] public Vector4 positionGain;
 
-    [Export] private Vector4 rotationGain;
+    [Export] public  Vector4 rotationGain;
 
     private Vector4 _pidGain;
     [Export] private Node3D imitationTarget;
 
     private readonly Vector3PidController _positionPid = new();
     private readonly Vector3PidController _rotationPid = new();
-
+    
 
     public override void _PhysicsProcess(double delta)
     {

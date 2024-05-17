@@ -23,6 +23,7 @@ public partial class SdfApproximateFollower : CharacterBody3D
 
     [Export] private bool _drawDebug;
     [Export] private bool _drawDebugSecondary;
+    [Export] private bool _immediateOnly;
     public readonly SdfApproximator Approximator = new(100, 0b1);
 
 
@@ -65,6 +66,7 @@ public partial class SdfApproximateFollower : CharacterBody3D
         Approximator.Snapshot.WeightedFitDirection = Velocity * DirectionalFitWeight;
         Approximator.Snapshot.WeightedFitSurfaceNormal = Vector3.Up * SurfaceNormalFitWeight;
         Approximator.Snapshot.ObjectRadius = ObjectRadius;
+        Approximator.Snapshot.IgnoreArchived = _immediateOnly;
     }
 
     private void UpdateCorrectiveMovement(ref Vector3 inputLocalSpace)
@@ -119,5 +121,10 @@ public partial class SdfApproximateFollower : CharacterBody3D
     public void ToggleDebug()
     {
         _drawDebug = !_drawDebug;
+    }
+
+    public void ToggleImmediateOnly()
+    {
+        _immediateOnly = !_immediateOnly;
     }
 }

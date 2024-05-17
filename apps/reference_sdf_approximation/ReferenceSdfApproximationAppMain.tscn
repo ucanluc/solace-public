@@ -1,9 +1,10 @@
-[gd_scene load_steps=23 format=3 uid="uid://sbqnoubna1qg"]
+[gd_scene load_steps=37 format=3 uid="uid://sbqnoubna1qg"]
 
 [ext_resource type="Script" path="res://apps/reference_sdf_approximation/SdfFollowerCameraRig.cs" id="1_m5cjo"]
 [ext_resource type="Script" path="res://apps/reference_sdf_approximation/SdfApproximateFollower.cs" id="2_u4f7l"]
 [ext_resource type="Script" path="res://apps/reference_sdf_approximation/PidRigidBody3D.cs" id="3_uqf7n"]
 [ext_resource type="Script" path="res://apps/reference_sdf_approximation/SdfFollowerSettings.cs" id="4_g7eju"]
+[ext_resource type="Script" path="res://apps/reference_sdf_approximation/PidBodySettings.cs" id="5_ow750"]
 [ext_resource type="Theme" uid="uid://dym726xcyrrko" path="res://content/user_interface/themes/default_ui_theme.tres" id="5_yhetk"]
 [ext_resource type="Script" path="res://content/user_interface/validation/NumeralHSlider.cs" id="6_ufq5o"]
 [ext_resource type="Script" path="res://addons/solace_core_plugin/user_interface/application/QuitButton.cs" id="7_f1m6p"]
@@ -38,11 +39,35 @@ radius = 5.0
 radius = 5.0
 height = 10.0
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_1bfm8"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_a85jc"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_tw25l"]
+radius = 2.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_buhyb"]
+radius = 2.0
+height = 4.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_a7akq"]
+radius = 4.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_82vfv"]
+radius = 4.0
+height = 8.0
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_o2ro4"]
 size = Vector3(1, 10, 10)
 
 [sub_resource type="BoxMesh" id="BoxMesh_igeda"]
 size = Vector3(1, 10, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u43yo"]
+size = Vector3(1, 10, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_4f851"]
+size = Vector3(1, 10, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_boav0"]
 size = Vector3(0.5, 0.5, 0.5)
@@ -56,6 +81,224 @@ albedo_color = Color(0.180392, 1, 1, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_p6fgj"]
 material = SubResource("StandardMaterial3D_fwtwk")
 size = Vector3(0.5, 0.5, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0o1x7"]
+size = Vector3(4, 4, 4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_5tj4q"]
+size = Vector3(4, 4, 4)
+
+[sub_resource type="Animation" id="Animation_xc4au"]
+resource_name = "moving_scene"
+length = 4.0
+loop_mode = 1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedCubeBody:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 2, 4)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedCubeBody:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 2, 4)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimatedCubeBody:position:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 2, 4)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AnimatedCubeBody2:position:x")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(-6.07752, -0.25, 0, 0.25, 0, -6.07752, -0.25, 0, 0.25, 0, -6.078, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 2, 4)
+}
+tracks/4/type = "bezier"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AnimatedCubeBody2:position:y")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(1.7213, -0.25, 0, 0.25, 0, 1.7213, -0.25, 0, 0.25, 0, 1.721, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 2, 4)
+}
+tracks/5/type = "bezier"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("AnimatedCubeBody2:position:z")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, -10.3204, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 2, 4)
+}
+tracks/6/type = "bezier"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("AnimatedCubeBody3:rotation:x")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 3.14159, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 2, 4)
+}
+tracks/7/type = "bezier"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("AnimatedCubeBody3:rotation:y")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 3.14159, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 2, 4)
+}
+tracks/8/type = "bezier"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("AnimatedCubeBody3:rotation:z")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 3.14159, -0.25, 0, 0.25, 0, 1.5708, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 2, 4)
+}
+
+[sub_resource type="Animation" id="Animation_iiav1"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedCubeBody:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedCubeBody:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimatedCubeBody:position:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AnimatedCubeBody2:position:x")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-6.07752, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/4/type = "bezier"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AnimatedCubeBody2:position:y")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1.7213, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/5/type = "bezier"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("AnimatedCubeBody2:position:z")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/6/type = "bezier"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("AnimatedCubeBody3:rotation:x")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/7/type = "bezier"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("AnimatedCubeBody3:rotation:y")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/8/type = "bezier"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("AnimatedCubeBody3:rotation:z")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fv8gq"]
+_data = {
+"RESET": SubResource("Animation_iiav1"),
+"moving_scene": SubResource("Animation_xc4au")
+}
 
 [node name="ReferenceSdfApproximationAppMain" type="Node"]
 
@@ -295,6 +538,506 @@ shape = SubResource("BoxShape3D_4u36u")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox3"]
 mesh = SubResource("BoxMesh_07h14")
 
+[node name="StaticBox45" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.81666, -0.282274, -0.503376, 0.164833, 0.949974, -0.265291, 0.553079, 0.133679, 0.822334, -51.6161, 3.00408, 17.9152)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox45"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox45"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox55" type="StaticBody3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 0.81531, -0.579025, 0, 0.579025, 0.815309, -65.9769, 3.00408, 15.3058)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox55"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox55"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox56" type="StaticBody3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 0.887027, -0.461717, 0, 0.461718, 0.887027, -75.4546, 3.47134, 15.3058)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox56"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox56"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox57" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.505747, -0.398315, -0.765221, 0.117915, 0.91062, -0.396066, 0.854585, 0.110079, 0.507511, -83.5107, 6.73821, 9.05343)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox57"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox57"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox58" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.505747, -0.398315, -0.765221, 0.117915, 0.91062, -0.396066, 0.854585, 0.110079, 0.507511, -83.5107, 6.73821, 17.1152)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox58"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox58"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox59" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.505747, -0.398315, -0.765221, 0.117915, 0.91062, -0.396066, 0.854585, 0.110079, 0.507511, -83.5107, 6.73821, 26.865)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox59"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox59"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox60" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.518319, -0.120407, -0.846668, -0.0320921, 0.986603, -0.159954, 0.854585, 0.110079, 0.507511, -77.574, 0.516271, 25.0426)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox60"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox60"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox64" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.518319, -0.120407, -0.846668, -0.0320921, 0.986603, -0.159954, 0.854585, 0.110079, 0.507511, -73.6497, -1.28581, 29.9986)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox64"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox64"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox65" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.518319, -0.120407, -0.846668, -0.0320921, 0.986603, -0.159954, 0.854585, 0.110079, 0.507511, -66.0502, -1.28581, 29.9986)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox65"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox65"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox66" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.518319, -0.120407, -0.846668, -0.0320921, 0.986603, -0.159954, 0.854585, 0.110079, 0.507511, -59.0247, -1.28581, 29.9986)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox66"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox66"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox67" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.518319, -0.120407, -0.846668, -0.0320921, 0.986603, -0.159954, 0.854585, 0.110079, 0.507511, -52.3379, -1.28581, 29.9986)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox67"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox67"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox68" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.518319, -0.120407, -0.846668, -0.0320921, 0.986603, -0.159954, 0.854585, 0.110079, 0.507511, -50.8441, -1.40051, 26.4335)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox68"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox68"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox69" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.518319, -0.120407, -0.846668, -0.0320921, 0.986603, -0.159954, 0.854585, 0.110079, 0.507511, -48.3917, -2.38109, 29.151)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox69"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox69"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox70" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.518319, -0.120407, -0.846668, -0.0320921, 0.986603, -0.159954, 0.854585, 0.110079, 0.507511, -46.4822, -2.84559, 26.7656)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox70"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox70"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox71" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.518319, -0.120407, -0.846668, -0.0320921, 0.986603, -0.159954, 0.854585, 0.110079, 0.507511, -46.4822, -2.84559, 29.7784)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox71"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox71"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox72" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.933462, 0.354654, 0.0535624, -0.352042, 0.934513, -0.0524657, -0.0686613, 0.0301182, 0.997185, -6.09812, 12.9458, 42.7853)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox72"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox72"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox73" type="StaticBody3D" parent="Level"]
+transform = Transform3D(-0.0962491, -0.995175, -0.0190455, 0.0990259, 0.00946587, -0.995039, 0.990419, -0.0976579, 0.0976376, 23.1257, 10.2708, 40.8276)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox73"]
+shape = SubResource("SphereShape3D_1bfm8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox73"]
+mesh = SubResource("SphereMesh_a85jc")
+
+[node name="StaticBox74" type="StaticBody3D" parent="Level"]
+transform = Transform3D(-0.0962491, -0.995175, -0.0190455, 0.0990259, 0.00946587, -0.995039, 0.990419, -0.0976579, 0.0976376, 24.4712, 10.2708, 40.8276)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox74"]
+shape = SubResource("SphereShape3D_1bfm8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox74"]
+mesh = SubResource("SphereMesh_a85jc")
+
+[node name="StaticBox75" type="StaticBody3D" parent="Level"]
+transform = Transform3D(-0.0962491, -0.995175, -0.0190455, 0.0990259, 0.00946587, -0.995039, 0.990419, -0.0976579, 0.0976376, 22.5602, 10.2708, 42.3931)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox75"]
+shape = SubResource("SphereShape3D_1bfm8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox75"]
+mesh = SubResource("SphereMesh_a85jc")
+
+[node name="StaticBox76" type="StaticBody3D" parent="Level"]
+transform = Transform3D(-0.0962491, -0.995175, -0.0190455, 0.0990259, 0.00946587, -0.995039, 0.990419, -0.0976579, 0.0976376, 23.9057, 10.2708, 42.3931)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox76"]
+shape = SubResource("SphereShape3D_1bfm8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox76"]
+mesh = SubResource("SphereMesh_a85jc")
+
+[node name="StaticBox77" type="StaticBody3D" parent="Level"]
+transform = Transform3D(-0.0962491, -0.995175, -0.0190455, 0.0990259, 0.00946587, -0.995039, 0.990419, -0.0976579, 0.0976376, 23.3609, 10.2708, 43.7846)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox77"]
+shape = SubResource("SphereShape3D_1bfm8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox77"]
+mesh = SubResource("SphereMesh_a85jc")
+
+[node name="StaticBox78" type="StaticBody3D" parent="Level"]
+transform = Transform3D(-0.0962491, -0.995175, -0.0190455, 0.0990259, 0.00946587, -0.995039, 0.990419, -0.0976579, 0.0976376, 24.7064, 10.2708, 43.7846)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox78"]
+shape = SubResource("SphereShape3D_1bfm8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox78"]
+mesh = SubResource("SphereMesh_a85jc")
+
+[node name="StaticBox79" type="StaticBody3D" parent="Level"]
+transform = Transform3D(-0.0962491, -0.995175, -0.0190455, 0.0990259, 0.00946587, -0.995039, 0.990419, -0.0976579, 0.0976376, 22.6541, 10.2708, 45.1928)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox79"]
+shape = SubResource("SphereShape3D_1bfm8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox79"]
+mesh = SubResource("SphereMesh_a85jc")
+
+[node name="StaticBox80" type="StaticBody3D" parent="Level"]
+transform = Transform3D(-0.0962491, -0.995175, -0.0190455, 0.0990259, 0.00946587, -0.995039, 0.990419, -0.0976579, 0.0976376, 23.9996, 10.2708, 45.1928)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox80"]
+shape = SubResource("SphereShape3D_1bfm8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox80"]
+mesh = SubResource("SphereMesh_a85jc")
+
+[node name="StaticBox81" type="StaticBody3D" parent="Level"]
+transform = Transform3D(-0.0962491, -0.995175, -0.0190455, 0.0990259, 0.00946587, -0.995039, 0.990419, -0.0976579, 0.0976376, 23.4159, 10.2708, 46.5298)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox81"]
+shape = SubResource("SphereShape3D_1bfm8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox81"]
+mesh = SubResource("SphereMesh_a85jc")
+
+[node name="StaticBox82" type="StaticBody3D" parent="Level"]
+transform = Transform3D(-0.0962491, -0.995175, -0.0190455, 0.0990259, 0.00946587, -0.995039, 0.990419, -0.0976579, 0.0976376, 24.7614, 10.2708, 46.5298)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox82"]
+shape = SubResource("SphereShape3D_1bfm8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox82"]
+mesh = SubResource("SphereMesh_a85jc")
+
+[node name="StaticBox83" type="StaticBody3D" parent="Level"]
+transform = Transform3D(-0.0962491, -0.995175, -0.0190455, 0.0990259, 0.00946587, -0.995039, 0.990419, -0.0976579, 0.0976376, 22.6911, 10.2708, 47.7596)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox83"]
+shape = SubResource("SphereShape3D_1bfm8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox83"]
+mesh = SubResource("SphereMesh_a85jc")
+
+[node name="StaticBox84" type="StaticBody3D" parent="Level"]
+transform = Transform3D(-0.0962491, -0.995175, -0.0190455, 0.0990259, 0.00946587, -0.995039, 0.990419, -0.0976579, 0.0976376, 24.0366, 10.2708, 47.7596)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox84"]
+shape = SubResource("SphereShape3D_1bfm8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox84"]
+mesh = SubResource("SphereMesh_a85jc")
+
+[node name="StaticBox85" type="StaticBody3D" parent="Level"]
+transform = Transform3D(-0.0962491, -0.995175, -0.0190455, 0.0990259, 0.00946587, -0.995039, 0.990419, -0.0976579, 0.0976376, 23.2376, 10.2708, 49.1364)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox85"]
+shape = SubResource("SphereShape3D_1bfm8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox85"]
+mesh = SubResource("SphereMesh_a85jc")
+
+[node name="StaticBox86" type="StaticBody3D" parent="Level"]
+transform = Transform3D(-0.0962491, -0.995175, -0.0190455, 0.0990259, 0.00946587, -0.995039, 0.990419, -0.0976579, 0.0976376, 24.583, 10.2708, 49.1364)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox86"]
+shape = SubResource("SphereShape3D_1bfm8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox86"]
+mesh = SubResource("SphereMesh_a85jc")
+
+[node name="StaticBox87" type="StaticBody3D" parent="Level"]
+transform = Transform3D(-0.0962491, -0.995175, -0.0190455, 0.0990259, 0.00946587, -0.995039, 0.990419, -0.0976579, 0.0976376, 23.284, 8.67905, 51.3412)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox87"]
+transform = Transform3D(1, -7.45058e-09, 7.45058e-09, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("SphereShape3D_tw25l")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox87"]
+mesh = SubResource("SphereMesh_buhyb")
+
+[node name="StaticBox88" type="StaticBody3D" parent="Level"]
+transform = Transform3D(-0.0962491, -0.995175, -0.0190455, 0.0990259, 0.00946587, -0.995039, 0.990419, -0.0976579, 0.0976376, 23.284, 8.67905, 55.6124)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox88"]
+transform = Transform3D(1, -7.45058e-09, 7.45058e-09, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("SphereShape3D_tw25l")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox88"]
+mesh = SubResource("SphereMesh_buhyb")
+
+[node name="StaticBox89" type="StaticBody3D" parent="Level"]
+transform = Transform3D(-0.0962491, -0.995175, -0.0190455, 0.0990259, 0.00946587, -0.995039, 0.990419, -0.0976579, 0.0976376, 23.284, 8.67905, 60.3082)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox89"]
+transform = Transform3D(1, -7.45058e-09, 7.45058e-09, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("SphereShape3D_tw25l")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox89"]
+mesh = SubResource("SphereMesh_buhyb")
+
+[node name="StaticBox90" type="StaticBody3D" parent="Level"]
+transform = Transform3D(-0.0962491, -0.995175, -0.0190455, 0.0990259, 0.00946587, -0.995039, 0.990419, -0.0976579, 0.0976376, 23.284, 8.67905, 64.8951)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox90"]
+transform = Transform3D(1, -7.45058e-09, 7.45058e-09, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("SphereShape3D_tw25l")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox90"]
+mesh = SubResource("SphereMesh_buhyb")
+
+[node name="StaticBox91" type="StaticBody3D" parent="Level"]
+transform = Transform3D(-0.0962491, -0.995175, -0.0190455, 0.0990259, 0.00946587, -0.995039, 0.990419, -0.0976579, 0.0976376, 27.0844, 8.67905, 62.6349)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox91"]
+transform = Transform3D(1, -7.45058e-09, 7.45058e-09, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("SphereShape3D_tw25l")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox91"]
+mesh = SubResource("SphereMesh_buhyb")
+
+[node name="StaticBox92" type="StaticBody3D" parent="Level"]
+transform = Transform3D(-0.0962491, -0.995175, -0.0190455, 0.0990259, 0.00946587, -0.995039, 0.990419, -0.0976579, 0.0976376, 27.0844, 8.67905, 57.9754)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox92"]
+transform = Transform3D(1, -7.45058e-09, 7.45058e-09, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("SphereShape3D_tw25l")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox92"]
+mesh = SubResource("SphereMesh_buhyb")
+
+[node name="StaticBox93" type="StaticBody3D" parent="Level"]
+transform = Transform3D(-0.0962491, -0.995175, -0.0190455, 0.0990259, 0.00946587, -0.995039, 0.990419, -0.0976579, 0.0976376, 27.0844, 8.67905, 52.8624)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox93"]
+transform = Transform3D(1, -7.45058e-09, 7.45058e-09, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("SphereShape3D_tw25l")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox93"]
+mesh = SubResource("SphereMesh_buhyb")
+
+[node name="StaticBox94" type="StaticBody3D" parent="Level"]
+transform = Transform3D(-0.0962491, -0.995175, -0.0190455, 0.0990259, 0.00946587, -0.995039, 0.990419, -0.0976579, 0.0976376, 27.0844, 8.67905, 48.2669)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox94"]
+transform = Transform3D(1, -7.45058e-09, 7.45058e-09, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("SphereShape3D_tw25l")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox94"]
+mesh = SubResource("SphereMesh_buhyb")
+
+[node name="StaticBox95" type="StaticBody3D" parent="Level"]
+transform = Transform3D(-0.0962491, -0.995175, -0.0190455, 0.0990259, 0.00946587, -0.995039, 0.990419, -0.0976579, 0.0976376, 24.4192, 10.4938, 72.0219)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox95"]
+transform = Transform3D(1, -7.45058e-09, 7.45058e-09, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("SphereShape3D_a7akq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox95"]
+transform = Transform3D(1, -7.45058e-09, 7.45058e-09, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("SphereMesh_82vfv")
+
+[node name="StaticBox96" type="StaticBody3D" parent="Level"]
+transform = Transform3D(-0.0962491, -0.995175, -0.0190455, 0.0990259, 0.00946587, -0.995039, 0.990419, -0.0976579, 0.0976376, 24.4192, 10.4938, 83.3328)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox96"]
+transform = Transform3D(1, -7.45058e-09, 7.45058e-09, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("SphereShape3D_a7akq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox96"]
+transform = Transform3D(1, -7.45058e-09, 7.45058e-09, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("SphereMesh_82vfv")
+
+[node name="StaticBox97" type="StaticBody3D" parent="Level"]
+transform = Transform3D(-0.0962491, -0.995175, -0.0190455, 0.0990259, 0.00946587, -0.995039, 0.990419, -0.0976579, 0.0976376, 36.0081, 10.4938, 76.9496)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox97"]
+transform = Transform3D(1, -7.45058e-09, 7.45058e-09, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("SphereShape3D_a7akq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox97"]
+transform = Transform3D(1, -7.45058e-09, 7.45058e-09, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("SphereMesh_82vfv")
+
+[node name="StaticBox61" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.516686, -0.082082, -0.852231, -0.052155, 0.990528, -0.127022, 0.854585, 0.110079, 0.507511, -69.3114, 0.516271, 25.0426)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox61"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox61"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox62" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.515126, -0.0558651, -0.855291, -0.0657972, 0.992352, -0.104446, 0.854585, 0.110079, 0.507511, -62.3873, 0.516271, 25.0426)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox62"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox62"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox63" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.512477, -0.0207302, -0.85845, -0.0839763, 0.993707, -0.0741288, 0.854585, 0.110079, 0.507511, -55.2697, 0.516271, 25.0426)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox63"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox63"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox46" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.532121, 0.140818, 0.834876, 0.164833, 0.949974, -0.265291, -0.830468, 0.278782, 0.482289, -47.7906, 1.27474, 9.80974)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox46"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox46"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox47" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.981753, -0.183881, -0.0484622, 0.164833, 0.949974, -0.265291, 0.0948197, 0.252462, 0.96295, -47.7906, -2.6282, 15.8804)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox47"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox47"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox48" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.981753, -0.183881, -0.0484622, 0.124017, 0.812324, -0.569868, 0.144155, 0.55346, 0.820306, -56.8759, 3.22797, 15.8804)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox48"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox48"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox49" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.981753, -0.183881, -0.0484622, 0.106719, 0.743709, -0.65993, 0.15739, 0.642717, 0.749762, -56.8759, 3.22797, 5.40121)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox49"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox49"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox50" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.981753, -0.183881, -0.0484622, 0.092532, 0.684592, -0.723029, 0.166128, 0.705353, 0.689115, -59.8063, 3.22797, 5.17674)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox50"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox50"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox51" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.981753, -0.183881, -0.0484622, 0.0698557, 0.585773, -0.807459, 0.176864, 0.789341, 0.58793, -62.6892, 3.22797, 5.17674)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox51"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox51"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox52" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.981753, -0.183881, -0.0484622, 0.0698557, 0.585773, -0.807459, 0.176864, 0.789341, 0.58793, -66.4578, 3.22797, 5.17674)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox52"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox52"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox53" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.981753, -0.183881, -0.0484622, 0.0301161, 0.401983, -0.915152, 0.18776, 0.896994, 0.400186, -70.6411, 3.22797, 5.17674)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox53"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox53"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox54" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.981753, -0.183881, -0.0484622, -0.0184227, 0.16168, -0.986671, 0.189265, 0.969561, 0.155342, -76.1146, 3.22797, 5.17674)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox54"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox54"]
+mesh = SubResource("BoxMesh_07h14")
+
+[node name="StaticBox27" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 73.1729, -4.50623, 14.3015)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox27"]
+shape = SubResource("BoxShape3D_4u36u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox27"]
+mesh = SubResource("BoxMesh_07h14")
+
 [node name="StaticBox12" type="StaticBody3D" parent="Level"]
 transform = Transform3D(0.851278, 0, -0.524714, 0, 1, 0, 0.524714, 0, 0.851278, -6.0507, 5.5, 14.315)
 
@@ -303,6 +1046,222 @@ shape = SubResource("BoxShape3D_o2ro4")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox12"]
 mesh = SubResource("BoxMesh_igeda")
+
+[node name="StaticBox20" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 51.4904, -4.44108, 14.315)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox20"]
+shape = SubResource("BoxShape3D_o2ro4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox20"]
+mesh = SubResource("BoxMesh_igeda")
+
+[node name="StaticBox21" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 53.5544, -4.44108, 14.315)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox21"]
+shape = SubResource("BoxShape3D_o2ro4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox21"]
+mesh = SubResource("BoxMesh_igeda")
+
+[node name="StaticBox22" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 55.5328, -4.44108, 14.315)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox22"]
+shape = SubResource("BoxShape3D_o2ro4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox22"]
+mesh = SubResource("BoxMesh_igeda")
+
+[node name="StaticBox23" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 58.5839, -4.44108, 14.315)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox23"]
+shape = SubResource("BoxShape3D_o2ro4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox23"]
+mesh = SubResource("BoxMesh_igeda")
+
+[node name="StaticBox24" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 61.5611, -4.44108, 14.315)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox24"]
+shape = SubResource("BoxShape3D_o2ro4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox24"]
+mesh = SubResource("BoxMesh_igeda")
+
+[node name="StaticBox25" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 64.5494, -4.44108, 14.315)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox25"]
+shape = SubResource("BoxShape3D_o2ro4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox25"]
+mesh = SubResource("BoxMesh_igeda")
+
+[node name="StaticBox26" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 43.6169, 5.23669, 41.9985)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox26"]
+shape = SubResource("BoxShape3D_u43yo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox26"]
+mesh = SubResource("BoxMesh_4f851")
+
+[node name="StaticBox28" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 43.6169, 5.23669, 40.0579)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox28"]
+shape = SubResource("BoxShape3D_u43yo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox28"]
+mesh = SubResource("BoxMesh_4f851")
+
+[node name="StaticBox29" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 43.6169, 5.23669, 38.1738)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox29"]
+shape = SubResource("BoxShape3D_u43yo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox29"]
+mesh = SubResource("BoxMesh_4f851")
+
+[node name="StaticBox30" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 43.6169, 5.23669, 36.3087)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox30"]
+shape = SubResource("BoxShape3D_u43yo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox30"]
+mesh = SubResource("BoxMesh_4f851")
+
+[node name="StaticBox31" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 43.6169, 5.23669, 34.2733)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox31"]
+shape = SubResource("BoxShape3D_u43yo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox31"]
+mesh = SubResource("BoxMesh_4f851")
+
+[node name="StaticBox32" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 43.6169, 5.23669, 32.0865)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox32"]
+shape = SubResource("BoxShape3D_u43yo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox32"]
+mesh = SubResource("BoxMesh_4f851")
+
+[node name="StaticBox33" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 43.6169, 5.23669, 29.3432)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox33"]
+shape = SubResource("BoxShape3D_u43yo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox33"]
+mesh = SubResource("BoxMesh_4f851")
+
+[node name="StaticBox34" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 43.6169, 5.23669, 26.4628)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox34"]
+shape = SubResource("BoxShape3D_u43yo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox34"]
+mesh = SubResource("BoxMesh_4f851")
+
+[node name="StaticBox35" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 43.6169, 5.23669, 43.7406)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox35"]
+shape = SubResource("BoxShape3D_u43yo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox35"]
+mesh = SubResource("BoxMesh_4f851")
+
+[node name="StaticBox36" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.921321, -0.388802, 0, 0.388802, 0.921321, 0, 0, 0, 0.999999, 41.6985, 5.24425, 40.1539)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox36"]
+shape = SubResource("BoxShape3D_u43yo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox36"]
+mesh = SubResource("BoxMesh_4f851")
+
+[node name="StaticBox44" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.956314, -0.292338, 0, 0.292338, 0.956315, 0, 0, 0, 1, 42.3658, 5.24425, 43.6921)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox44"]
+shape = SubResource("BoxShape3D_u43yo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox44"]
+mesh = SubResource("BoxMesh_4f851")
+
+[node name="StaticBox43" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.938378, -0.345609, 0, 0.345609, 0.938379, 0, 0, 0, 1, 42.0502, 5.24425, 42.0339)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox43"]
+shape = SubResource("BoxShape3D_u43yo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox43"]
+mesh = SubResource("BoxMesh_4f851")
+
+[node name="StaticBox37" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.909236, -0.416281, 0, 0.416281, 0.909236, 0, 0, 0, 0.999999, 41.5256, 4.87292, 38.2449)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox37"]
+shape = SubResource("BoxShape3D_u43yo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox37"]
+mesh = SubResource("BoxMesh_4f851")
+
+[node name="StaticBox38" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.899214, -0.437508, 0, 0.437508, 0.899214, 0, 0, 0, 0.999999, 41.7346, 4.42834, 36.3107)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox38"]
+shape = SubResource("BoxShape3D_u43yo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox38"]
+mesh = SubResource("BoxMesh_4f851")
+
+[node name="StaticBox39" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.89825, -0.439485, 0, 0.439484, 0.89825, 0, 0, 0, 0.999999, 41.4287, 4.19141, 34.1869)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox39"]
+shape = SubResource("BoxShape3D_u43yo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox39"]
+mesh = SubResource("BoxMesh_4f851")
+
+[node name="StaticBox40" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.85512, -0.51843, 0, 0.51843, 0.85512, 0, 0, 0, 0.999999, 41.4575, 4.07022, 32.2412)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox40"]
+shape = SubResource("BoxShape3D_u43yo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox40"]
+mesh = SubResource("BoxMesh_4f851")
+
+[node name="StaticBox41" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.823977, -0.566622, 0, 0.566622, 0.823978, 0, 0, 0, 0.999999, 41.1836, 4.09428, 29.477)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox41"]
+shape = SubResource("BoxShape3D_u43yo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox41"]
+mesh = SubResource("BoxMesh_4f851")
+
+[node name="StaticBox42" type="StaticBody3D" parent="Level"]
+transform = Transform3D(0.786978, -0.616981, 0, 0.616981, 0.786978, 0, 0, 0, 0.999999, 40.7128, 4.22699, 26.3818)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/StaticBox42"]
+shape = SubResource("BoxShape3D_u43yo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/StaticBox42"]
+mesh = SubResource("BoxMesh_4f851")
 
 [node name="StaticBox4" type="StaticBody3D" parent="Level"]
 transform = Transform3D(0.851278, 0, -0.524714, 0, 1, 0, 0.524714, 0, 0.851278, -18.5889, 5.5, 35.5893)
@@ -339,6 +1298,7 @@ _directionReference = NodePath("../SdfFollowerCameraRig/CameraRigOrbit/Camera3D"
 RaycastDistance = 5.0
 MovementSpeed = 5.0
 MovementTurnSpeed = 10.0
+_immediateOnly = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SdfFollower/SdfApproximateFollower"]
 shape = SubResource("BoxShape3D_boav0")
@@ -350,7 +1310,7 @@ mesh = SubResource("BoxMesh_ur11r")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.62364, 0)
 collision_layer = 4
 script = ExtResource("3_uqf7n")
-positionGain = Vector4(50, 100, 20, 5)
+positionGain = Vector4(200, 200, 25, 5)
 rotationGain = Vector4(5, 10, 3, 1)
 imitationTarget = NodePath("../SdfApproximateFollower")
 
@@ -360,7 +1320,7 @@ shape = SubResource("BoxShape3D_boav0")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="SdfFollower/PidRigidBody3D"]
 mesh = SubResource("BoxMesh_p6fgj")
 
-[node name="SdfFollowerSettings" type="Node" parent="." node_paths=PackedStringArray("follower", "_velocitySlider", "_localUpSlider", "_globalSlider", "_radiusSlider", "_rayDistanceSlider", "_rayCountSlider", "_moveSpeedSlider", "_toggleRayDebug", "_toggleCharacterDebug")]
+[node name="SdfFollowerSettings" type="Node" parent="." node_paths=PackedStringArray("follower", "_velocitySlider", "_localUpSlider", "_globalSlider", "_radiusSlider", "_rayDistanceSlider", "_rayCountSlider", "_moveSpeedSlider", "_toggleRayDebug", "_toggleCharacterDebug", "_toggleImmediateOnly")]
 script = ExtResource("4_g7eju")
 follower = NodePath("../SdfFollower/SdfApproximateFollower")
 _velocitySlider = NodePath("../CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/HSlider")
@@ -372,6 +1332,20 @@ _rayCountSlider = NodePath("../CanvasLayer/Control/HBoxContainer/PanelContainer/
 _moveSpeedSlider = NodePath("../CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer7/HSlider")
 _toggleRayDebug = NodePath("../CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/Button")
 _toggleCharacterDebug = NodePath("../CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/Button2")
+_toggleImmediateOnly = NodePath("../CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/Button3")
+
+[node name="PidBodySettings" type="Node" parent="." node_paths=PackedStringArray("_massSlider", "_posPSlider", "_posISlider", "_posDSlider", "_posMaxSlider", "_rotPSlider", "_rotISlider", "_rotDSlider", "_rotMaxSlider", "_pidRigidbody")]
+script = ExtResource("5_ow750")
+_massSlider = NodePath("../CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer16/HSlider")
+_posPSlider = NodePath("../CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer8/HSlider")
+_posISlider = NodePath("../CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer9/HSlider")
+_posDSlider = NodePath("../CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer10/HSlider")
+_posMaxSlider = NodePath("../CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer15/HSlider")
+_rotPSlider = NodePath("../CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer12/HSlider")
+_rotISlider = NodePath("../CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer13/HSlider")
+_rotDSlider = NodePath("../CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer14/HSlider")
+_rotMaxSlider = NodePath("../CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer11/HSlider")
+_pidRigidbody = NodePath("../SdfFollower/PidRigidBody3D")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -513,7 +1487,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer6"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Ray Count 100"
+text = "Tracker Count 100"
 
 [node name="HSlider" type="HSlider" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer6" node_paths=PackedStringArray("_textLabel")]
 layout_mode = 2
@@ -523,7 +1497,7 @@ max_value = 500.0
 value = 100.0
 rounded = true
 script = ExtResource("6_ufq5o")
-_prefixText = "Ray Count "
+_prefixText = "Tracker Count "
 _textLabel = NodePath("../Label")
 _updateInEditor = true
 
@@ -539,6 +1513,7 @@ text = "Move Speed 5 m/s"
 layout_mode = 2
 size_flags_horizontal = 3
 min_value = 1.0
+max_value = 50.0
 value = 5.0
 script = ExtResource("6_ufq5o")
 _prefixText = "Move Speed "
@@ -554,28 +1529,194 @@ text = "Toggle Ray Debug"
 layout_mode = 2
 text = "Toggle Character Debug"
 
-[node name="Control" type="Control" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Button3" type="Button" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 3
+text = "Toggle Archive Usage"
 
 [node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 1
-text = "Ray Debug Colors:
-   Red = Natural Miss
-   Blue = Tracker Miss
+theme_override_colors/font_color = Color(0.75, 0.75, 0.75, 1)
+text = "Ray Debug:
+     Type: Primary / Secondary / Archived
+     Miss: Red / Blue / Black
+     Hit: Green / Yellow / White
+Sky: Cyan
+Ground: Orange
+Actual: Magenta"
 
-   Green = Natural Hit
-   Yellow = Tracker Hit
+[node name="HBoxContainer16" type="HBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
 
-   White = Archived Hit
-   Black = Archived Miss
-	
-	Cyan: Sky position
-	Orange: Ground Position
-	Magenta: Actual Position
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer16"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Mass 1 kg"
 
-Mouse: look around
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer16" node_paths=PackedStringArray("_textLabel")]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+max_value = 1000.0
+value = 1.0
+script = ExtResource("6_ufq5o")
+_prefixText = "Mass "
+_suffixText = " kg"
+_textLabel = NodePath("../Label")
+_updateInEditor = true
+
+[node name="HBoxContainer8" type="HBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer8"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Pos P Gain 200"
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer8" node_paths=PackedStringArray("_textLabel")]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1000.0
+value = 200.0
+script = ExtResource("6_ufq5o")
+_prefixText = "Pos P Gain "
+_textLabel = NodePath("../Label")
+_updateInEditor = true
+
+[node name="HBoxContainer9" type="HBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer9"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Pos I Gain 200"
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer9" node_paths=PackedStringArray("_textLabel")]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1000.0
+value = 200.0
+script = ExtResource("6_ufq5o")
+_prefixText = "Pos I Gain "
+_textLabel = NodePath("../Label")
+_updateInEditor = true
+
+[node name="HBoxContainer10" type="HBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer10"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Pos D Gain 25"
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer10" node_paths=PackedStringArray("_textLabel")]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1000.0
+value = 25.0
+script = ExtResource("6_ufq5o")
+_prefixText = "Pos D Gain "
+_textLabel = NodePath("../Label")
+_updateInEditor = true
+
+[node name="HBoxContainer15" type="HBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer15"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Pos I Capacity 5"
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer15" node_paths=PackedStringArray("_textLabel")]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 200.0
+value = 5.0
+script = ExtResource("6_ufq5o")
+_prefixText = "Pos I Capacity "
+_textLabel = NodePath("../Label")
+_updateInEditor = true
+
+[node name="HBoxContainer12" type="HBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer12"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Rot P Gain 5"
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer12" node_paths=PackedStringArray("_textLabel")]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 50.0
+value = 5.0
+script = ExtResource("6_ufq5o")
+_prefixText = "Rot P Gain "
+_textLabel = NodePath("../Label")
+_updateInEditor = true
+
+[node name="HBoxContainer13" type="HBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer13"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Rot I Gain 10"
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer13" node_paths=PackedStringArray("_textLabel")]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 50.0
+value = 10.0
+script = ExtResource("6_ufq5o")
+_prefixText = "Rot I Gain "
+_textLabel = NodePath("../Label")
+_updateInEditor = true
+
+[node name="HBoxContainer14" type="HBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer14"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Rot D Gain 3"
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer14" node_paths=PackedStringArray("_textLabel")]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 50.0
+value = 3.0
+script = ExtResource("6_ufq5o")
+_prefixText = "Rot D Gain "
+_textLabel = NodePath("../Label")
+_updateInEditor = true
+
+[node name="HBoxContainer11" type="HBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer11"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Rot I Capacity 1"
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer11" node_paths=PackedStringArray("_textLabel")]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 50.0
+value = 1.0
+script = ExtResource("6_ufq5o")
+_prefixText = "Rot I Capacity "
+_textLabel = NodePath("../Label")
+_updateInEditor = true
+
+[node name="Control" type="Control" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label2" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Mouse: look around
 WASD: move around
 Shift/Control: move up/down
 ESC: toggle the mouse cursor
@@ -585,3 +1726,44 @@ F3: toggle the performance overlay"
 layout_mode = 2
 text = "Quit"
 script = ExtResource("7_f1m6p")
+
+[node name="DynamicLevel" type="Node3D" parent="."]
+transform = Transform3D(-0.697815, 0, -0.716278, 0, 1, 0, 0.716278, 0, -0.697815, -31.9272, 1.54594, -37.8072)
+
+[node name="AnimatedCubeBody" type="AnimatableBody3D" parent="DynamicLevel"]
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DynamicLevel/AnimatedCubeBody"]
+shape = SubResource("BoxShape3D_0o1x7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="DynamicLevel/AnimatedCubeBody"]
+mesh = SubResource("BoxMesh_5tj4q")
+skeleton = NodePath("")
+
+[node name="AnimatedCubeBody2" type="AnimatableBody3D" parent="DynamicLevel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.07752, 1.7213, 0)
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DynamicLevel/AnimatedCubeBody2"]
+shape = SubResource("BoxShape3D_0o1x7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="DynamicLevel/AnimatedCubeBody2"]
+mesh = SubResource("BoxMesh_5tj4q")
+skeleton = NodePath("")
+
+[node name="AnimatedCubeBody3" type="AnimatableBody3D" parent="DynamicLevel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.36361, 1.32474, -15.1275)
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DynamicLevel/AnimatedCubeBody3"]
+shape = SubResource("BoxShape3D_0o1x7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="DynamicLevel/AnimatedCubeBody3"]
+mesh = SubResource("BoxMesh_5tj4q")
+skeleton = NodePath("")
+
+[node name="LevelAnimationPlayer" type="AnimationPlayer" parent="DynamicLevel"]
+libraries = {
+"": SubResource("AnimationLibrary_fv8gq")
+}
+autoplay = "moving_scene"

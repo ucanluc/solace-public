@@ -6,6 +6,8 @@ namespace Solace.addons.solace_core_plugin.lib.sdf_approximation;
 
 public class SdfSnapshot
 {
+    public const float IgnoreWeight = 0.0000001f;
+
     /// <summary>
     /// Optional; Ignores secondary/cached values, only using the immediately accessible data. 
     /// </summary>
@@ -139,12 +141,6 @@ public class SdfSnapshot
 
     private float IntegrateTrackerMiss(SdfRaycastTracker tracker)
     {
-        if (IgnoreArchived && !tracker.HasNaturalHit)
-        {
-            // Ignored due to not being new.
-            return 0;
-        }
-
         var trackerMissPosition = tracker.MissPosition;
         if (tracker.HasArchivedMiss)
         {
@@ -160,6 +156,12 @@ public class SdfSnapshot
 
         // Distant hits are more important for tracking the sky
         var skyWeight = RangeUtilities.WeightedRange01(missDistance, maxDistance);
+
+        if (IgnoreArchived && tracker.HasArchivedMiss)
+        {
+            // Ignored due to not being new.
+            skyWeight *= IgnoreWeight;
+        }
 
         // Optional; Directional fit; prefers misses in given direction.
         var dirFitWeight =
@@ -183,12 +185,6 @@ public class SdfSnapshot
     /// <returns>The importance weight of the tracker hit; between 0~1.</returns>
     private float IntegrateTrackerHit(SdfRaycastTracker tracker)
     {
-        if (IgnoreArchived && !tracker.HasNaturalHit)
-        {
-            // Ignored due to not being new.
-            return 0;
-        }
-
         // hit vectors are integrated with the origin as a basis, for weighted averaging.
         var maxDistance = Mathf.Clamp(_raycastDist - ObjectRadius, 0, _raycastDist);
         var hitVector = (tracker.HitPosition - _origin);
@@ -216,6 +212,13 @@ public class SdfSnapshot
 
         // Combine and integrate the weights to relevant data.
         var trackerWeight = groundWeight * dirFitWeight * normalFitWeight;
+
+        if (IgnoreArchived && tracker.HasArchivedHit)
+        {
+            // Ignored due to not being new.
+            trackerWeight *= IgnoreWeight;
+        }
+
         SurfaceNormal += hitNormal * trackerWeight;
         CompositeGroundPosition += hitVector * trackerWeight;
         _trackerHitsWeightTotal += trackerWeight;
@@ -223,10 +226,11 @@ public class SdfSnapshot
         return trackerWeight;
     }
 
-    private static void DrawTrackerDebug(SdfRaycastTracker tracker, float hitWeight, float missWeight)
+    private void DrawTrackerDebug(SdfRaycastTracker tracker, float hitWeight, float missWeight)
     {
         if (tracker.HasArchivedHit) tracker.DrawPosition(tracker.HitPosition, Colors.White, hitWeight);
         if (tracker.HasArchivedMiss) tracker.DrawPosition(tracker.MissPosition, Colors.Black, missWeight);
+
 
         if (!tracker.HasNaturalHit)
         {

@@ -17,6 +17,7 @@ public partial class SdfFollowerSettings : Node
     [Export] private NumeralHSlider _moveSpeedSlider;
     [Export] private Button _toggleRayDebug;
     [Export] private Button _toggleCharacterDebug;
+    [Export] private Button _toggleImmediateOnly;
 
 
     public override void _Ready()
@@ -31,6 +32,8 @@ public partial class SdfFollowerSettings : Node
         _moveSpeedSlider.ValueChanged += value => follower.MovementSpeed = (float)value;
         _toggleRayDebug.Pressed += () => follower.Approximator.Snapshot.ToggleDebug();
         _toggleCharacterDebug.Pressed += () => follower.ToggleDebug();
+        _toggleImmediateOnly.Pressed += () => follower.ToggleImmediateOnly();
         follower.Approximator.Snapshot.DrawDebugLines = true;
+        follower.Approximator.Snapshot.IgnoreArchived = true;
     }
 }
