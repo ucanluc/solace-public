@@ -25,16 +25,25 @@ public class SdfSnapshot
     /// If length is 1; Weights are between 0~1 depending on alignment. 
     /// If length above 1; Starts ignoring misaligned vectors completely. 
     /// </summary>
-    public Vector3 NormalFitVector { private get; set; }
+    public Vector3 WeightFitHitNormal { private get; set; }
 
     /// <summary>
-    /// Optional; set to prioritise hits in the aligned direction.
+    /// Optional; set to prioritise hits in the given direction.
     /// If length = 0; Disabled
     /// If length is 0~1; Mild adjustment
     /// If length is 1; Weights are between 0~1 depending on alignment. 
     /// If length above 1; Starts ignoring misaligned vectors completely. 
     /// </summary>
-    public Vector3 DirFitVector { private get; set; }
+    public Vector3 WeightFitDirection { private get; set; }
+
+
+    /// <summary>
+    /// Optional; set to align surface normal with the given direction.
+    /// If length = 0; Disabled
+    /// If length is 0~2; Length decides alignment strength. 
+    /// If length is 1 or above; Force assume this as the surface normal. 
+    /// </summary>
+    public Vector3 WeightFitSurfaceNormal { private get; set; }
 
     /// <summary>
     /// Derived output:
@@ -136,16 +145,26 @@ public class SdfSnapshot
             return 0;
         }
 
+        var trackerMissPosition = tracker.MissPosition;
+        if (tracker.HasArchivedMiss)
+        {
+            // The distance until this point is known to be clear.
+            trackerMissPosition = tracker.HitPosition;
+        }
+
         var maxDistance = Mathf.Clamp(_raycastDist - ObjectRadius, 0, _raycastDist);
-        var missVector = (tracker.MissPosition - _origin);
+
+        var missVector = (trackerMissPosition - _origin);
         var missDistance = Mathf.Clamp(missVector.Length() - ObjectRadius, 0, maxDistance);
-        var skyWeight = RangeUtilities.WeightedRange01(missDistance, maxDistance);
         var missDirection = missVector.Normalized();
 
-        // Optional; Directional fit; prefers hits in given direction.
+        // Distant hits are more important for tracking the sky
+        var skyWeight = RangeUtilities.WeightedRange01(missDistance, maxDistance);
+
+        // Optional; Directional fit; prefers misses in given direction.
         var dirFitWeight =
-            DirFitVector.Length() > float.Epsilon
-                ? VectorUtilities.Dot01(missDirection, DirFitVector)
+            WeightFitDirection.Length() > float.Epsilon
+                ? VectorUtilities.Dot01(missDirection, WeightFitDirection)
                 : 1;
 
         skyWeight *= dirFitWeight * dirFitWeight;
@@ -182,14 +201,14 @@ public class SdfSnapshot
 
         // Optional; Normal fit; prefers hits with aligned normals. 
         var normalFitWeight =
-            NormalFitVector.Length() > float.Epsilon
-                ? VectorUtilities.Dot01(hitNormal, NormalFitVector)
+            WeightFitHitNormal.Length() > float.Epsilon
+                ? VectorUtilities.Dot01(hitNormal, WeightFitHitNormal)
                 : 1;
 
         // Optional; Directional fit; prefers hits in given direction.
         var dirFitWeight =
-            DirFitVector.Length() > float.Epsilon
-                ? VectorUtilities.Dot01(hitDirection, DirFitVector)
+            WeightFitDirection.Length() > float.Epsilon
+                ? VectorUtilities.Dot01(hitDirection, WeightFitDirection)
                 : 1;
 
         normalFitWeight *= normalFitWeight;
@@ -261,15 +280,15 @@ public class SdfSnapshot
             out var skyHeightVector, out var skyTranslationVector
         );
 
-        ProjectedGroundPosition =_origin- skyHeightVector;
-        GroundAligningMovement =-skyTranslationVector;
+        ProjectedGroundPosition = _origin - skyHeightVector;
+        GroundAligningMovement = -skyTranslationVector;
 
         DistanceToSky = _origin.DecomposeWithPlane(
             CompositeSkyPosition, -SurfaceNormal,
             out var groundHeightVector, out var groundTranslationVector
         );
 
-        ProjectedSkyPosition = _origin- groundHeightVector;
+        ProjectedSkyPosition = _origin - groundHeightVector;
         SkyAligningMovement = -groundTranslationVector;
 
         HeightRatio = RangeUtilities.RatioRange01(DistanceToGround, DistanceToSky);
@@ -280,13 +299,37 @@ public class SdfSnapshot
     /// </summary>
     private void FinaliseIntegrations()
     {
-        SurfaceNormal = SurfaceNormal.Normalized();
+        FinaliseNormal();
 
         CompositeGroundPosition /= _trackerHitsWeightTotal;
         CompositeSkyPosition /= _trackerMissesWeightTotal;
 
         CompositeGroundPosition += _origin;
         CompositeSkyPosition += _origin;
+        return;
+
+        void FinaliseNormal()
+        {
+            var normalRefitWeight = WeightFitSurfaceNormal.Length().Clamp01();
+            switch (normalRefitWeight)
+            {
+                case 1:
+                    SurfaceNormal = WeightFitSurfaceNormal;
+                    break;
+                case > 0 when SurfaceNormal.Length() > 0:
+                {
+                    var target = WeightFitSurfaceNormal.Normalized();
+                    var from = SurfaceNormal.Normalized();
+                    SurfaceNormal = from.Lerp(target, normalRefitWeight * target.Dot01(from));
+                    break;
+                }
+                case > 0:
+                    SurfaceNormal = WeightFitSurfaceNormal;
+                    break;
+            }
+
+            SurfaceNormal = SurfaceNormal.Normalized();
+        }
     }
 
     private void DrawDebug()

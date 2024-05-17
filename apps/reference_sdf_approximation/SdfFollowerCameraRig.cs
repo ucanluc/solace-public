@@ -1,4 +1,5 @@
 using Godot;
+using Solace.addons.solace_core_plugin.lib.utilities;
 
 namespace Solace.apps.reference_sdf_approximation;
 
@@ -9,7 +10,7 @@ public partial class SdfFollowerCameraRig : Node3D
 
     [Export] private Node3D _cameraOrbitNode;
     [Export] private Node3D _cameraNode;
-    [Export] private Node3D _followTarget;
+    [Export] private SdfApproximateFollower _followTarget;
 
     public override void _Ready()
     {
@@ -35,6 +36,30 @@ public partial class SdfFollowerCameraRig : Node3D
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
+        ProjectCameraOrbit();
+    }
+
+    private void ProjectCameraOrbit()
+    {
         GlobalPosition = _followTarget.GlobalPosition;
+
+
+        _cameraOrbitNode.GlobalPosition =
+            _cameraOrbitNode.GlobalPosition.ProjectPositionToSphereSurface(GlobalPosition, 5f);
+        _cameraOrbitNode.Position = _cameraOrbitNode.Position with
+        {
+            Y = _followTarget.SkyPoint.DistanceToPlane(GlobalPosition, Vector3.Up) / 2
+        };
+        var space = GetWorld3D().DirectSpaceState;
+        var result =
+            space.IntersectRay(
+                PhysicsRayQueryParameters3D.Create(GlobalPosition, _cameraOrbitNode.GlobalPosition, 0b1));
+
+        var hasHit = result.Count > 0;
+        if (hasHit)
+        {
+            var hitPosition = (Vector3)result["position"];
+            _cameraOrbitNode.GlobalPosition = hitPosition;
+        }
     }
 }

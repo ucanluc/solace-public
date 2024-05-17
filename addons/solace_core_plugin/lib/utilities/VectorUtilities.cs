@@ -63,7 +63,7 @@ public static class VectorUtilities
     /// <param name="pointToProject">Point coordinates to project on to the plane</param>
     /// <param name="referencePointOnPlane">A point on the plane to get parallel alignment to.</param>
     /// <param name="planeNormal">The normal of the plane surface.</param>
-    /// <param name="pointHeightVector">Height vector of the first point, relative to the plane surface</param>
+    /// <param name="pointHeightVector">Height vector of the first point, relative to the reference point on the plane surface</param>
     /// <param name="planeParallelTranslation">
     /// Translation of the projected point, from the reference point.
     /// </param>
