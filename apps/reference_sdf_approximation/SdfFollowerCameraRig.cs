@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using Solace.addons.solace_core_plugin.lib.utilities;
 
@@ -11,11 +12,35 @@ public partial class SdfFollowerCameraRig : Node3D
     [Export] private Node3D _cameraOrbitNode;
     [Export] private Node3D _cameraNode;
     [Export] private SdfApproximateFollower _followTarget;
+    [Export] private Control _hud;
 
     public override void _Ready()
     {
-        Input.MouseMode = Input.MouseModeEnum.Captured;
+        HideHud();
+
+        _hud.GuiInput += HudOnGuiInput;
+        return;
+
+        void HudOnGuiInput(InputEvent @event)
+        {
+            if (@event is not InputEventMouseButton { Pressed: true }) return;
+            HideHud();
+        }
     }
+
+    private void HideHud()
+    {
+        Input.MouseMode = Input.MouseModeEnum.Captured;
+
+        SetProcessInput(true);
+    }
+
+    private void ShowHud()
+    {
+        Input.MouseMode = Input.MouseModeEnum.Visible;
+        SetProcessInput(false);
+    }
+
 
     public override void _Input(InputEvent @event)
     {
@@ -33,6 +58,22 @@ public partial class SdfFollowerCameraRig : Node3D
         }
     }
 
+    public override void _UnhandledInput(InputEvent @event)
+    {
+        if (!Input.IsActionJustPressed("sc_menu_quit")) return;
+
+        if (!_hud.Visible)
+        {
+            ShowHud();
+        }
+        else
+        {
+            HideHud();
+        }
+
+        _hud.Visible = !_hud.Visible;
+    }
+
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
@@ -45,7 +86,8 @@ public partial class SdfFollowerCameraRig : Node3D
 
 
         _cameraOrbitNode.GlobalPosition =
-            _cameraOrbitNode.GlobalPosition.ProjectPositionToSphereSurface(GlobalPosition, 5f);
+            _cameraOrbitNode.GlobalPosition.ProjectPositionToSphereSurface(GlobalPosition,
+                _followTarget.RaycastDistance - 1f);
         _cameraOrbitNode.Position = _cameraOrbitNode.Position with
         {
             Y = _followTarget.SkyPoint.DistanceToPlane(GlobalPosition, Vector3.Up) / 2

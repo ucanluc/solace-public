@@ -9,7 +9,7 @@ namespace Solace.addons.solace_core_plugin.lib.sdf_approximation;
 /// </summary>
 public class SdfRaycastTracker
 {
-    public readonly Vector3 RaycastDirection;
+    private readonly Vector3 _raycastDirection;
     public Vector3 MissPosition { get; private set; }
     public Vector3 HitPosition { get; private set; }
     public Vector3 HitNormal { get; private set; }
@@ -27,7 +27,7 @@ public class SdfRaycastTracker
 
     public SdfRaycastTracker(Vector3 raycastDirection, uint mask)
     {
-        RaycastDirection = raycastDirection;
+        _raycastDirection = raycastDirection;
         _queryParameters = PhysicsRayQueryParameters3D.Create(Vector3.Zero, raycastDirection, mask);
     }
 
@@ -56,7 +56,7 @@ public class SdfRaycastTracker
 
     private void SetupNaturalRaycast(Vector3 queryOrigin, float raycastDistance)
     {
-        var raycastEndPoint = queryOrigin + (RaycastDirection * raycastDistance);
+        var raycastEndPoint = queryOrigin + (_raycastDirection * raycastDistance);
         _queryParameters.From = queryOrigin;
         _queryParameters.To = raycastEndPoint;
     }
@@ -104,7 +104,7 @@ public class SdfRaycastTracker
         var newTargetPosition = positionToTrack
             .ProjectToFocusHorizon(
                 queryOrigin,
-                RaycastDirection,
+                _raycastDirection,
                 raycastDistance
             );
 
@@ -114,7 +114,8 @@ public class SdfRaycastTracker
 
     public void DrawPosition(Vector3 pointToDraw, Color color, float lineLength)
     {
-        DebugDraw3D.DrawLine(pointToDraw + RaycastDirection * (lineLength),
-            pointToDraw - (RaycastDirection * lineLength), color);
+        lineLength += 0.1f;
+        DebugDraw3D.DrawLine(pointToDraw + _raycastDirection * (lineLength),
+            pointToDraw - (_raycastDirection * lineLength), color);
     }
 }

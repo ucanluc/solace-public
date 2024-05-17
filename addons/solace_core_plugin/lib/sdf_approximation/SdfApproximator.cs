@@ -10,7 +10,7 @@ namespace Solace.addons.solace_core_plugin.lib.sdf_approximation;
 public class SdfApproximator
 {
     private const int MinTrackerCount = 5;
-    private readonly SdfRaycastTracker[] _trackers;
+    private SdfRaycastTracker[] _trackers;
     public readonly SdfSnapshot Snapshot = new();
 
     public SdfApproximator(int trackerCount, uint mask)
@@ -21,16 +21,22 @@ public class SdfApproximator
                                                  $" assuming {MinTrackerCount} trackers. ");
         }
 
+        _trackers = CreateTrackers(trackerCount, mask);
+    }
 
+    private SdfRaycastTracker[] CreateTrackers(int trackerCount, uint mask)
+    {
         var trackerDirections = SphereUtilities.GetPointsOnUnitSphere(trackerCount);
 
-        _trackers = new SdfRaycastTracker[trackerCount];
+        var trackers = new SdfRaycastTracker[trackerCount];
 
         for (var index = 0; index < trackerDirections.Length; index++)
         {
             var trackerDirection = trackerDirections[index];
-            _trackers[index] = new SdfRaycastTracker(trackerDirection, mask);
+            trackers[index] = new SdfRaycastTracker(trackerDirection, mask);
         }
+
+        return trackers;
     }
 
     /// <summary>
@@ -55,5 +61,10 @@ public class SdfApproximator
         }
 
         Snapshot.Finalise();
+    }
+
+    public void RecreateTrackers(int trackerCount, uint mask)
+    {
+        _trackers = CreateTrackers(trackerCount, mask);
     }
 }

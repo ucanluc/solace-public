@@ -6,36 +6,30 @@ namespace Solace.apps.reference_sdf_approximation;
 
 public partial class SdfApproximateFollower : CharacterBody3D
 {
-    [Export] private float _inputTurnStrength = 10f;
     [Export] private Node3D _directionReference;
     [Export] public Vector3 SkyPoint { get; private set; }
 
+    [Export] public float DirectionalFitWeight { get; set; }
+    [Export] public float HitNormalFit { get; set; }
+    [Export] public float SurfaceNormalFitWeight { get; set; }
+    [Export] public float RaycastDistance { get; set; }
+    [Export] public float MovementSpeed { get; set; }
+    [Export] public float MovementTurnSpeed { get; set; }
+    [Export] public float ObjectRadius { get; set; }
+
     private Vector3 _currentDirection = Vector3.Zero;
 
-
-    private float _currentSpeed = 4.5f;
-    private float _raycastDistance = 10;
     private float _lastHeight = 0.5f;
 
-    private readonly SdfApproximator _approximator = new(100, 0b1);
+    [Export] private bool _drawDebug;
+    [Export] private bool _drawDebugSecondary;
+    public readonly SdfApproximator Approximator = new(100, 0b1);
 
-
-    public override void _Ready()
-    {
-        base._Ready();
-        InitialiseApproximatorSnapshot();
-    }
-
-    private void InitialiseApproximatorSnapshot()
-    {
-        _approximator.Snapshot.DrawDebugLines = true;
-        _approximator.Snapshot.ObjectRadius = 1f;
-    }
 
     public override void _PhysicsProcess(double delta)
     {
-        var inputLocalSpace = GetLocalSpaceInput();
         UpdateApproximatorFit();
+        var inputLocalSpace = GetLocalSpaceInput();
         UpdateApproximatorSnapshot();
         UpdateCorrectiveMovement(ref inputLocalSpace);
 
@@ -45,26 +39,39 @@ public partial class SdfApproximateFollower : CharacterBody3D
         GlobalBasis = upFacingBasis;
 
 
-        _currentDirection = _currentDirection.Lerp(inputGlobalSpace, (float)(_inputTurnStrength * delta));
+        _currentDirection = _currentDirection.Lerp(inputGlobalSpace, (float)(MovementTurnSpeed * delta));
 
-        var velocity = _currentDirection * _currentSpeed;
+        var velocity = _currentDirection * MovementSpeed;
         Velocity = velocity;
 
         MoveAndSlide();
+
+        if (_drawDebug)
+        {
+            DrawDebug();
+        }
+    }
+
+    private void DrawDebug()
+    {
+        DebugDraw3D.DrawSphere(GlobalPosition, ObjectRadius, Colors.Gray);
+        DebugDraw3D.DrawSphere(GlobalPosition, _lastHeight, Colors.LightYellow);
+        DebugDraw3D.DrawSphere(GlobalPosition, RaycastDistance, Colors.White);
     }
 
     private void UpdateApproximatorFit()
     {
-        var upDirection = GlobalBasis * (Vector3.Up);
-        _approximator.Snapshot.WeightFitHitNormal = upDirection;
-        _approximator.Snapshot.WeightFitDirection = Velocity * 0.25f;
-        _approximator.Snapshot.WeightFitSurfaceNormal = Vector3.Up * 0.5f;
+        Approximator.Snapshot.WeightedFitHitNormal = (GlobalBasis * Vector3.Up) * HitNormalFit;
+        Approximator.Snapshot.WeightedFitDirection = Velocity * DirectionalFitWeight;
+        Approximator.Snapshot.WeightedFitSurfaceNormal = Vector3.Up * SurfaceNormalFitWeight;
+        Approximator.Snapshot.ObjectRadius = ObjectRadius;
     }
 
     private void UpdateCorrectiveMovement(ref Vector3 inputLocalSpace)
     {
-        var availableHeight = _approximator.Snapshot.DistanceToSky;
-        var currentHeight = _approximator.Snapshot.DistanceToGround;
+        if (Mathf.IsEqualApprox(SurfaceNormalFitWeight, 1f)) return;
+        var availableHeight = Approximator.Snapshot.DistanceToSky;
+        var currentHeight = Approximator.Snapshot.DistanceToGround;
         var totalHeightAvailable = Mathf.Abs(currentHeight + availableHeight);
         if (Mathf.IsZeroApprox(inputLocalSpace.Y))
         {
@@ -89,12 +96,12 @@ public partial class SdfApproximateFollower : CharacterBody3D
         var upFacingBasis = cameraFacingBasis.AlignLocalVectorToGlobalVectorWeighted
         (
             Vector3.Up,
-            _approximator.Snapshot.SurfaceNormal
+            Approximator.Snapshot.SurfaceNormal
         );
         return upFacingBasis;
     }
 
-    private Vector3 GetLocalSpaceInput()
+    private static Vector3 GetLocalSpaceInput()
     {
         var inputDirection = Input.GetVector("sc_move_left", "sc_move_right", "sc_move_backward", "sc_move_forward");
         var verticalDirection = Input.GetAxis("sc_modifier_careful", "sc_modifier_rush");
@@ -105,7 +112,12 @@ public partial class SdfApproximateFollower : CharacterBody3D
     private void UpdateApproximatorSnapshot()
     {
         var spaceState = GetWorld3D().DirectSpaceState;
-        _approximator.UpdateSnapshot(spaceState, GlobalPosition, _raycastDistance);
-        SkyPoint = _approximator.Snapshot.ProjectedSkyPosition;
+        Approximator.UpdateSnapshot(spaceState, GlobalPosition, RaycastDistance);
+        SkyPoint = Approximator.Snapshot.ProjectedSkyPosition;
+    }
+
+    public void ToggleDebug()
+    {
+        _drawDebug = !_drawDebug;
     }
 }

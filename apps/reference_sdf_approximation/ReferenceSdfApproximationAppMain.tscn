@@ -1,8 +1,12 @@
-[gd_scene load_steps=19 format=3 uid="uid://sbqnoubna1qg"]
+[gd_scene load_steps=23 format=3 uid="uid://sbqnoubna1qg"]
 
 [ext_resource type="Script" path="res://apps/reference_sdf_approximation/SdfFollowerCameraRig.cs" id="1_m5cjo"]
 [ext_resource type="Script" path="res://apps/reference_sdf_approximation/SdfApproximateFollower.cs" id="2_u4f7l"]
 [ext_resource type="Script" path="res://apps/reference_sdf_approximation/PidRigidBody3D.cs" id="3_uqf7n"]
+[ext_resource type="Script" path="res://apps/reference_sdf_approximation/SdfFollowerSettings.cs" id="4_g7eju"]
+[ext_resource type="Theme" uid="uid://dym726xcyrrko" path="res://content/user_interface/themes/default_ui_theme.tres" id="5_yhetk"]
+[ext_resource type="Script" path="res://content/user_interface/validation/NumeralHSlider.cs" id="6_ufq5o"]
+[ext_resource type="Script" path="res://addons/solace_core_plugin/user_interface/application/QuitButton.cs" id="7_f1m6p"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_80twd"]
 
@@ -314,12 +318,13 @@ transform = Transform3D(0.146447, 0.853553, -0.5, -0.5, 0.5, 0.707107, 0.853553,
 
 [node name="SdfFollower" type="Node3D" parent="."]
 
-[node name="SdfFollowerCameraRig" type="Node3D" parent="SdfFollower" node_paths=PackedStringArray("_cameraOrbitNode", "_cameraNode", "_followTarget")]
+[node name="SdfFollowerCameraRig" type="Node3D" parent="SdfFollower" node_paths=PackedStringArray("_cameraOrbitNode", "_cameraNode", "_followTarget", "_hud")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.41715, 0)
 script = ExtResource("1_m5cjo")
 _cameraOrbitNode = NodePath("CameraRigOrbit")
 _cameraNode = NodePath("CameraRigOrbit/Camera3D")
 _followTarget = NodePath("../SdfApproximateFollower")
+_hud = NodePath("../../CanvasLayer/Hud")
 
 [node name="CameraRigOrbit" type="Node3D" parent="SdfFollower/SdfFollowerCameraRig"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.63146, 5.47662)
@@ -331,6 +336,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.41715, 0)
 collision_layer = 2
 script = ExtResource("2_u4f7l")
 _directionReference = NodePath("../SdfFollowerCameraRig/CameraRigOrbit/Camera3D")
+RaycastDistance = 5.0
+MovementSpeed = 5.0
+MovementTurnSpeed = 10.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SdfFollower/SdfApproximateFollower"]
 shape = SubResource("BoxShape3D_boav0")
@@ -351,3 +359,229 @@ shape = SubResource("BoxShape3D_boav0")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="SdfFollower/PidRigidBody3D"]
 mesh = SubResource("BoxMesh_p6fgj")
+
+[node name="SdfFollowerSettings" type="Node" parent="." node_paths=PackedStringArray("follower", "_velocitySlider", "_localUpSlider", "_globalSlider", "_radiusSlider", "_rayDistanceSlider", "_rayCountSlider", "_moveSpeedSlider", "_toggleRayDebug", "_toggleCharacterDebug")]
+script = ExtResource("4_g7eju")
+follower = NodePath("../SdfFollower/SdfApproximateFollower")
+_velocitySlider = NodePath("../CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/HSlider")
+_localUpSlider = NodePath("../CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3/HSlider")
+_globalSlider = NodePath("../CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4/HSlider")
+_radiusSlider = NodePath("../CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/HSlider")
+_rayDistanceSlider = NodePath("../CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer5/HSlider")
+_rayCountSlider = NodePath("../CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer6/HSlider")
+_moveSpeedSlider = NodePath("../CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer7/HSlider")
+_toggleRayDebug = NodePath("../CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/Button")
+_toggleCharacterDebug = NodePath("../CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/Button2")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Hud" type="Control" parent="CanvasLayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("5_yhetk")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="Control" parent="CanvasLayer/Control/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 5.0
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Velocity Fit 25 %"
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2" node_paths=PackedStringArray("_textLabel")]
+layout_mode = 2
+size_flags_horizontal = 3
+value = 25.0
+script = ExtResource("6_ufq5o")
+_prefixText = "Velocity Fit "
+_suffixText = " %"
+_textLabel = NodePath("../Label")
+_updateInEditor = true
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Local Up Fit 100 %"
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3" node_paths=PackedStringArray("_textLabel")]
+layout_mode = 2
+size_flags_horizontal = 3
+value = 100.0
+script = ExtResource("6_ufq5o")
+_prefixText = "Local Up Fit "
+_suffixText = " %"
+_textLabel = NodePath("../Label")
+_updateInEditor = true
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Global Up Fit 0 %"
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4" node_paths=PackedStringArray("_textLabel")]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("6_ufq5o")
+_prefixText = "Global Up Fit "
+_suffixText = " %"
+_textLabel = NodePath("../Label")
+_updateInEditor = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Self Radius 0 cm"
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" node_paths=PackedStringArray("_textLabel")]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 200.0
+script = ExtResource("6_ufq5o")
+_prefixText = "Self Radius "
+_suffixText = " cm"
+_textLabel = NodePath("../Label")
+_updateInEditor = true
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Ray Distance 5 m"
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer5" node_paths=PackedStringArray("_textLabel")]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 3.0
+max_value = 20.0
+value = 5.0
+script = ExtResource("6_ufq5o")
+_prefixText = "Ray Distance "
+_suffixText = " m"
+_textLabel = NodePath("../Label")
+_updateInEditor = true
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Ray Count 100"
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer6" node_paths=PackedStringArray("_textLabel")]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 5.0
+max_value = 500.0
+value = 100.0
+rounded = true
+script = ExtResource("6_ufq5o")
+_prefixText = "Ray Count "
+_textLabel = NodePath("../Label")
+_updateInEditor = true
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer7"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Move Speed 5 m/s"
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer7" node_paths=PackedStringArray("_textLabel")]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+value = 5.0
+script = ExtResource("6_ufq5o")
+_prefixText = "Move Speed "
+_suffixText = " m/s"
+_textLabel = NodePath("../Label")
+_updateInEditor = true
+
+[node name="Button" type="Button" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Toggle Ray Debug"
+
+[node name="Button2" type="Button" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Toggle Character Debug"
+
+[node name="Control" type="Control" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Ray Debug Colors:
+   Red = Natural Miss
+   Blue = Tracker Miss
+
+   Green = Natural Hit
+   Yellow = Tracker Hit
+
+   White = Archived Hit
+   Black = Archived Miss
+	
+	Cyan: Sky position
+	Orange: Ground Position
+	Magenta: Actual Position
+
+Mouse: look around
+WASD: move around
+Shift/Control: move up/down
+ESC: toggle the mouse cursor
+F3: toggle the performance overlay"
+
+[node name="QuitButton" type="Button" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Quit"
+script = ExtResource("7_f1m6p")

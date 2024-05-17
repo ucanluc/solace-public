@@ -34,7 +34,7 @@ public partial class NumeralHSlider : HSlider
             return;
         }
 
-        _textLabel.Text = $"{_prefixText}{GetValue(value)}{_suffixText}";
+        _textLabel.Text = $"{_prefixText}{GetValueInt(value)}{_suffixText}";
     }
 
     private void UpdateLabel()
@@ -44,11 +44,11 @@ public partial class NumeralHSlider : HSlider
             return;
         }
 
-        _textLabel.Text = $"{_prefixText}{GetValue()}{_suffixText}";
+        _textLabel.Text = $"{_prefixText}{GetValueInt()}{_suffixText}";
     }
 
 
-    private int GetValue()
+    public int GetValueInt()
     {
         if (_asPowerOfTwo)
         {
@@ -58,7 +58,7 @@ public partial class NumeralHSlider : HSlider
         return (int)Value;
     }
 
-    private int GetValue(double value)
+    private int GetValueInt(double value)
     {
         if (_asPowerOfTwo)
         {

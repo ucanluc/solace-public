@@ -25,7 +25,7 @@ public class SdfSnapshot
     /// If length is 1; Weights are between 0~1 depending on alignment. 
     /// If length above 1; Starts ignoring misaligned vectors completely. 
     /// </summary>
-    public Vector3 WeightFitHitNormal { private get; set; }
+    public Vector3 WeightedFitHitNormal { private get; set; }
 
     /// <summary>
     /// Optional; set to prioritise hits in the given direction.
@@ -34,7 +34,7 @@ public class SdfSnapshot
     /// If length is 1; Weights are between 0~1 depending on alignment. 
     /// If length above 1; Starts ignoring misaligned vectors completely. 
     /// </summary>
-    public Vector3 WeightFitDirection { private get; set; }
+    public Vector3 WeightedFitDirection { private get; set; }
 
 
     /// <summary>
@@ -43,7 +43,7 @@ public class SdfSnapshot
     /// If length is 0~2; Length decides alignment strength. 
     /// If length is 1 or above; Force assume this as the surface normal. 
     /// </summary>
-    public Vector3 WeightFitSurfaceNormal { private get; set; }
+    public Vector3 WeightedFitSurfaceNormal { private get; set; }
 
     /// <summary>
     /// Derived output:
@@ -163,8 +163,8 @@ public class SdfSnapshot
 
         // Optional; Directional fit; prefers misses in given direction.
         var dirFitWeight =
-            WeightFitDirection.Length() > float.Epsilon
-                ? VectorUtilities.Dot01(missDirection, WeightFitDirection)
+            WeightedFitDirection.Length() > float.Epsilon
+                ? VectorUtilities.Dot01(missDirection, WeightedFitDirection)
                 : 1;
 
         skyWeight *= dirFitWeight * dirFitWeight;
@@ -201,14 +201,14 @@ public class SdfSnapshot
 
         // Optional; Normal fit; prefers hits with aligned normals. 
         var normalFitWeight =
-            WeightFitHitNormal.Length() > float.Epsilon
-                ? VectorUtilities.Dot01(hitNormal, WeightFitHitNormal)
+            WeightedFitHitNormal.Length() > float.Epsilon
+                ? VectorUtilities.Dot01(hitNormal, WeightedFitHitNormal)
                 : 1;
 
         // Optional; Directional fit; prefers hits in given direction.
         var dirFitWeight =
-            WeightFitDirection.Length() > float.Epsilon
-                ? VectorUtilities.Dot01(hitDirection, WeightFitDirection)
+            WeightedFitDirection.Length() > float.Epsilon
+                ? VectorUtilities.Dot01(hitDirection, WeightedFitDirection)
                 : 1;
 
         normalFitWeight *= normalFitWeight;
@@ -310,21 +310,21 @@ public class SdfSnapshot
 
         void FinaliseNormal()
         {
-            var normalRefitWeight = WeightFitSurfaceNormal.Length().Clamp01();
+            var normalRefitWeight = WeightedFitSurfaceNormal.Length().Clamp01();
             switch (normalRefitWeight)
             {
                 case 1:
-                    SurfaceNormal = WeightFitSurfaceNormal;
+                    SurfaceNormal = WeightedFitSurfaceNormal;
                     break;
                 case > 0 when SurfaceNormal.Length() > 0:
                 {
-                    var target = WeightFitSurfaceNormal.Normalized();
+                    var target = WeightedFitSurfaceNormal.Normalized();
                     var from = SurfaceNormal.Normalized();
                     SurfaceNormal = from.Lerp(target, normalRefitWeight * target.Dot01(from));
                     break;
                 }
                 case > 0:
-                    SurfaceNormal = WeightFitSurfaceNormal;
+                    SurfaceNormal = WeightedFitSurfaceNormal;
                     break;
             }
 
@@ -334,9 +334,14 @@ public class SdfSnapshot
 
     private void DrawDebug()
     {
-        DebugDraw3D.DrawLine(CompositeSkyPosition, ProjectedSkyPosition, Colors.Blue);
-        DebugDraw3D.DrawLine(CompositeGroundPosition, ProjectedGroundPosition, Colors.Red);
-        DebugDraw3D.DrawLine(_origin, ProjectedGroundPosition, Colors.Yellow);
+        DebugDraw3D.DrawLine(CompositeSkyPosition, ProjectedSkyPosition, Colors.Magenta);
+        DebugDraw3D.DrawLine(CompositeGroundPosition, ProjectedGroundPosition, Colors.DarkMagenta);
+        DebugDraw3D.DrawLine(_origin, ProjectedGroundPosition, Colors.Orange);
         DebugDraw3D.DrawLine(_origin, ProjectedSkyPosition, Colors.Cyan);
+    }
+
+    public void ToggleDebug()
+    {
+        DrawDebugLines = !DrawDebugLines;
     }
 }
