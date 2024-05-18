@@ -1,43 +1,49 @@
-﻿namespace Solace.addons.solace_core_plugin.lib.generator.wfc;
+﻿using System;
+using System.Collections.Generic;
+
+namespace Solace.addons.solace_core_plugin.lib.generator.wfc;
 
 /// <summary>
 /// Handles constraint solving steps
 /// </summary>
 public class WfcSolver
 {
-    private WfcCell[] cells;
-    private WfcPropagator _propagator;
+    private readonly WfcPropagator _propagator;
+    private readonly WfcEntropyTracker _entropyTracker;
+    private readonly WfcMap _map;
 
+
+    public WfcSolver(WfcSolverParameters parameters)
+    {
+        _map = new WfcMap(parameters.Dimensions, parameters.GetLayers());
+        _entropyTracker = new WfcEntropyTracker(_map);
+        _propagator = new WfcPropagator(_map);
+    }
 
     private void Setup()
     {
+        _entropyTracker.RestartTracking();
     }
 
     private void StepConstraintSolve()
     {
-        _propagator.PopMinEntropy(cells);
+        if (_entropyTracker.IsCollapsed)
+        {
+            Finalise();
+            return;
+        }
 
-        _propagator.PropagateChanges();
-
-        // TODO: is the collapse check done on the propagator or the layer?
-        // How do we handle multiple layers?
-        
-        
-        // _propagator.CheckCollapsed();
-        // if (_propagator.isCollapsed)
-        // {
-        //     Finalise();
-        // }
+        if (!_propagator.HasDirty)
+        {
+            var selectedWave = _entropyTracker.PopMinEntropy();
+            _propagator.AddDirty(selectedWave);
+        }
+        else
+        {
+            var changedWaves = _propagator.PropagateStep();
+            _entropyTracker.UpdateWaves(changedWaves);
+        }
     }
-
-
-    private bool CheckCollapsed()
-    {
-        return false;
-    }
-
-
-
 
 
     private void Finalise()

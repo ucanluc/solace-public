@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Godot;
+
 
 namespace Solace.addons.solace_core_plugin.lib.generator.wfc;
 
@@ -9,61 +9,44 @@ namespace Solace.addons.solace_core_plugin.lib.generator.wfc;
 /// </summary>
 public class WfcPropagator
 {
-    private readonly Stack<WfcCell> _dirtyCellStack = new Stack<WfcCell>();
+    private readonly Stack<int> _dirtyWaveStack = new();
+    private readonly WfcMap _map;
+
+    public WfcPropagator(WfcMap map)
+    {
+        _map = map;
+    }
+
+    public bool HasDirty => _dirtyWaveStack.Count > 0;
 
     /// <summary>
     /// Propagates constraints while there are cells with internal changes.
     /// </summary>
-    public void PropagateChanges()
+    public int[] PropagateStep()
     {
-        while (_dirtyCellStack.TryPop(out var cell))
+        var tryPop = _dirtyWaveStack.TryPop(out var waveId);
+        if (!tryPop) return Array.Empty<int>();
+
+        var dirtyWaves = _map.PropagateConstraints(waveId);
+        foreach (var dirtyWave in dirtyWaves)
         {
-            var dirtyCells = cell.PropagateConstraints();
-            foreach (var dirtyCell in dirtyCells)
-            {
-                if (_dirtyCellStack.Contains(dirtyCell)) continue;
-                _dirtyCellStack.Push(dirtyCell);
-            }
+            if (_dirtyWaveStack.Contains(dirtyWave)) continue;
+            _dirtyWaveStack.Push(dirtyWave);
         }
+
+        return dirtyWaves;
     }
 
-    public void AddDirty(WfcCell dirtyCell)
+    public void AddDirty(int dirtyWave)
     {
-        _dirtyCellStack.Push(dirtyCell);
+        _dirtyWaveStack.Push(dirtyWave);
     }
 
-    public void AddDirty(WfcCell[] dirtyCells)
+    public void AddDirty(int[] dirtyWaves)
     {
-        foreach (var dirtyCell in dirtyCells)
+        foreach (var dirtyCell in dirtyWaves)
         {
-            _dirtyCellStack.Push(dirtyCell);
+            _dirtyWaveStack.Push(dirtyCell);
         }
-    }
-
-    /// <summary>
-    /// Pop one of the cells with the lowest entropy to create something to propagate.
-    /// </summary>
-    public void PopMinEntropy(WfcCell[] cells)
-    {
-        throw new NotImplementedException();
-        // TODO: updating entropy can be done lazily; 
-        
-        
-        // Reset();
-        // foreach (var cell in cells)
-        // {
-        //     if (cell.IsDecided)
-        //     {
-        //         continue;
-        //     }
-        //
-        //     cell.GetWaveEntropy(cell);
-        // }
-        //
-        // var cellToPop = GetRandomMinEntropyCell();
-        //
-        // cellToPop.PopRandom();
-        //
-        // _dirtyCellStack.Push(cellToPop);
     }
 }

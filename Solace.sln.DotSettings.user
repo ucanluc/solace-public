@@ -1,10 +1,9 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/Environment/UnitTesting/TestLinker/SubjectAttributeName/@EntryValue">TestSuite,TestCase</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=76bd6eb5_002De813_002D4fce_002Dbf14_002D5f68f7a60b10/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;And&gt;&#xD;
-    &lt;Namespace&gt;Solace.addons.solace_core_plugin.lib.utilities.test&lt;/Namespace&gt;&#xD;
-    &lt;Project Location="C:\ulry\projects\godot_shared\solace" Presentation="&amp;lt;Solace&amp;gt;" /&gt;&#xD;
-  &lt;/And&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;VsTest::2028733D-92D2-41DF-8649-4BC1D82A0B26::net8.0::executor://gdunit4.testadapter/#Solace.test.IndexingUtilitiesTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Housekeeping/UnitTestingMru/UnitTestRunner/RunConfigurationFilename/@EntryValue">C:\ulry\projects\godot_shared\solace\.runsettings</s:String>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Coord/@EntryIndexedValue">True</s:Boolean>

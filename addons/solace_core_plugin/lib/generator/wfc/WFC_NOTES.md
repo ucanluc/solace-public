@@ -1,63 +1,86 @@
-Initialise a list of cells
-    Add the possibility list to each cell.
-    May 'draw' the map boundaries / map center with exact cells.
-    The initialisation step marks the affected cells as dirty, and propagates.
+- Solver definition:
+    - One or more layers to solve over
+    - Each layer can have 1~64 possible choices.
+    - Choices have sockets for 3d placement, and internal qualities.
+    - Sockets have 64 bit definitions
+- Solver:
+    - Initialise:
+        - For every layer;
+            - Add the wave possibilities for all possible choices in layer
+        - Precull:
+            - Map boundaries, center or exact coordinates may get 'preselected' to an individual choice
+            - First propagation is started from the preculled cells
+        - Entropy initialisation:
+            - Get the entropy of all undecided cells
+    - Solver Step
+        - Pop a wave if no dirty waves exist:
+            - Get a random wave from lowest entropy cell
+            - Force the wave to a single decision; weighted random
+            - Mark the wave as dirty.
+        - Propagate the limited constraints:
+            - Keep a stack of dirty waves
+            - While there are dirty waves:
+                - Pop a wave from the dirty stack
+                - Get the comparison list
+                    - Every neighbouring wave in layer
+                    - Every aligned wave in other layers
+                - For every comparison:
+                    - Get the possibility whitelist for the neighbour
+                    - Mask the neighbour's possibilities
+                    - If changes were made to the neighbour;
+                        - Abort or backtrack if resolved as a contradiction
+                        - add the neighbour to the stack if not already in there
+        - Solver is complete if no undecided cells exist.
+    -
 
-Solver:
-    Pop a cell:
-        find lowest entropy:
-            set minimum entropy at max value.
-            Create a list to track minimum entropy cells.
-            for each cell:
-                get cell entropy:
-                    initialise cell weight sums
-                    loop over available selections to sum the weights.
-                    ```
-                    weightSum += selection.weight;
-                    weightLogSum += selection.weight * math.log(selection.weight);
-                    ```
-                    Set the cell weight:
-                    ```
-                    cell.weight = math.log(weightSum)-(weightLogSum/weightSum);
-                    ```
-                Update the minimum entropy index if lower than known minimum
-        Select a cell from the minimum entropy cells randomly.
-            Select a random possibility from available selections.
-            Mark the cell as 'dirty', due to unenforced changes.
-    Propagate:
-        keep a stack of 'dirty' cells, with unchecked propagation.
-        Initialise the stack with the cell popped in the previous step.
-        While there are dirty cells remaining:
-            pop a cell from the stack,
-            for each neighbouring direction:
-                get the list of accepted sockets in that direction.
-                Remove unfit possibilities from the neighbour.
-                If any possibilities were removed, mark the neighbour as dirty, 
-                    and add it to the stack if not already in there. 
-    Check if all cells have exactly 1 option remaining
-        If any cell has 0 options remaining; restart, backtrack, or stop completely.
-        If all cells have exactly one option remaining, generation is complete.
+- Map
+    - Has an arbitrary number of layers; defines internal values for a given volume of space.
+    - Has an arbitrary number of cells; defines 3d space locations.
+    - Has a wave for every layer/cell combination.
+    - The result is interpreted from the singular choices in each layer.
+- Layer
+    - Each layer has 'options' defined; one of which must be chosen for the wave to resolve.
+    - Max 64 options are allowed per tile layer
+    - 3D boolean navigation requires exactly 64 cells to contain all possibilities.
+    - Every choice has a mask of allowed choices within the layer.
+- Option
+    - Options have sockets for every neighbour direction in the layer,
+    - Options have sockets to define 'internal' values for usage between layers.
+- Sockets
+    - Sockets are used to define the compatibility of two options
+    - Socket definitions on the same axis faces the same way.
+        - Exactly compatible NS / SN sockets, or EW/WE sockets are equal.
+    - Sockets can fit 'exactly'; requiring the same socket.
+    - Sockets can fit 'inclusively'; The bits of the first socket contains the second socket's bits.
+- Cell
+    - Defines a given location in space
+    - Includes waves for each possible layer
+    - A resolved cell has one choice selected for every layer.
+- Wave
+    - Includes 64 different possibilities
+    - Exactly one possibility = wave is decided
+    - Exactly zero possibility = wave is contradictory
+    - Two or more possibilities = wave is undecided.
+-
 
-Max 64 types allowed per tile; kept as a mask with uint64.
-This speeds up most operations considerably,
-The generated tile sets do not map to the full variety of assets,
+- Wave entropy tracker operations:
+    - Pop a random minimum entropy wave;
+        - Weighted random from min. entropy waves
+        - The popped cell will not be added back again
+    - Remove a wave from tracking
+    - Add a wave to tracking
+    - Add a list of waves to tracking.
 
-Each given layer has 'options' defined; one of which must be chosen for the wave to resolve.
-Options have sockets; which are used to compare whether the options can be paired with each other in a given direction.
-Sockets are axis independent; but placement pairs are done alongside the axes
-For any tile, there are 4 different sides to place another tile on;
+Entropy Integration: with weight sum over a list of choices:
 
-Each 'socket', for every axis; has a whitelist for allowed tiles in the given direction
-Each socket checks suitability by exact match; The sockets face in global directions, not local ones.
-    - NS / SN sockets are the same; 
-    - EW / WE sockets are the same
-Every option, for every axis; has a socket; defined as an int.
-Every layer; has a list of options; one must be chosen for each cell.
-cells define a given volume in space; and may have an arbitrary amount of layers solved at the same time.
+```
+weightSum += selection.weight;
+weightLogSum += selection.weight * math.log(selection.weight);
+```
 
-layers may have 'internal requirements'; and constrain themselves from other layers. 
-Layers cannot explicitly check other layers;
-    Layers define one or more 'internal' sockets,
-    Other layers can check a different layer for that socket; which is not used elsewhere.
+Entropy finalisation:
 
-Sockets can be fit exactly, or inclusively.
+```
+cell.weight = math.log(weightSum)-(weightLogSum/weightSum);
+```
+

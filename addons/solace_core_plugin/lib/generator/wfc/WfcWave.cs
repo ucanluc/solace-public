@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
 using Godot;
 
@@ -14,8 +15,9 @@ namespace Solace.addons.solace_core_plugin.lib.generator.wfc;
 /// If multiple possibilities exist; they are undecided.
 /// If no possibilities exist; then there is a contradiction.
 /// </summary>
-public struct WfcWave
+public class WfcWave
 {
+    private readonly int Id;
     private const int MaxBitCount = 64;
 
     /// <summary>
@@ -190,12 +192,35 @@ public struct WfcWave
         return compositeWhitelist;
     }
 
-    /// <summary>
-    /// Force selecting a single possibility.
-    /// </summary>
-    /// <exception cref="NotImplementedException"></exception>
-    public void ForceDecide()
+
+    public bool ForceDecide(float[] weights)
     {
+        // TODO; weighted random
         throw new NotImplementedException();
+    }
+
+    /// <summary>
+    /// Force selecting a random single possibility.
+    /// </summary>
+    /// <returns>True if there were any changes made; False if no changes were made</returns>
+    public bool ForceDecide()
+    {
+        var remainingOptions = PossibilityCount;
+        if (remainingOptions <= 1)
+        {
+            return false;
+        }
+
+        var availablePossibilities = new List<int>();
+        for (var i = 0; i < MaxBitCount; i++)
+        {
+            if (!GetSinglePossibility(i)) continue;
+            availablePossibilities.Add(i);
+        }
+
+        var randomItem = availablePossibilities[Random.Shared.Next() % availablePossibilities.Count];
+        var old = _possibilities;
+        _possibilities = BitFlag(randomItem);
+        return old != _possibilities;
     }
 }

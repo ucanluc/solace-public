@@ -7,5 +7,5 @@
 /// </summary>
 public class WaveFunctionCollapse
 {
-    
+    private WfcMap _map;
 }

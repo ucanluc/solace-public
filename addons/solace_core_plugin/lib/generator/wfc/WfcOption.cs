@@ -25,8 +25,8 @@ public class WfcOption
 
     public WfcOption(WfcSocket[] directionalSockets, Dictionary<int, WfcSocket> internalSockets, float selectionWeight)
     {
-        this._directionalSockets = directionalSockets;
-        this._internalSockets = internalSockets;
-        this.SelectionWeight = selectionWeight;
+        _directionalSockets = directionalSockets;
+        _internalSockets = internalSockets;
+        SelectionWeight = selectionWeight;
     }
 }
