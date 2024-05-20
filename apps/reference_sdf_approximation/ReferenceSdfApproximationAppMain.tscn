@@ -1719,6 +1719,7 @@ size_flags_vertical = 1
 text = "Mouse: look around
 WASD: move around
 Shift/Control: move up/down
+Right Click: Aim
 ESC: toggle the mouse cursor
 F3: toggle the performance overlay"
 

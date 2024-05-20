@@ -89,11 +89,15 @@ public partial class SdfApproximateFollower : CharacterBody3D
 
     private Basis GetBasisWithDesiredRotation()
     {
-        var cameraFacingBasis = GlobalBasis.AlignSameLocalVectorGloballyWeighted
-        (
-            Vector3.Forward,
-            _directionReference.GlobalBasis
-        );
+        var lookAction = Input.GetActionStrength("sc_action_secondary");
+
+        var cameraFacingBasis = lookAction == 0
+            ? GlobalBasis
+            : GlobalBasis.AlignSameLocalVectorGloballyWeighted
+            (
+                Vector3.Forward,
+                _directionReference.GlobalBasis
+            );
 
         var upFacingBasis = cameraFacingBasis.AlignLocalVectorToGlobalVectorWeighted
         (
