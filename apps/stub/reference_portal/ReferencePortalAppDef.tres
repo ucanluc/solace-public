@@ -1,8 +1,0 @@
-[gd_resource type="Resource" script_class="AppDefinitionResource" load_steps=3 format=3 uid="uid://t6kod0j5xq2u"]
-
-[ext_resource type="PackedScene" uid="uid://dt4p63av2ky10" path="res://apps/stub/reference_portal/ReferencePortalAppMain.tscn" id="1_0er1w"]
-[ext_resource type="Script" path="res://addons/solace_core_plugin/core/application/AppDefinitionResource.cs" id="1_ppsao"]
-
-[resource]
-script = ExtResource("1_ppsao")
-_appEntryNode = ExtResource("1_0er1w")

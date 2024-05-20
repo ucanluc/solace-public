@@ -1,8 +1,0 @@
-[gd_resource type="Resource" script_class="AppDefinitionResource" load_steps=3 format=3 uid="uid://cq5ehn5mdvs0c"]
-
-[ext_resource type="PackedScene" uid="uid://c16flkmfev6gi" path="res://apps/stub/reference_wave_function_collapse/ReferenceWaveFunctionCollapseAppMain.tscn" id="1_jqcdv"]
-[ext_resource type="Script" path="res://addons/solace_core_plugin/core/application/AppDefinitionResource.cs" id="1_mchim"]
-
-[resource]
-script = ExtResource("1_mchim")
-_appEntryNode = ExtResource("1_jqcdv")

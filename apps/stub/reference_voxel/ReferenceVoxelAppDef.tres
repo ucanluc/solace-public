@@ -1,8 +1,0 @@
-[gd_resource type="Resource" script_class="AppDefinitionResource" load_steps=3 format=3 uid="uid://bxcjrd4hnhau3"]
-
-[ext_resource type="PackedScene" uid="uid://bjrmgk64nmqbe" path="res://apps/stub/reference_voxel/ReferenceVoxelAppMain.tscn" id="1_5dofm"]
-[ext_resource type="Script" path="res://addons/solace_core_plugin/core/application/AppDefinitionResource.cs" id="1_co3sj"]
-
-[resource]
-script = ExtResource("1_co3sj")
-_appEntryNode = ExtResource("1_5dofm")
