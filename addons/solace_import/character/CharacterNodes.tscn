@@ -3,3 +3,12 @@
 [ext_resource type="PackedScene" uid="uid://cc84wnnkg3374" path="res://addons/solace_import/character/source/character_nodes.gltf" id="1_31t0h"]
 
 [node name="CharacterNodes" instance=ExtResource("1_31t0h")]
+
+[node name="torso_neck_skin" parent="Node/char_root/hip/torso_spine/torso_chest/torso_upper_chest/torso_neck" index="1"]
+layers = 524288
+
+[node name="head_skull_skin" parent="Node/char_root/hip/torso_spine/torso_chest/torso_upper_chest/torso_neck/head" index="1"]
+layers = 524288
+
+[node name="head_jaw_skin" parent="Node/char_root/hip/torso_spine/torso_chest/torso_upper_chest/torso_neck/head/head_jaw" index="0"]
+layers = 524288

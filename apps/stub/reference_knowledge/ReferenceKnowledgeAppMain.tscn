@@ -1,7 +1,8 @@
-[gd_scene load_steps=21 format=3 uid="uid://mdwyw8gkdvj"]
+[gd_scene load_steps=22 format=3 uid="uid://mdwyw8gkdvj"]
 
 [ext_resource type="Script" path="res://apps/stub/reference_knowledge/LevelGenerator.cs" id="1_pwi33"]
 [ext_resource type="TileSet" uid="uid://brevrqvxfp0aw" path="res://addons/solace_import/tilemap/topdown_tile_set.tres" id="2_0tg78"]
+[ext_resource type="PackedScene" uid="uid://bhd8drw02nuho" path="res://addons/solace_import/character/CharacterNodes.tscn" id="2_1ajub"]
 [ext_resource type="Script" path="res://apps/stub/reference_knowledge/MockBodyInstance2D.cs" id="4_07lot"]
 [ext_resource type="Texture2D" uid="uid://xw04n66d2q6b" path="res://addons/kenney/2d/tilesheet_topdown.png" id="5_bjcj4"]
 [ext_resource type="Script" path="res://apps/stub/reference_knowledge/NPCCharacterBody3D.cs" id="6_o1x3s"]
@@ -70,6 +71,16 @@ transform = Transform3D(0.146447, 0.853553, -0.5, -0.5, 0.5, 0.707106, 0.853553,
 
 [node name="PlayerSpace" type="Node" parent="."]
 
+[node name="CharacterNodes" parent="PlayerSpace" instance=ExtResource("2_1ajub")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.16279)
+
+[node name="Head" type="Node3D" parent="PlayerSpace/CharacterNodes"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1.67971, 0.115212)
+
+[node name="Camera3D" type="Camera3D" parent="PlayerSpace/CharacterNodes/Head"]
+cull_mask = 524287
+current = true
+
 [node name="ServerSpace" type="Node" parent="."]
 
 [node name="Node2D" type="Node2D" parent="ServerSpace"]
@@ -93,8 +104,8 @@ shape = SubResource("CircleShape2D_0oh08")
 
 [node name="AnimatableBody2D" type="AnimatableBody2D" parent="ServerSpace/Node2D" node_paths=PackedStringArray("rotationTarget")]
 script = ExtResource("4_07lot")
-EntityId = 1
 rotationTarget = NodePath(".")
+EntityId = 1
 
 [node name="Camera2D" type="Camera2D" parent="ServerSpace/Node2D/AnimatableBody2D"]
 
@@ -152,8 +163,8 @@ surface_material_override/0 = SubResource("StandardMaterial3D_6rcsq")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.63192, 0)
 script = ExtResource("7_wqj77")
 EntityId = 1
-Head = NodePath("Head")
-Camera = NodePath("Head/Camera3D")
+Head = NodePath("../../../PlayerSpace/CharacterNodes/Head")
+Camera = NodePath("../../../PlayerSpace/CharacterNodes/Head/Camera3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ServerSpace/Node3D/CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -163,10 +174,3 @@ shape = SubResource("CapsuleShape3D_8022a")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 layers = 524288
 mesh = SubResource("CapsuleMesh_s188a")
-
-[node name="Head" type="Node3D" parent="ServerSpace/Node3D/CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.62, 0)
-
-[node name="Camera3D" type="Camera3D" parent="ServerSpace/Node3D/CharacterBody3D/Head"]
-cull_mask = 524287
-current = true
