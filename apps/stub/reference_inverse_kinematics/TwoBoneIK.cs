@@ -1,5 +1,6 @@
 using Godot;
 using Solace.addons.solace_core_plugin.core;
+using Solace.addons.solace_core_plugin.lib.utilities;
 
 namespace Solace.apps.stub.reference_inverse_kinematics;
 
@@ -108,7 +109,7 @@ public partial class TwoBoneIK : Node3D
         }
 
         var solutionRootAngle =
-            LawOfCosines(_elbowBone.Position.Length(), _endEffector.Position.Length(), targetLength);
+            TrigUtilities.LawOfCosines(_elbowBone.Position.Length(), _endEffector.Position.Length(), targetLength);
 
         var hintVector = _hint!.GlobalPosition - _rootBone.GlobalPosition;
         var hintNormal = hintVector.Normalized();
@@ -128,19 +129,6 @@ public partial class TwoBoneIK : Node3D
         var lookDirection = targetNormal.Rotated(solutionPlaneNormal, solutionRootAngle).Normalized();
         _rootBone.LookAt(_rootBone.GlobalPosition + lookDirection);
         _elbowBone.LookAt(_target.GlobalPosition);
-    }
-
-    /// <summary>
-    /// Finds one angle from a given triangle, defined by the length of it's edges.
-    /// Solves for the angle 'facing' (opposite to) the first edge.
-    /// </summary>
-    /// <param name="a">Length of first edge</param>
-    /// <param name="b">Length of the second edge</param>
-    /// <param name="c">Length of the third edge</param>
-    /// <returns>The angle in radians. </returns>
-    private float LawOfCosines(float a, float b, float c)
-    {
-        return Mathf.Acos(((b * b) + (c * c) - (a * a)) / (2 * b * c));
     }
 
 
